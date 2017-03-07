@@ -1,0 +1,106 @@
+{% extends 'main.html' %}
+
+{% block title %}员工密码管理{% endblock %}
+
+{% block style %}
+    <style>
+        form {
+            width: 400px;
+            height: 200px;
+            margin: 0 auto;
+            margin-top: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+        }
+
+        .input-area {
+            width: 300px;
+            margin: 0 auto;
+        }
+
+        label {
+            display: inline-block;
+            width: 100px;
+            text-align: right;
+            font-size: 18px;
+            line-height: 18px;
+        }
+
+        span.input {
+            display: inline-block;
+            width: 195px;
+            border: 1px solid #bbb;
+            border-radius: 5px;
+            margin: 8px 0;
+            padding: 3px 8px;
+            background: #fff;
+        }
+
+        input {
+            width: 180px;
+            border: none;
+            outline: none;
+            font-size: 18px;
+            line-height: 18px;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+
+    <h2>修改员工密码</h2>
+
+    <form id="reset_form">
+        <div class="input-area">
+            <label for="">登录名：</label>
+            <span class="input"><input type="text" name="username" required></span>
+        </div>
+        <div class="input-area">
+            <label for="">新密码：</label>
+            <span class="input"><input type="text" name="new_password" required></span>
+        </div>
+        <div class="input-area">
+            <label for="">重复密码：</label>
+            <span class="input"><input type="text" name="new_password_repeat" required></span>
+        </div>
+    </form>
+
+    <button id="reset" type="button" class="normal">确定</button>
+{% endblock %}
+
+
+{% block js %}
+    <script>
+        $('#reset').click(function () {
+            $.ajax({
+                cache: false,
+                url: '{% url "user:reset" %}',
+                type: 'POST',
+                async: true,
+                dataType: 'json',
+                beforeSend: function (xhr, settings) {
+                    xhr.setRequestHeader("X-CSRFToken", "{{ csrf_token }}");
+                },
+                data: $('#reset_form').serializeArray(),
+                success: function (data) {
+                    $('#msg').text(data.msg)
+                    setTimeout(function () {
+                        $('#msg').text('')
+                    }, 2000)
+                },
+                error: function () {
+                    $('#msg').text('出错了')
+                }
+            })
+        })
+
+    </script>
+{% endblock %}
+
+
+
+
+
+
+

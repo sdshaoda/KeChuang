@@ -1,0 +1,82 @@
+{% extends 'main.html' %}
+
+{% block title %}添加新员工{% endblock %}
+
+{% block style %}{% endblock %}
+
+{% block content %}
+    <form action="{% url 'user:add_staff' %}" method="post">
+        <table>
+            <tr>
+                <th colspan="2">添加新员工</th>
+            </tr>
+            <tr>
+                <td>
+                    <label for="name">姓名：</label>
+                    <input id="name" type="text" name="name" value="" required>
+                </td>
+                <td>
+                    <label for="department">部门：</label>
+                    <select id="department" name="department">
+                        <option value="综合办">综合办</option>
+                        <option value="总工办">总工办</option>
+                        <option value="检测一室">检测一室</option>
+                        <option value="检测二室">检测二室</option>
+                        <option value="检测三室">检测三室</option>
+                        <option value="检测四室">检测四室</option>
+                        <option value="土力学实验室">土力学实验室</option>
+                        <option value="岩土力学实验室">岩土力学实验室</option>
+                        <option value="钢结构室">钢结构室</option>
+                        <option value="设备研发室">设备研发室</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="job">职务：</label>
+                    <input id="job" type="text" name="job" value="" required>
+                </td>
+                <td>
+                    <label for="induction_time">入职时间：</label>
+                    <input id="induction_time" type="date" name="induction_time" value="" required>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="staff_num">职工编号：</label>
+                    <input id="staff_num" type="text" name="staff_num" value="" required>
+                </td>
+                <td>
+                    <label for="username">登录名：</label>
+                    <input id="username" type="text" name="username" value="" required>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="password">密码：</label>
+                    <input id="password" type="text" name="password" value="" required>
+                </td>
+                <td>
+                    <label for="password_repeat">重复密码</label>
+                    <input id="password_repeat" type="text" name="password_repeat" value="" required>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="permission">系统权限：</label>
+                    <select id="permission" name="permission">
+                        <option value="0">检测员</option>
+                        <option value="1">部门负责</option>
+                        <option value="2">公司负责</option>
+                        <option value="3">系统管理员</option>
+                    </select>
+                </td>
+                <td></td>
+            </tr>
+        </table>
+
+        <button type="submit" class="normal">添加</button>
+        {% csrf_token %}
+    </form>
+{% endblock %}
+

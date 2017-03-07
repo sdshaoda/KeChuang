@@ -1,0 +1,105 @@
+{% extends 'main.html' %}
+
+{% block title %}浏览工程{% endblock %}
+
+{% block style %}
+    <style>
+        .add-file {
+            margin: 20px 0;
+            float: left;
+        }
+
+        button {
+            clear: both;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+
+    <form method="post" enctype="multipart/form-data" action="{% url 'pro:add' %}">
+        <table>
+            <tr>
+                <th colspan="3">工程资料输入</th>
+            </tr>
+            <tr>
+                <td>
+                    <label for="pro_name"><span class="require"></span>工程名称：</label>
+                    <input type="text" name="pro_name" value="">
+                </td>
+                <td>
+                    <label for="ht_num"><span class="require"></span>合同编号：</label>
+                    <input type="text" name="ht_num" value="">
+                </td>
+                <td>
+                    <label for="ht_name"><span class="require"></span>合同名称：</label>
+                    <input type="text" name="ht_name" value="">
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="ht_money"><span class="require"></span>合同金额：</label>
+                    <input type="text" name="ht_money" value=""></td>
+                <td>
+                    <label for="wt_dw"><span class="require"></span>委托单位：</label>
+                    <input type="text" name="wt_dw" value=""></td>
+                <td>
+                    <label for="wt_person"><span class="require"></span>委托人：</label>
+                    <input type="text" name="wt_person" value=""></td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="mobile"><span class="require"></span>联系电话：</label>
+                    <input type="tel" name="mobile" value=""></td>
+                <td>
+                    <label for="pro_address"><span class="require"></span>项目地址：</label>
+                    <input type="text" name="pro_address" value=""></td>
+                <td>
+                    <label for="represent_person"><span class="require"></span>公司代表：</label>
+                    <input type="text" name="represent_person" value=""></td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="sign_date"><span class="require"></span>签订日期：</label>
+                    <input type="date" name="sign_date" value=""></td>
+                <td>
+                    <label for="start_date"><span class="require"></span>开工时间：</label>
+                    <input type="date" name="start_date" value=""></td>
+                <td>
+                    <label for="finish_date"><span class="require"></span>完工时间：</label>
+                    <input type="date" name="finish_date" value=""></td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="pro_person"><span class="require"></span>项目负责人：</label>
+                    <select name="pro_person">
+                        {% for staff in staffs %}
+                            <option value="{{ staff.username }}">{{ staff.name }}</option>
+                        {% endfor %}
+                    </select>
+                </td>
+                <td>
+                    <label for="pro_type"><span class="require"></span>工程类型：</label>
+                    <select name="pro_type">
+                        <option value="jkjc">基坑监测</option>
+                        <option value="jcgc">沉降观测</option>
+                        <option value="zjjc">桩基检测</option>
+                        <option value="clsy">材料试验</option>
+                        <option value="gcwt">工程物探</option>
+                    </select>
+                <td>
+                    <label for="equipment"><span class="require"></span>检测设备：</label>
+                    <input type="text" name="equipment" value=""></td>
+            </tr>
+        </table>
+        <div class="add-file">
+            <label for="ht_scan"><span class="require"></span>上传合同扫描件：</label>
+            <input type="file" name="ht_scan">
+        </div>
+
+        <button type="submit" class="normal">添加</button>
+        {% csrf_token %}
+    </form>
+
+{% endblock %}
+

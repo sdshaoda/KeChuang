@@ -1,0 +1,82 @@
+{% extends 'main.html' %}
+
+{% block title %}员工信息管理{% endblock %}
+
+{% block style %}
+    <style>
+        table {
+            margin-top: 20px;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+
+    <h2>用户管理</h2>
+
+    <table>
+        <tr>
+            <th>职工编号</th>
+            <th>姓名</th>
+            <th>部门</th>
+            <th>职务</th>
+            <th>登录名</th>
+            <th>系统权限</th>
+            <th colspan="2">操作</th>
+        </tr>
+
+        {% for staff in all_staffs %}
+            <tr id="{{ staff.id }}">
+                <td>{{ staff.staff_num }}</td>
+                <td>{{ staff.name }}</td>
+                <td>{{ staff.department }}</td>
+                <td>{{ staff.job }}</td>
+                <td class="username">{{ staff.username }}</td>
+                <td>{{ staff.get_permission_display }}</td>
+                <td><a href="{% url 'user:edit' staff.id %}">编辑</a></td>
+                <td>
+                    <button value="{{ staff.id }}" class="delete">删除</button>
+                </td>
+            </tr>
+        {% endfor %}
+
+    </table>
+
+    <button type="button" class="normal w100"><a href="{% url 'user:add_staff' %}">添加新员工</a></button>
+
+{% endblock %}
+
+
+{% block js %}
+    <script>
+        $('.delete').click(function (e) {
+            var staff_id = $(this).val()
+            var $tr_staff = $(this).parent().parent()
+            $.ajax({
+                cache: false,
+                url: '{% url "user:delete_staff" %}',
+                type: 'POST',
+                async: true,
+                dataType: 'json',
+                beforeSend: function (xhr, settings) {
+                    xhr.setRequestHeader("X-CSRFToken", "{{ csrf_token }}");
+                },
+                data: {'staff_id': staff_id},
+                success: function (data) {
+                    if (data.status === 'success') {
+                        $tr_staff.remove()
+                    }
+                    $('#msg').text(data.msg)
+                    setTimeout(function () {
+                        $('#msg').text('')
+                    }, 2000)
+                },
+                error: function () {
+                    $('#msg').text('出错了')
+                }
+            })
+        })
+
+    </script>
+{% endblock %}
+

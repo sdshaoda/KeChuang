@@ -1,0 +1,100 @@
+{% extends 'main.html' %}
+
+{% block title %}修改工程{% endblock %}
+
+{% block style %}
+    <style>
+        .add-file {
+            margin: 20px 0;
+            float: left;
+        }
+
+        button {
+            clear: both;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+
+
+    <table>
+        <tr>
+            <th colspan="3">工程资料输入</th>
+        </tr>
+        <tr>
+            <td>
+                <label for=""><span class="require"></span>工程名称：</label>
+                <input type="text" name="" value="">
+            </td>
+            <td>
+                <label for=""><span class="require"></span>合同编号：</label>
+                <input type="text" name="" value="">
+            </td>
+            <td>
+                <label for=""><span class="require"></span>合同名称：</label>
+                <input type="text" name="" value="">
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label for=""><span class="require"></span>合同金额：</label>
+                <input type="text" name="" value=""></td>
+            <td>
+                <label for=""><span class="require"></span>委托单位：</label>
+                <input type="text" name="" value=""></td>
+            <td>
+                <label for=""><span class="require"></span>委托人：</label>
+                <input type="text" name="" value=""></td>
+        </tr>
+        <tr>
+            <td>
+                <label for=""><span class="require"></span>电话：</label>
+                <input type="tel" name="" value=""></td>
+            <td>
+                <label for=""><span class="require"></span>项目地址：</label>
+                <input type="text" name="" value=""></td>
+            <td>
+                <label for=""><span class="require"></span>公司代表：</label>
+                <input type="text" name="" value=""></td>
+        </tr>
+        <tr>
+            <td>
+                <label for=""><span class="require"></span>签订日期：</label>
+                <input type="date" name="" value=""></td>
+            <td>
+                <label for=""><span class="require"></span>开工时间：</label>
+                <input type="date" name="" value=""></td>
+            <td>
+                <label for=""><span class="require"></span>完工时间：</label>
+                <input type="date" name="" value=""></td>
+        </tr>
+        <tr>
+            <td>
+                <label for=""><span class="require"></span>项目负责人：</label>
+                <input type="text" name="" value=""></td>
+            <td>
+                <label for=""><span class="require"></span>工程类型：</label>
+                <select>
+                    <option value="">基坑监测</option>
+                    <option value="">沉降观测</option>
+                    <option value="">桩基检测</option>
+                    <option value="">材料试验</option>
+                    <option value="">工程物探</option>
+                </select>
+            <td>
+                <label for=""><span class="require"></span>检测设备：</label>
+                <input type="text" name="" value=""></td>
+        </tr>
+    </table>
+    <div class="add-file">
+        <label for=""><span class="require"></span>上传合同扫描件：</label>
+        <input type="file" name="" value="">
+    </div>
+
+    <button type="button" class="normal w90"><a href="{% url 'pro:apply' %}">确认修改</a></button>
+
+
+{% endblock %}
+
+

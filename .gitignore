@@ -1,0 +1,8 @@
+.idea
+
+# PyCharm file
+*.pyc
+
+migrations
+
+media

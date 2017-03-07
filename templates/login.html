@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>登录 - 武汉中科科创工程检测有限公司</title>
+    <link rel='stylesheet' href='/static/css/login.css'/>
+    {#      <link rel="stylesheet" href="/static/css/bootstrap.css">#}
+    <script src="/static/js/jquery.js"></script>
+</head>
+<body>
+        <div id="dialog">
+            <span id="close"></span>
+            <div id="msg">{{ msg }}</div>
+        </div>
+
+<div class="login-con">
+    <div class="login-header">武汉中科科创工程检测有限公司办公管理系统</div>
+    <form class="login-main" method="post" action="{% url 'login' %}">
+        <div class="input-area">
+            <label for="username">用户名：</label>
+            <div class="input">
+                <input id="username" value="{{ login_form.username.value }}" type="text" name="username"/>
+            </div>
+        </div>
+        <div class="input-area">
+            <label for="password">密码：</label>
+            <div class="input">
+                <input id="password" value="{{ login_form.password.value }}" type="password" name="password"/>
+            </div>
+        </div>
+        <button type="submit">登录</button>
+        {% csrf_token %}
+    </form>
+</div>
+<script>
+    $(document).ready(function () {
+        if ($('#msg').text() === '') {
+            $('#dialog').fadeOut()
+        } else {
+            $('#dialog').fadeIn()
+        }
+
+        $('#close').click(function () {
+            $('#dialog').fadeOut()
+        })
+    })
+</script>
+</body>
+</html>

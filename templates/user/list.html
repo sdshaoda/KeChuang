@@ -1,0 +1,65 @@
+{% extends 'main.html' %}
+
+{% block title %}浏览工程{% endblock %}
+
+{% block style %}
+    <style>
+        table {
+            margin-top: 40px;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+    <div class="handle">
+        <div class="filter">
+            筛选：
+            <select>
+                <option value="">姓名</option>
+                <option value="">部门</option>
+                <option value="">职务</option>
+            </select>
+            <input type="text" name="" value="">
+            <button type="button">确定</button>
+        </div>
+        <div class="sort">
+            排序：
+            <select>
+                <option value="">部门</option>
+                <option value="">职务</option>
+            </select>
+            <select name="" id="">
+                <option value="">从高到底</option>
+                <option value="">从底到高</option>
+            </select>
+            <button type="button">确定</button>
+        </div>
+    </div>
+
+    <table>
+        <thead>
+        <tr>
+            <th>职工编号</th>
+            <th>姓名</th>
+            <th>部门</th>
+            <th>职务</th>
+            <th>学历证书</th>
+            <th>职称证书</th>
+            <th>资格证书</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for staff in staffs %}
+        <tr>
+            <td>{{ staff.staff_num }}</td>
+            <td>{{ staff.name }}</td>
+            <td>{{ staff.get_department_display }}</td>
+            <td>{{ staff.job }}</td>
+            <td><a href="">查看</a></td>
+            <td><a href="">查看</a></td>
+            <td><a href="">查看</a></td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

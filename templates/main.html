@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{% block title %}首页{% endblock %} - 武汉中科科创工程检测有限公司</title>
+    {#    <link rel="stylesheet" href="/static/css/bootstrap.css">#}
+    <link rel='stylesheet' href='/static/css/main.css'/>
+    <script src="/static/js/jquery.js"></script>
+    {#    <script src="/static/js/bootstrap.js"></script>#}
+    {% block style %}{% endblock %}
+</head>
+<body>
+<div id="dialog">
+    <span id="close"></span>
+    <p id="msg">{{ msg }}</p>
+</div>
+<div class="container">
+    <div class="header">
+        <div class="head-left">
+            武汉中科科创工程检测有限公司
+        </div>
+        <div class="head-right">
+            <ul>
+                <li class="person-nav">
+                    欢迎你！{{ user.name }}
+                    <ul class="hover-nav">
+                        <li><a href="{% url 'user:edit' request.user.id %}">编辑档案</a></li>
+                        <li><a href="{% url 'user:change' %}">修改密码</a></li>
+                        <li><a href="{% url 'logout' %}">退出登录</a></li>
+                    </ul>
+                </li>
+                <li id="now"></li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="left">
+        <div class="nav-list active">
+            <div class="header">
+                <span>工程管理</span>
+            </div>
+            <ul>
+                <li><a href="{% url 'pro:list' %}">浏览工程</a></li>
+                <li><a href="{% url 'pro:add' %}">添加工程</a></li>
+                <li><a href="">现场管理</a></li>
+                <li><a href="{% url 'pro:verify' %}">工程审核</a></li>
+            </ul>
+        </div>
+        <div class="nav-list active">
+            <div class="header">
+                <span>设备管理</span>
+            </div>
+            <ul>
+                <li><a href="{% url 'equ:list' %}">设备浏览</a></li>
+                <li><a href="{% url 'equ:revert' %}">设备归还</a></li>
+                <li><a href="{% url 'equ:info' %}">设备资料</a></li>
+                <li><a href="{% url 'equ:verify' %}">设备审核</a></li>
+            </ul>
+        </div>
+        <div class="nav-list active">
+            <div class="header">
+                <span>人员管理</span>
+            </div>
+            <ul>
+                <li><a href="{% url 'user:list' %}">人员浏览</a></li>
+                <li><a href="{% url 'user:edit' request.user.id %}">编辑档案</a></li>
+                <li><a href="{% url 'user:address' %}">通讯录</a></li>
+            </ul>
+        </div>
+        <div class="nav-list active">
+            <div class="header">
+                <span>公告公文管理</span>
+            </div>
+            <ul>
+                <li><a href="{% url 'ann:list' %}">浏览公告</a></li>
+                <li><a href="{% url 'ann:publish' %}">发布公告</a></li>
+                <li><a href="{% url 'ann:doc_list' %}">公文管理</a></li>
+            </ul>
+        </div>
+        <div class="nav-list active">
+            <div class="header">
+                <span>用户管理</span>
+            </div>
+            <ul>
+                <li><a href="{% url 'user:permission' %}">人员权限管理</a></li>
+                <li><a href="{% url 'user:staff' %}">员工信息管理</a></li>
+                <li><a href="{% url 'user:reset' %}">员工密码管理</a></li>
+                <li><a href="{% url 'user:change' %}">个人密码管理</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="right">
+        <div class="main">
+            {% if request.user.is_authenticated %}
+                {% block content %}
+                {% endblock %}
+            {% else %}
+                <h2 class="warning">对不起，您当前尚未登录，无法浏览！</h2>
+            {% endif %}
+        </div>
+    </div>
+</div>
+<script src="/static/js/jquery.js"></script>
+{#    <script src="/static/js/vue.js"></script>#}
+<script>
+    // 弹窗
+    setInterval(function () {
+        if ($('#msg').text() === '') {
+            $('#dialog').slideUp()
+        } else {
+            $('#dialog').slideDown()
+        }
+    }, 1000)
+
+    $('#close').click(function () {
+        $('#dialog').slideUp()
+        $('#msg').text('')
+    })
+
+
+    // 左侧导航位置，sessionStorage
+    var left = document.querySelector('.left')
+    left.scrollTop = sessionStorage.getItem('leftTop')
+    left.onscroll = function () {
+        sessionStorage.setItem('leftTop', left.scrollTop)
+    }
+
+    // 显示时间
+    function showTime() {
+        var time = new Date()
+        var year = time.getFullYear()
+        var mounth = time.getMonth()
+        var date = time.getDate()
+        var day = time.getDay()
+        var hours = time.getHours()
+        var minutes = time.getMinutes()
+        var seconds = time.getSeconds()
+
+        var dayArr = ['日 ', '一 ', '二 ', '三 ', '四 ', '五 ', '六 ']
+
+        if (('' + minutes).length < 2) {
+            minutes = '0' + minutes
+        }
+        if (('' + seconds).length < 2) {
+            seconds = '0' + seconds
+        }
+
+
+        return `${year}年${mounth + 1}月${date}日星期${dayArr[day]}${hours}:${minutes}:${seconds}`
+    }
+
+    setInterval(function () {
+        document.querySelector('#now').innerText = showTime()
+    }, 1000)
+
+    // 导航收起展开，此处有bug
+    {#        var listHeader = document.querySelectorAll('.header')#}
+    {#        for (var i = 0; i < listHeader.length; i++) {#}
+    {#            listHeader[i].onclick = function (e) {#}
+    {#                e.preventDefault()#}
+    {#                e.stopPropagation()#}
+    {##}
+    {#                var tar = e.currentTarget.parentElement#}
+    {##}
+    {#                if (tar.className.includes(' active')) {#}
+    {#                    tar.className = tar.className.replace(' active', '')#}
+    {#                } else {#}
+    {#                    // 若点击的不是当前active的项目#}
+    {#                    // var pre = document.querySelector('.active')#}
+    {#                    // if (pre) {#}
+    {#                    //     pre.className = pre.className.replace(' active', '')#}
+    {#                    // }#}
+    {#                    tar.className += ' active'#}
+    {#                }#}
+    {#            }#}
+    {#        }#}
+</script>
+{% block js %}{% endblock %}
+</body>
+</html>

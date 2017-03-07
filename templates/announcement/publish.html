@@ -1,0 +1,66 @@
+﻿{% extends 'main.html' %}
+
+{% block title %}发布公告{% endblock %}
+
+{% block style %}
+    <style>
+        table tr td:nth-child(1) {
+            text-align: right;
+        }
+
+        table tr td:nth-child(2) {
+            text-align: left;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+    <form method="post" action="{% url 'ann:publish' %}">
+        <table>
+            <tr>
+                <th colspan="2">发布公告</th>
+            </tr>
+            <tr>
+                <td>公告标题：</td>
+                <td>
+                    <input type="text" name="title">
+                </td>
+            </tr>
+            <tr>
+                <td>发布者：</td>
+                <td>{{ request.user.name }}</td>
+                <input type="hidden" name="person" value="{{ request.user.username }}">
+            </tr>
+            <tr>
+                <td>相关部门：</td>
+                <td>
+                    <select name="department">
+                        <option value="qgs">全公司</option>
+                        <option value="jc1s">检测一室</option>
+                        <option value="jc2s">检测二室</option>
+                        <option value="jc3s">检测三室</option>
+                        <option value="jc4s">检测四室</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    公告正文：
+                </td>
+                <td>
+                    <textarea name="content" rows="28" cols="115"></textarea>
+                </td>
+            </tr>
+        </table>
+
+        <button class="normal" type="submit">发布</button>
+        {% csrf_token %}
+    </form>
+{% endblock %}
+
+
+
+
+
+
+

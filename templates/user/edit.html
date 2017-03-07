@@ -1,0 +1,134 @@
+{% extends 'main.html' %}
+
+{% block title %}编辑档案{% endblock %}
+
+{% block style %}
+{% endblock %}
+
+{% block content %}
+    <form id="edit_form" action="">
+        <table>
+            <tr class="thead">
+                <td colspan="3">
+                    个人资料输入
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="">职工名称：</label>
+                    <input type="hidden" name="username" , value="{{ staff.username }}">
+                    <input type="text" name="name" value="{{ staff.name }}" disabled>
+                </td>
+                <td>
+                    <label for="">职工编号：</label>
+                    <input type="number" name="staff_num" value="{{ staff.staff_num }}" disabled>
+                </td>
+                <td>
+                    <label for="">入职时间：</label>
+                    <input type="date" name="induction_time" value="{{ staff.induction_time }}" disabled>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="">职务：</label>
+                    <input type="text" name="job" value="{{ staff.job }}">
+                </td>
+                <td>
+                    <label for="">所属部门：</label>
+                    <select name="department">
+                        <option value="zhb">综合办</option>
+                        <option value="zgb">总工办</option>
+                        <option value="jc1s">检测一室</option>
+                        <option value="jc2s">检测二室</option>
+                        <option value="jc3s">检测三室</option>
+                        <option value="jc4s">检测四室</option>
+                        <option value="tlsys">土力学实验室</option>
+                        <option value="ytlxsys">岩土力学实验室</option>
+                        <option value="gjgs">钢结构室</option>
+                        <option value="sbyfs">设备研发室</option>
+                    </select>
+                </td>
+                <td>
+                    <label for="">手机号码：</label>
+                    <input type="tel" name="mobile" value="{{ staff.mobile }}">
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="">邮箱地址：</label>
+                    <input type="email" name="email" value="{% if staff.email %}{{ staff.email }}{% endif %}">
+                </td>
+                <td>
+                    <label for="">办公电话：</label>
+                    <input type="text" name="office_phone"
+                           value="{% if staff.office_phone %}{{ staff.office_phone }}{% endif %}">
+                </td>
+                <td>
+                    <label for="">家庭住址：</label>
+                    <input type="text" name="home_address"
+                           value="{% if staff.home_address %}{{ staff.home_address }}{% endif %}">
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="">家庭电话：</label>
+                    <input type="text" name="home_phone"
+                           value="{% if staff.home_phone %}{{ staff.home_phone }}{% endif %}">
+                </td>
+                <td>
+                    <label for="">上传照片：</label>
+                    <input type="file" name="image">
+                </td>
+                <td>
+                    <label for="">上传学历证书：</label>
+                    <input type="file" name="xuelizs">
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="">上传职称证书：</label>
+                    <input type="file" name="zhichengzs">
+                </td>
+                <td>
+                    <label for="">上传资格证书：</label>
+                    <input type="file" name="zigezs">
+                </td>
+                <td></td>
+            </tr>
+        </table>
+
+        <button id="edit_staff" type="button" class="normal">完成</button>
+    </form>
+{% endblock %}
+
+{% block js %}
+    <script>
+        $('#edit_staff').click(function () {
+            console.log($('#edit_form').serializeArray())
+            $.ajax({
+                cache: false,
+                url: '{% url "user:edit_staff" %}',
+                type: 'POST',
+                data: $('#edit_form').serializeArray(),
+                async: true,
+                dataType: 'json',
+                beforeSend: function (xhr, settings) {
+                    xhr.setRequestHeader("X-CSRFToken", "{{ csrf_token }}");
+                },
+                success: function (data) {
+                    if (data.status === 'success') {
+                        $('#msg').text(data.msg)
+                    }
+                    $('#msg').text(data.msg)
+                    setTimeout(function () {
+                        $('#msg').text('')
+                    }, 2000)
+                },
+                error: function () {
+                    $('#msg').text('出错了')
+                }
+            })
+        })
+    </script>
+{% endblock %}
+

@@ -1,0 +1,79 @@
+{% extends 'main.html' %}
+
+{% block title %}设备编辑{% endblock %}
+
+{% block style %}
+
+{% endblock %}
+
+{% block content %}
+
+<table>
+    <tr>
+        <th colspan="2">
+            设备资料输入
+        </th>
+    </tr>
+    <tr>
+        <td>
+            <label for="">设备名称：</label>
+            <input type="text" name="" value="">
+        </td>
+        <td>
+            <label for="">设备型号：</label>
+            <input type="text" name="" value="">
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <label for="">购买价格：</label>
+            <input type="text" name="" value="">
+        </td>
+        <td>
+            <label for="">购买日期：</label>
+            <input type="text" name="" value="">
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <label for="">所在部门：</label>
+            <input type="text" name="" value="">
+        </td>
+        <td>
+            <label for="">保管人：</label>
+            <input type="text" name="" value="">
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <label for="">设备状态：</label>
+            <select name="" id="">
+            <option value="">良好</option>
+            <option value="">一般</option>
+            <option value="">较差</option>
+            <option value="">待修</option>
+            <option value="">报废</option>
+        </select>
+        </td>
+        <td>
+            <label for="">设备分类：</label>
+            <select>
+            <option value="">检测设备</option>
+            <option value="">监测设备</option>
+            <option value="">物探设备</option>
+            <option value="">材料试验</option>
+        </select>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <label for="">计量有效期：</label>
+            <input type="date" name="" value="">
+        </td>
+        <td></td>
+    </tr>
+</table>
+
+<button class="normal" type="button"><a href="/equipment/view">确定</a></button>
+{% endblock %}
+

@@ -1,0 +1,38 @@
+{% extends 'main.html' %}
+
+{% block title %}公告详情{% endblock %}
+
+{% block style %}
+<style>
+.ann-info{
+    margin: 5px;
+    text-align: center;
+}
+.ann-info span{
+    margin-right: 50px;
+}
+p{
+    text-indent: 2em;
+    font-size: 16px;
+    line-height: 20px;
+    margin-bottom: 5px;
+}
+</style>
+{% endblock %}
+
+{% block content %}
+
+
+<h2>{{ ann.title }}</h2>
+
+
+<div class="ann-info">
+    <span>发布人：{{ ann.person }}</span><span>发布时间：{{ ann.add_time }}</span><span>相关部门：{{ ann.get_department_display }}</span>
+</div>
+
+{{ ann.content }}
+
+<button class="normal" type="button"><a href="{% url 'ann:list' %}">返回</a></button>
+{% endblock %}
+
+

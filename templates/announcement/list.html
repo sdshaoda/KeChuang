@@ -1,0 +1,99 @@
+﻿{% extends 'main.html' %}
+
+{% block title %}公告列表{% endblock %}
+
+{% block style %}
+
+    <style>
+        .handle {
+            margin-top: 20px;
+        }
+
+        table {
+            margin-top: 60px;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+
+    <h2>武汉中科科创工程检测公司 - 公告</h2>
+
+    <div class="handle">
+        <div class="filter">
+            筛选：
+            <select>
+                <option value="">部门</option>
+                <option value="">标题关键词</option>
+            </select>
+            <input type="text" name="" value="">
+            <button type="button">确定</button>
+        </div>
+        <div class="sort">
+            排序：
+            <select name="" id="">
+                <option value="">时间由远到近</option>
+                <option value="">时间由近到远</option>
+            </select>
+            <button type="button">确定</button>
+        </div>
+    </div>
+
+    <table>
+        <tr>
+            <th>公告序号</th>
+            <th>公告标题</th>
+            <th>发布时间</th>
+            <th>相关部门</th>
+            <th>发布人</th>
+            <th>删除</th>
+        </tr>
+        {% for ann in all_anns %}
+            <tr id="{{ ann.id }}">
+                <td>{{ ann.id }}</td>
+                <td><a href="{% url 'ann:detail' ann.id %}">{{ ann.title }}</a></td>
+                <td>{{ ann.add_time }}</td>
+                <td>{{ ann.get_department_display }}</td>
+                <td>{{ ann.person }}</td>
+                <td>
+                    <button value="{{ ann.id }}" id="delete_ann">删除</button>
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+
+{% endblock %}
+
+
+
+{% block js %}
+    <script>
+        $('#delete_ann').click(function (e) {
+            var ann_id = $(this).val()
+            $.ajax({
+                cache: false,
+                url: '{% url "ann:delete_ann" %}',
+                type: 'POST',
+                async: true,
+                dataType: 'json',
+                beforeSend: function (xhr, settings) {
+                    xhr.setRequestHeader("X-CSRFToken", "{{ csrf_token }}");
+                },
+                data: {'ann_id': ann_id},
+                success: function (data) {
+                    if (data.status === 'success') {
+                        $('#' + ann_id).remove()
+                    }
+                    $('#msg').text(data.msg)
+                    setTimeout(function () {
+                        $('#msg').text('')
+                    }, 2000)
+                },
+                error: function () {
+                    $('#msg').text('出错了')
+                }
+            })
+        })
+
+    </script>
+{% endblock %}

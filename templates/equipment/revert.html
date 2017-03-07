@@ -1,0 +1,41 @@
+{% extends 'main.html' %}
+
+{% block title %}设备归还{% endblock %}
+
+{% block style %}
+
+{% endblock %}
+
+{% block content %}
+
+<table>
+    <thead>
+        <tr>
+            <th>设备序号</th>
+            <th>设备名称</th>
+            <th>领用时间</th>
+            <th>应还时间</th>
+            <th>操作</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>1</td>
+            <td>设备名称1</td>
+            <td>2016/02/03</td>
+            <td>2017/02/03</td>
+            <td><a href="/common/apply">归还</a></td>
+        </tr>
+        <tr>
+            <td>2</td>
+            <td>设备名称2</td>
+            <td>2016/02/03</td>
+            <td>2017/02/03</td>
+            <td><a href="/equipment/apply">归还</a></td>
+        </tr>
+    </tbody>
+</table>
+{% endblock %}
+
+
+

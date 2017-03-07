@@ -1,0 +1,105 @@
+{% extends 'main.html' %}
+
+{% block title %}工程详情{% endblock %}
+
+{% block style %}
+    <style>
+        .label {
+            display: inline-block;
+            width: 38%;
+            float: left;
+            text-align: right;
+        }
+
+        .info {
+            width: 60%;
+            float: left;
+            text-align: left;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+
+
+    <table>
+        <tr>
+            <th colspan="3">工程详细资料</th>
+        </tr>
+        <tr>
+            <td>
+                <div class="label">工程名称：</div>
+                <div class="info">{{ pro.pro_name }}</div>
+            </td>
+            <td>
+                <div class="label">合同编号：</div>
+                <div class="info">{{ pro.ht_num }}</div>
+            </td>
+            <td>
+                <div class="label">合同名称：</div>
+                <div class="info">{{ pro.ht_name }}</div>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <div class="label">合同金额：</div>
+                <div class="info">{{ pro.ht_money }}</div>
+            </td>
+            <td>
+                <div class="label">委托单位：</div>
+                <div class="info">{{ pro.wt_dw }}</div>
+            </td>
+            <td>
+                <div class="label">委托人：</div>
+                <div class="info">{{ pro.wt_person }}</div>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <div class="label">联系电话：</div>
+                <div class="info">{{ pro.mobile }}</div>
+            </td>
+            <td>
+                <div class="label">项目地址：</div>
+                <div class="info">{{ pro.pro_address }}</div>
+            </td>
+            <td>
+                <div class="label">公司代表：</div>
+                <div class="info">{{ pro.represent_person }}</div>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <div class="label">签订日期：</div>
+                <div class="info">{{ pro.sign_date }}</div>
+            </td>
+            <td>
+                <div class="label">开工时间：</div>
+                <div class="info">{{ pro.start_date }}</div>
+            </td>
+            <td>
+                <div class="label">完工时间：</div>
+                <div class="info">{{ pro.finish_date }}</div>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <div class="label">项目负责人：</div>
+                <div class="info">{{ pro.pro_person }}</div>
+            </td>
+            <td>
+                <div class="label">工程类型：</div>
+                <div class="info">{{ pro.get_pro_type_display }}</div>
+            </td>
+            <td>
+                <div class="label">检测设备：</div>
+                <div class="info">{{ pro.equipment }}</div>
+            </td>
+        </tr>
+    </table>
+
+    <button class="normal" type="button"><a href="{% url 'pro:list' %}">返回</a></button>
+
+{% endblock %}
+
+
