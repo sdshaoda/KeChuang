@@ -304,7 +304,7 @@ button.normal {
     height: 30px;
     margin: 0 auto;
     margin-top: 30px;
-    background: #298fc2;
+    background: #0a70a3;
     font-size: 16px;
     line-height: 16px;
     border: 1px solid #0a70a3;
@@ -313,7 +313,7 @@ button.normal {
 }
 
 button.normal:hover {
-    background: #0a70a3;
+    background: #298fc2;
 }
 
 button.normal a {
@@ -343,4 +343,8 @@ table input,
 table select {
     width: 60%;
     font-size: 16px;
+}
+
+table input[disabled], table select[disabled] {
+    cursor: no-drop;
 }

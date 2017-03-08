@@ -88,6 +88,16 @@ class EditView(View):
         return render(request, 'project/edit.html')
 
 
+class DeleteView(View):
+    def get(self, request):
+        return render(request, 'project/list.html')
+
+
 class ApplyView(View):
     def get(self, request):
         return render(request, 'project/apply.html')
+
+
+class LocalView(View):
+    def get(self, request):
+        return render(request, 'project/local.html')

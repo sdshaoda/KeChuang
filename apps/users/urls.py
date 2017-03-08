@@ -7,10 +7,12 @@ from .views import ListView, EditView, EditStaffView, DeleteStaffView, AddressVi
 
 urlpatterns = [
     # 人员浏览
+    # 证书未做
     url(r'^list/', ListView.as_view(), name='list'),
     # 编辑档案 GET
     url(r'^edit/(?P<staff_id>\d+)$', EditView.as_view(), name='edit'),
     # 编辑档案 POST
+    # 未校验
     url(r'^staff/edit/$', EditStaffView.as_view(), name='edit_staff'),
     # 通讯录
     url(r'^address/', AddressView.as_view(), name='address'),
