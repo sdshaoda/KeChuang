@@ -25,6 +25,7 @@ class CustomBackend(ModelBackend):
 
 # 登录 GET POST
 class LoginView(View):
+    # 未做验证码
     def get(self, request):
         if request.user.username:
             all_anns = Announcement.objects.all().order_by('-add_time')

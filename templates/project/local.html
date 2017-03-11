@@ -7,48 +7,5 @@
 {% endblock %}
 
 {% block content %}
-    <div id="output"></div>
-    <button type="button" id="getPos">获取位置</button>
 {% endblock %}
 
-{% block js %}
-    <script>
-        $(function () {
-            $('#getPos').click(function () {
-                geo()
-            })
-            function geo() {
-                if (!navigator.geolocation) {
-                    $('#output').html("<p>您的浏览器不支持地理位置</p>")
-                    return;
-                }
-
-                function success(position) {
-                    var longitude = position.coords.longitude.toFixed(5)
-                    var latitude = position.coords.latitude.toFixed(5)
-                    var timestamp = position.timestamp
-                    var url = 'http://restapi.amap.com/v3/geocode/regeo?key=b6fed87eb605f455108d1be6e8548420&output=json&location=' + longitude + ',' + latitude
-                    console.log(url)
-                    $.ajax({
-                        type: 'GET',
-                        url: url,
-                        success: function (data) {
-                            if(data.status === '1'){
-                                $('#output').html(data.regeocode.formatted_address)
-                            }
-                        },
-                        error: function () {
-                            console.log('error!')
-                        }
-                    })
-                }
-
-                function error() {
-                    $('#output').html("无法获取您的位置")
-                }
-
-                navigator.geolocation.getCurrentPosition(success, error);
-            }
-        })
-    </script>
-{% endblock %}
