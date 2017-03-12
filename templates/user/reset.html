@@ -51,18 +51,24 @@
 
     <h2>修改员工密码</h2>
 
-    <form id="reset_form">
-        <div class="input-area">
-            <label for="">登录名：</label>
-            <span class="input"><input type="text" name="username" required></span>
+    <form id="reset_form" class="form-horizontal">
+        <div class="form-group">
+            <label for="username" class="col-md-2 col-sm-2 control-label">登录名：</label>
+            <div class="col-md-5 col-sm-10">
+                <input type="text" class="form-control" id="username" name="username" placeholder="登录名">
+            </div>
         </div>
-        <div class="input-area">
-            <label for="">新密码：</label>
-            <span class="input"><input type="text" name="new_password" required></span>
+        <div class="form-group">
+            <label for="new_password" class="col-md-2 col-sm-2 control-label">新密码：</label>
+            <div class="col-md-5 col-sm-10">
+                <input type="text" class="form-control" id="new_password" name="new_password" placeholder="新密码">
+            </div>
         </div>
-        <div class="input-area">
-            <label for="">重复密码：</label>
-            <span class="input"><input type="text" name="new_password_repeat" required></span>
+        <div class="form-group">
+            <label for="new_password_repeat" class="col-md-2 col-sm-2 control-label">重复密码：</label>
+            <div class="col-md-5 col-sm-10">
+                <input type="text" class="form-control" id="new_password_repeat" name="new_password_repeat" placeholder="重复密码">
+            </div>
         </div>
     </form>
 

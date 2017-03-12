@@ -20,6 +20,7 @@
             flex-direction: column;
             justify-content: space-around;
         }
+
         .input-area {
             width: 300px;
             margin: 0 auto;
@@ -57,20 +58,22 @@
 {% block content %}
 
 
-    <table>
-        <tr>
-            <th>公文序号</th>
-            <th>公文名称</th>
-            <th>下载</th>
-        </tr>
-        {% for doc in docs %}
+    <div class="table-responsive">
+        <table class="table table-hover">
             <tr>
-                <td>{{ doc.id }}</td>
-                <td>{{ doc.name }}</td>
-                <td><a href="">点击下载</a></td>
+                <th>公文序号</th>
+                <th>公文名称</th>
+                <th>下载</th>
             </tr>
-        {% endfor %}
-    </table>
+            {% for doc in docs %}
+                <tr>
+                    <td>{{ doc.id }}</td>
+                    <td>{{ doc.name }}</td>
+                    <td><a href="">点击下载</a></td>
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
 
     <form method="post" enctype="multipart/form-data" action="{% url 'ann:doc_upload' %}">
         <div class="input-area">
@@ -84,7 +87,7 @@
             <input id="document" name="document" value="公文文件" type="file">
         </div>
         <button class="normal w90" type="submit">上传公文</button>
-    {% csrf_token %}
+        {% csrf_token %}
     </form>
 {% endblock %}
 

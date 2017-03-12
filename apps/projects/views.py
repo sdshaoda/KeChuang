@@ -98,6 +98,6 @@ class ApplyView(View):
         return render(request, 'project/apply.html')
 
 
-class LocalView(View):
+class AttenView(View):
     def get(self, request):
         return render(request, 'project/local.html')

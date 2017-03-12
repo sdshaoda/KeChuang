@@ -8,69 +8,31 @@
 
 {% block content %}
 
-<table>
-    <tr>
-        <th>申请序号</th>
-        <th>申请人</th>
-        <th>所在部门</th>
-        <th>工程名称</th>
-        <th>申请类型</th>
-        <th colspan="2">操作</th>
-    </tr>
-    <tr>
-        <td>06</td>
-        <td>李四</td>
-        <td>XX部</td>
-        <td>工程名称01</td>
-        <td>添加工程</td>
-        <td><a href="">查看</a></td>
-        <td><button type="button">同意</button></td>
-    </tr>
-    <tr>
-        <td>05</td>
-        <td>李四</td>
-        <td>XX部</td>
-        <td>工程名称01</td>
-        <td>修改工程</td>
-        <td><a href="">查看</a></td>
-        <td><button type="button">同意</button></td>
-    </tr>
-    <tr>
-        <td>04</td>
-        <td>李四</td>
-        <td>XX部</td>
-        <td>工程名称01</td>
-        <td>删除工程</td>
-        <td><a href="">查看</a></td>
-        <td><button type="button">同意</button></td>
-    </tr>
-    <tr>
-        <td>03</td>
-        <td>李四</td>
-        <td>XX部</td>
-        <td>工程名称01</td>
-        <td>添加工程</td>
-        <td><a href="">查看</a></td>
-        <td><button type="button">同意</button></td>
-    </tr>
-    <tr>
-        <td>02</td>
-        <td>李四</td>
-        <td>XX部</td>
-        <td>工程名称01</td>
-        <td>添加工程</td>
-        <td><a href="">查看</a></td>
-        <td><button type="button">同意</button></td>
-    </tr>
-    <tr>
-        <td>01</td>
-        <td>李四</td>
-        <td>XX部</td>
-        <td>工程名称01</td>
-        <td>添加工程</td>
-        <td><a href="">查看</a></td>
-        <td><button type="button">同意</button></td>
-    </tr>
-</table>
+    <div class="table-responsive">
+        <table class="table table-hover">
+            <tr>
+                <th>#</th>
+                <th>申请人</th>
+                <th>所在部门</th>
+                <th>工程名称</th>
+                <th>申请类型</th>
+                <th colspan="3">操作</th>
+            </tr>
+            <tr>
+                <td>06</td>
+                <td>李四</td>
+                <td>XX部</td>
+                <td>工程名称01</td>
+                <td>添加工程</td>
+                <td><a href="">查看</a></td>
+                <td>
+                    <a href="#">通过</a>
+                </td>
+                <td>
+                    <a href="#">驳回</a>
+                </td>
+            </tr>
+        </table>
+    </div>
 {% endblock %}
 

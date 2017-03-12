@@ -73,6 +73,9 @@ class DocListView(View):
 
 # 公文下载 未做
 class DocUploadView(View):
+    def get(self, request):
+        return render(request, 'announcement/upload.html', {})
+
     def post(self, request):
         doc = Document()
         name = request.POST.get('name', '')
