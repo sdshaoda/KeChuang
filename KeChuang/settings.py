@@ -26,10 +26,16 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'xadmin',
     'crispy_forms',
+    # 用户
     'users',
+    # 工程
     'projects',
+    # 设备
     'equipments',
+    # 公告
     'announcements',
+    # 验证码
+    'captcha',
 ]
 
 AUTH_USER_MODEL = "users.UserProfile"

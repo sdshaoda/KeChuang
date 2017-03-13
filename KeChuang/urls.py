@@ -10,6 +10,8 @@ import xadmin
 from users.views import LoginView, LogoutView
 
 urlpatterns = [
+    # 验证码
+    url(r'^captcha/', include('captcha.urls')),
     # 登录
     url(r'^$', LoginView.as_view(), name='login'),
     # 退出

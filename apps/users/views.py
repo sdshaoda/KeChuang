@@ -25,14 +25,16 @@ class CustomBackend(ModelBackend):
 
 # 登录 GET POST
 class LoginView(View):
-    # 未做验证码
     def get(self, request):
+        login_form = LoginForm()
         if request.user.username:
             all_anns = Announcement.objects.all().order_by('-add_time')
             return render(request, 'announcement/list.html', {
                 'all_anns': all_anns
             })
-        return render(request, 'login.html')
+        return render(request, 'login.html', {
+            'login_form': login_form
+        })
 
     def post(self, request):
         login_form = LoginForm(request.POST)

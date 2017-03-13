@@ -1,11 +1,12 @@
 <!DOCTYPE html>
 <html>
+{% load staticfiles %}
 <head>
     <title>{% block title %}首页{% endblock %} - 武汉中科科创工程检测有限公司</title>
-    <link rel="stylesheet" href="/static/css/bootstrap.css">
+    <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
     {#    <link rel='stylesheet' href='/static/css/main.css'/>#}
-    <script src="/static/js/jquery.js"></script>
-    <script src="/static/js/bootstrap.js"></script>
+    <script src="{% static 'js/jquery.js' %}"></script>
+    <script src="{% static 'js/bootstrap.js' %}"></script>
     {#    <script src="/static/js/vue.js"></script>#}
     {% block style %}{% endblock %}
     <style>
@@ -190,32 +191,32 @@
             </ol>
 
             {#顶部信息导航#}
-{#            <nav class="navbar navbar-default navbar-static-top">#}
-{#                <div class="container-fluid">#}
-{#                    <div class="navbar-header">#}
-{#                        <a class="navbar-brand" href="#">{{ nav_head }}公告信息</a>#}
-{#                    </div>#}
-{##}
-{#                    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">#}
-{#                        <ul class="nav navbar-nav navbar-left">#}
-{#                            <li></li>#}
-{#                        </ul>#}
-{##}
-{#                        <form class="navbar-form navbar-left" action="" method="get">#}
-{#                            <div class="input-group search-group">#}
-{#                                <label for="searchbar"></label>#}
-{#                                <input id="searchbar" class="form-control" name="_q_" value="" placeholder="搜索 公告信息"#}
-{#                                       type="text">#}
-{#                                <span class="input-group-btn"><button class="btn btn-primary" type="button">搜索</button></span>#}
-{#                            </div>#}
-{#                        </form>#}
-{##}
-{#                        <div class="navbar-btn pull-right hide-xs">#}
-{#                            <a href="{% url 'ann:publish' %}" class="btn btn-primary">发布新公告</a>#}
-{#                        </div>#}
-{#                    </div>#}
-{#                </div>#}
-{#            </nav>#}
+            {#            <nav class="navbar navbar-default navbar-static-top">#}
+            {#                <div class="container-fluid">#}
+            {#                    <div class="navbar-header">#}
+            {#                        <a class="navbar-brand" href="#">{{ nav_head }}公告信息</a>#}
+            {#                    </div>#}
+            {##}
+            {#                    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">#}
+            {#                        <ul class="nav navbar-nav navbar-left">#}
+            {#                            <li></li>#}
+            {#                        </ul>#}
+            {##}
+            {#                        <form class="navbar-form navbar-left" action="" method="get">#}
+            {#                            <div class="input-group search-group">#}
+            {#                                <label for="searchbar"></label>#}
+            {#                                <input id="searchbar" class="form-control" name="_q_" value="" placeholder="搜索 公告信息"#}
+            {#                                       type="text">#}
+            {#                                <span class="input-group-btn"><button class="btn btn-primary" type="button">搜索</button></span>#}
+            {#                            </div>#}
+            {#                        </form>#}
+            {##}
+            {#                        <div class="navbar-btn pull-right hide-xs">#}
+            {#                            <a href="{% url 'ann:publish' %}" class="btn btn-primary">发布新公告</a>#}
+            {#                        </div>#}
+            {#                    </div>#}
+            {#                </div>#}
+            {#            </nav>#}
             {% block content %}
             {% endblock %}
         {% else %}
