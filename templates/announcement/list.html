@@ -18,25 +18,25 @@
 
     {#    <h2>武汉中科科创工程检测公司 - 公告</h2>#}
 
-{#    <div class="handle">#}
-{#        <div class="filter">#}
-{#            筛选：#}
-{#            <select>#}
-{#                <option value="">部门</option>#}
-{#                <option value="">标题关键词</option>#}
-{#            </select>#}
-{#            <input type="text" name="" value="">#}
-{#            <button type="button" class="btn btn-primary">确定</button>#}
-{#        </div>#}
-{#        <div class="sort">#}
-{#            排序：#}
-{#            <select name="" id="">#}
-{#                <option value="">时间由远到近</option>#}
-{#                <option value="">时间由近到远</option>#}
-{#            </select>#}
-{#            <button type="button">确定</button>#}
-{#        </div>#}
-{#    </div>#}
+    {#    <div class="handle">#}
+    {#        <div class="filter">#}
+    {#            筛选：#}
+    {#            <select>#}
+    {#                <option value="">部门</option>#}
+    {#                <option value="">标题关键词</option>#}
+    {#            </select>#}
+    {#            <input type="text" name="" value="">#}
+    {#            <button type="button" class="btn btn-primary">确定</button>#}
+    {#        </div>#}
+    {#        <div class="sort">#}
+    {#            排序：#}
+    {#            <select name="" id="">#}
+    {#                <option value="">时间由远到近</option>#}
+    {#                <option value="">时间由近到远</option>#}
+    {#            </select>#}
+    {#            <button type="button">确定</button>#}
+    {#        </div>#}
+    {#    </div>#}
 
 
 
@@ -58,7 +58,7 @@
                     <td>{{ ann.get_department_display }}</td>
                     <td>{{ ann.person }}</td>
                     <td>
-                        <a value="{{ ann.id }}" id="delete_ann">删除</a>
+                        <a href="javascript:void(0);" value="{{ ann.id }}" id="delete_ann">删除</a>
                     </td>
                 </tr>
             {% endfor %}

@@ -79,6 +79,7 @@
 
 {#顶部导航栏下主体区域#}
 <div class="container-fluid">
+
     {#左侧导航栏#}
     <div class="col-md-2 left">
         <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
@@ -97,7 +98,7 @@
                         <a href="{% url 'pro:add' %}" class="list-group-item">添加工程</a>
                         <a href="{% url 'pro:list' %}" class="list-group-item">浏览工程</a>
                         <a href="{% url 'pro:attendance' %}" class="list-group-item">考勤登记</a>
-                        <a href="{% url 'pro:apply' %}" class="list-group-item">申请记录</a>
+                        <a href="{% url 'pro:apply' %}" class="list-group-item">工程申请</a>
                         <a href="{% url 'pro:verify' %}" class="list-group-item">工程审核</a>
                         <a href="{% url 'pro:change' %}" class="list-group-item">变更记录</a>
                     </div>
@@ -118,7 +119,7 @@
                         <a href="{% url 'equ:list' %}" class="list-group-item">设备浏览</a>
                         <a href="{% url 'equ:revert' %}" class="list-group-item">设备归还</a>
                         <a href="{% url 'equ:info' %}" class="list-group-item">设备资料</a>
-                        <a href="{% url 'equ:apply' %}" class="list-group-item">申请记录</a>
+                        <a href="{% url 'equ:apply' %}" class="list-group-item">设备申请</a>
                         <a href="{% url 'equ:verify' %}" class="list-group-item">设备审核</a>
                     </div>
                 </div>
@@ -181,14 +182,14 @@
             </div>
         </div>
     </div>
+    {#左侧导航栏结束#}
+
     {#右侧信息展示区#}
     <div class="col-md-10 right">
         {% if request.user.is_authenticated %}
+
             {#路径导航（面包屑）#}
-            <ol class="breadcrumb">
-                <li>{{ path_main }}公告公文管理</li>
-                <li class="active">{{ path_detail }}浏览公告</li>
-            </ol>
+            <ol class="breadcrumb"></ol>
 
             {#顶部信息导航#}
             {#            <nav class="navbar navbar-default navbar-static-top">#}
@@ -223,6 +224,8 @@
             <h2 class="warning">对不起，您当前尚未登录，无法浏览！</h2>
         {% endif %}
     </div>
+    {#右侧信息展示区结束#}
+
 </div>
 
 
@@ -242,12 +245,23 @@
     {#    })#}
     {##}
     {##}
-    {#    // 左侧导航位置，sessionStorage#}
-    {#    var left = document.querySelector('.left')#}
-    {#    left.scrollTop = sessionStorage.getItem('leftTop')#}
-    {#    left.onscroll = function () {#}
-    {#        sessionStorage.setItem('leftTop', left.scrollTop)#}
-    {#    }#}
+
+    {#根据 sessionStorage ，显示左侧导航位置和路径面包屑#}
+    var navHead = sessionStorage.getItem('left-nav-head')
+    var navItem = sessionStorage.getItem('left-nav-item')
+    {#左侧导航栏#}
+    $('a.left-nav-head:contains(' + navHead + ')').removeClass('collapsed').attr('aria-expanded', 'true')
+    $('a.list-group-item:contains(' + navItem + ')').addClass('active').parents('.panel-collapse').addClass('in')
+    {#面包屑#}
+    $('ol.breadcrumb').html('<li>' + navHead + '</li><li class="active">' + navItem + '</li>')
+
+    // 左侧导航点击，保存到 sessionStorage
+    $('a.list-group-item').click(function () {
+        {#获取导航头部文本内容#}
+        sessionStorage.setItem('left-nav-head', $(this).closest('.panel-collapse').prev().children().children().text().trim())
+        {#获取导航item文本内容#}
+        sessionStorage.setItem('left-nav-item', $(this).text().trim())
+    })
 
     // 显示时间
     function showTime() {
@@ -277,27 +291,6 @@
         document.querySelector('#now').innerText = showTime()
     }, 1000)
 
-    // 导航收起展开，此处有bug
-    {#        var listHeader = document.querySelectorAll('.header')#}
-    {#        for (var i = 0; i < listHeader.length; i++) {#}
-    {#            listHeader[i].onclick = function (e) {#}
-    {#                e.preventDefault()#}
-    {#                e.stopPropagation()#}
-    {##}
-    {#                var tar = e.currentTarget.parentElement#}
-    {##}
-    {#                if (tar.className.includes(' active')) {#}
-    {#                    tar.className = tar.className.replace(' active', '')#}
-    {#                } else {#}
-    {#                    // 若点击的不是当前active的项目#}
-    {#                    // var pre = document.querySelector('.active')#}
-    {#                    // if (pre) {#}
-    {#                    //     pre.className = pre.className.replace(' active', '')#}
-    {#                    // }#}
-    {#                    tar.className += ' active'#}
-    {#                }#}
-    {#            }#}
-    {#        }#}
 </script>
 {% block js %}{% endblock %}
 </body>
