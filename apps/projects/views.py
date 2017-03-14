@@ -16,7 +16,7 @@ class ListView(View):
 
 class AddProView(View):
     def get(self, request):
-        all_staffs = UserProfile.objects.all().order_by('staff_num')
+        all_staffs = UserProfile.objects.all().order_by('id')
         staffs = []
         for staff in all_staffs:
             if staff.name:

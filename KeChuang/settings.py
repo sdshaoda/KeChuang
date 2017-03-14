@@ -34,6 +34,8 @@ INSTALLED_APPS = [
     'equipments',
     # 公告
     'announcements',
+    # 其他操作
+    'operation',
     # 验证码
     'captcha',
 ]

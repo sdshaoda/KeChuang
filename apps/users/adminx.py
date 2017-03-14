@@ -1,10 +1,8 @@
 # _*_ coding:utf-8 _*_
-__author__ = 'shaoda'
-__create_time__ = '2017/2/28 22:18'
 import xadmin
 from xadmin import views
 
-from .models import UserProfile
+from .models import Department, UserProfile
 
 
 # 修改 xadmin 的默认显示
@@ -20,17 +18,24 @@ class GlobalSettings(object):
     menu_style = 'accordion'
 
 
+class DepartmentAdmin(object):
+    list_display = ['name', 'remark', 'add_time']
+    search_fields = ['name', 'remark']
+    list_filter = ['name', 'remark', 'add_time']
+
+
 class UserProfileAdmin(object):
-    list_display = ['name', 'username', 'mobile', 'department', 'job', 'induction_time', 'staff_num', 'permission',
+    list_display = ['name', 'username', 'mobile', 'department', 'job', 'induction_time', 'permission',
                     'email', 'office_phone', 'home_phone', 'home_address', 'image', 'zigezs', 'xuelizs', 'zhichengzs',
                     'add_time']
-    search_fields = ['name', 'username', 'mobile', 'department', 'job', 'induction_time', 'staff_num', 'permission',
+    search_fields = ['name', 'username', 'mobile', 'department', 'job', 'induction_time', 'permission',
                      'email', 'office_phone', 'home_phone', 'home_address', 'image', 'zigezs', 'xuelizs', 'zhichengzs']
-    list_filter = ['name', 'username', 'mobile', 'department', 'job', 'induction_time', 'staff_num', 'permission',
+    list_filter = ['name', 'username', 'mobile', 'department', 'job', 'induction_time', 'permission',
                    'email', 'office_phone', 'home_phone', 'home_address', 'image', 'zigezs', 'xuelizs', 'zhichengzs',
                    'add_time']
 
 
+xadmin.site.register(Department, DepartmentAdmin)
 xadmin.site.register(UserProfile, UserProfileAdmin)
 xadmin.site.register(views.BaseAdminView, BaseSetting)
 xadmin.site.register(views.CommAdminView, GlobalSettings)

@@ -48,7 +48,7 @@
     <div class="table-responsive">
         <table class="table table-hover">
             <tr>
-                <th>职工编号</th>
+                <th>#</th>
                 <th>姓名</th>
                 <th>部门</th>
                 <th>联系电话</th>
@@ -58,7 +58,7 @@
             </tr>
             {% for staff in all_staffs %}
                 <tr>
-                    <td>{{ staff.staff_num }}</td>
+                    <td>{{ staff.id }}</td>
                     <td>{{ staff.name }}</td>
                     <td>{{ staff.get_department_display }}</td>
                     <td>{% if staff.mobile %}{{ staff.mobile }}{% else %}未填写{% endif %}</td>

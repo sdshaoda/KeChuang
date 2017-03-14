@@ -66,7 +66,7 @@ class LogoutView(View):
 class ListView(View):
     def get(self, request):
         # 获取所有员工信息，过滤掉超级用户
-        all_staffs = UserProfile.objects.all().order_by('staff_num')
+        all_staffs = UserProfile.objects.all().order_by('id')
         staffs = []
         for staff in all_staffs:
             if staff.name:
@@ -124,7 +124,7 @@ class EditStaffView(View):
 # 通讯录 GET
 class AddressView(View):
     def get(self, request):
-        all_staffs = UserProfile.objects.all().order_by('staff_num')
+        all_staffs = UserProfile.objects.all().order_by('id')
         staffs = []
         for staff in all_staffs:
             if staff.name:
@@ -138,7 +138,7 @@ class AddressView(View):
 # 人员权限管理 GET Ajax √
 class PermView(View):
     def get(self, request):
-        all_staffs = UserProfile.objects.all().order_by('staff_num')
+        all_staffs = UserProfile.objects.all().order_by('id')
         staffs = []
         for staff in all_staffs:
             if staff.name:
@@ -161,7 +161,7 @@ class PermView(View):
 # 员工信息管理 GET
 class StaffView(View):
     def get(self, request):
-        all_staffs = UserProfile.objects.all().order_by('staff_num')
+        all_staffs = UserProfile.objects.all().order_by('id')
         staffs = []
         for staff in all_staffs:
             if staff.name:
@@ -192,7 +192,7 @@ class AddStaffView(View):
             department = request.POST.get('department', '')
             job = request.POST.get('job', '')
             induction_time = request.POST.get('induction_time', '')
-            staff_num = request.POST.get('staff_num', '')
+            # staff_num = request.POST.get('staff_num', '')
             permission = request.POST.get('permission', '')
 
             user_profile = UserProfile()
@@ -201,13 +201,13 @@ class AddStaffView(View):
             user_profile.department = department
             user_profile.job = job
             user_profile.induction_time = induction_time
-            user_profile.staff_num = staff_num
+            # user_profile.staff_num = staff_num
             user_profile.permission = permission
             user_profile.is_active = True
             user_profile.password = make_password(pass_word)
             user_profile.save()
 
-            all_staffs = UserProfile.objects.all().order_by('staff_num')
+            all_staffs = UserProfile.objects.all().order_by('id')
             staffs = []
             for staff in all_staffs:
                 if staff.name:

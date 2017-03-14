@@ -50,7 +50,7 @@
 
     <table>
         <tr>
-            <th>职工编号</th>
+            <th>#</th>
             <th>姓名</th>
             <th>部门</th>
             <th>职务</th>
@@ -64,7 +64,7 @@
         {% for staff in all_staffs %}
             <form action="">
                 <tr class="perm_tr">
-                    <td>{{ staff.staff_num }}</td>
+                    <td>{{ staff.id }}</td>
                     <td>{{ staff.name }}</td>
                     <td>{{ staff.get_department_display }}</td>
                     <td>{{ staff.job }}</td>
