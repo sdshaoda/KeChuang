@@ -18,24 +18,27 @@ class GlobalSettings(object):
     menu_style = 'accordion'
 
 
+# 部门信息Admin
 class DepartmentAdmin(object):
     list_display = ['name', 'remark', 'add_time']
     search_fields = ['name', 'remark']
     list_filter = ['name', 'remark', 'add_time']
 
 
+# 用户信息Admin
 class UserProfileAdmin(object):
-    list_display = ['name', 'username', 'mobile', 'department', 'job', 'induction_time', 'permission',
+    list_display = ['department', 'name', 'username', 'job', 'induction_time', 'permission', 'mobile',
                     'email', 'office_phone', 'home_phone', 'home_address', 'image', 'zigezs', 'xuelizs', 'zhichengzs',
                     'add_time']
-    search_fields = ['name', 'username', 'mobile', 'department', 'job', 'induction_time', 'permission',
+    search_fields = ['department', 'name', 'username', 'job', 'induction_time', 'permission', 'mobile',
                      'email', 'office_phone', 'home_phone', 'home_address', 'image', 'zigezs', 'xuelizs', 'zhichengzs']
-    list_filter = ['name', 'username', 'mobile', 'department', 'job', 'induction_time', 'permission',
+    list_filter = ['department', 'name', 'username', 'job', 'induction_time', 'permission', 'mobile',
                    'email', 'office_phone', 'home_phone', 'home_address', 'image', 'zigezs', 'xuelizs', 'zhichengzs',
                    'add_time']
 
 
-xadmin.site.register(Department, DepartmentAdmin)
-xadmin.site.register(UserProfile, UserProfileAdmin)
 xadmin.site.register(views.BaseAdminView, BaseSetting)
 xadmin.site.register(views.CommAdminView, GlobalSettings)
+
+xadmin.site.register(Department, DepartmentAdmin)
+xadmin.site.register(UserProfile, UserProfileAdmin)

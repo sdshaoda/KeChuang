@@ -1,4 +1,4 @@
-# _*_ coding:utf-8 _*_
+# coding:utf-8
 from __future__ import unicode_literals
 
 from datetime import datetime
@@ -38,7 +38,10 @@ class UserProfile(AbstractUser):
     job = models.CharField(max_length=20, verbose_name=u'职务')
     induction_time = models.DateField(max_length=20, default=datetime.now, verbose_name=u'入职时间')
     permission = models.CharField(default='0', max_length=2, choices=(
-        ('0', u'检测员'), ('1', u'部门负责'), ('2', u'公司负责'), ('3', u'管理员'),
+        ('0', u'检测员'),
+        ('1', u'部门负责'),
+        ('2', u'公司负责'),
+        ('3', u'管理员'),
     ), verbose_name=u'系统权限')
     mobile = models.CharField(max_length=11, verbose_name=u'手机号码')
     email = models.EmailField(max_length=20, verbose_name=u'邮箱地址', null=True, blank=True)
