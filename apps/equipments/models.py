@@ -1,4 +1,4 @@
-# _*_ coding:utf-8 _*_
+# coding:utf-8
 from __future__ import unicode_literals
 
 from datetime import datetime
@@ -12,7 +12,7 @@ from users.models import UserProfile
 # 设备类型
 class EquipmentType(models.Model):
     name = models.CharField(max_length=20, verbose_name=u'设备类型名称', default='')
-    remark = models.CharField(max_length=200, verbose_name=u'备注', default='')
+    remark = models.CharField(max_length=200, verbose_name=u'备注', null=True, blank=True)
 
     add_time = models.DateTimeField(default=datetime.now, verbose_name=u'添加时间')
 
@@ -44,7 +44,7 @@ class Equipment(models.Model):
     department = models.CharField(default=u'仓库', max_length=20, verbose_name=u'所在部门')
     use_date = models.DateField(default=datetime.now, verbose_name=u'领用时间')
     revert_date = models.DateField(default=datetime.now, verbose_name=u'归还时间')
-    remark = models.CharField(max_length=200, verbose_name=u'备注', default='')
+    remark = models.CharField(max_length=200, verbose_name=u'备注', null=True, blank=True)
 
     add_time = models.DateTimeField(default=datetime.now, verbose_name=u'添加时间')
 
@@ -76,7 +76,7 @@ class EquipmentChange(models.Model):
     department = models.CharField(default=u'仓库', max_length=20, verbose_name=u'所在部门')
     use_date = models.DateField(default=datetime.now, verbose_name=u'领用时间')
     revert_date = models.DateField(default=datetime.now, verbose_name=u'归还时间')
-    remark = models.CharField(max_length=200, verbose_name=u'备注', default='')
+    remark = models.CharField(max_length=200, verbose_name=u'备注', null=True, blank=True)
 
     add_time = models.DateTimeField(default=datetime.now, verbose_name=u'添加时间')
 

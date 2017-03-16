@@ -4,86 +4,91 @@
 
 {% block style %}
     <style>
-        .handle {
-            margin-top: 20px;
-        }
-
-        table {
-            margin-top: 60px;
-        }
-
+{#        .handle {#}
+{#            margin-top: 20px;#}
+{#        }#}
+{##}
+{#        table {#}
+{#            margin-top: 60px;#}
+{#        }#}
+{##}
         .current-perm:after {
             content: '*';
             color: #f00;
+            position: relative;
+            right: 10px;
         }
     </style>
 {% endblock %}
 
 {% block content %}
-    <h2>系统使用权限设置</h2>
+    {#    <h2>系统使用权限设置</h2>#}
+    {##}
+    {#    <div class="handle">#}
+    {#        <div class="filter">#}
+    {#            筛选：#}
+    {#            <select>#}
+    {#                <option value="">姓名</option>#}
+    {#                <option value="">部门</option>#}
+    {#                <option value="">职务</option>#}
+    {#            </select>#}
+    {#            <input type="text" name="" value="">#}
+    {#            <button type="button">确定</button>#}
+    {#        </div>#}
+    {#        <div class="sort">#}
+    {#            排序：#}
+    {#            <select>#}
+    {#                <option value="">姓名</option>#}
+    {#                <option value="">部门</option>#}
+    {#                <option value="">职务</option>#}
+    {#            </select>#}
+    {#            <select name="" id="">#}
+    {#                <option value="">从高到底</option>#}
+    {#                <option value="">从底到高</option>#}
+    {#            </select>#}
+    {#            <button type="button">确定</button>#}
+    {#        </div>#}
+    {#    </div>#}
 
-    <div class="handle">
-        <div class="filter">
-            筛选：
-            <select>
-                <option value="">姓名</option>
-                <option value="">部门</option>
-                <option value="">职务</option>
-            </select>
-            <input type="text" name="" value="">
-            <button type="button">确定</button>
-        </div>
-        <div class="sort">
-            排序：
-            <select>
-                <option value="">姓名</option>
-                <option value="">部门</option>
-                <option value="">职务</option>
-            </select>
-            <select name="" id="">
-                <option value="">从高到底</option>
-                <option value="">从底到高</option>
-            </select>
-            <button type="button">确定</button>
-        </div>
+
+    <div class="table-responsive">
+        <table class="table table-hover">
+            <tr>
+                <th>#</th>
+                <th>姓名</th>
+                <th>部门</th>
+                <th>职务</th>
+                <th>登录名</th>
+                <th>普通员工</th>
+                <th>部门主任</th>
+                <th>公司领导</th>
+                <th>系统管理员</th>
+                <th>操作</th>
+            </tr>
+            {% for staff in all_staffs %}
+                <form action="">
+                    <tr class="perm_tr">
+                        <td>{{ staff.id }}</td>
+                        <td>{{ staff.name }}</td>
+                        <td>{{ staff.department.name }}</td>
+                        <td>{{ staff.job }}</td>
+                        <td>{{ staff.username }}</td>
+                        <td><input type="radio" name="permission" value="0" {% ifequal staff.permission '0' %}checked
+                                   class="current-perm"{% endifequal %}></td>
+                        <td><input type="radio" name="permission" value="1" {% ifequal staff.permission '1' %}checked
+                                   class="current-perm"{% endifequal %}></td>
+                        <td><input type="radio" name="permission" value="2" {% ifequal staff.permission '2' %}checked
+                                   class="current-perm"{% endifequal %}></td>
+                        <td><input type="radio" name="permission" value="3" {% ifequal staff.permission '3' %}checked
+                                   class="current-perm"{% endifequal %}></td>
+                        <td>
+                            <button value="{{ staff.username }}" class="change_permission btn btn-default" type="button">应用</button>
+                        </td>
+                    </tr>
+                </form>
+            {% endfor %}
+        </table>
     </div>
-
-    <table>
-        <tr>
-            <th>#</th>
-            <th>姓名</th>
-            <th>部门</th>
-            <th>职务</th>
-            <th>登录名</th>
-            <th>普通员工</th>
-            <th>部门主任</th>
-            <th>公司领导</th>
-            <th>系统管理员</th>
-            <th>操作</th>
-        </tr>
-        {% for staff in all_staffs %}
-            <form action="">
-                <tr class="perm_tr">
-                    <td>{{ staff.id }}</td>
-                    <td>{{ staff.name }}</td>
-                    <td>{{ staff.get_department_display }}</td>
-                    <td>{{ staff.job }}</td>
-                    <td>{{ staff.username }}</td>
-                    <td><input type="radio" name="permission" value="0" {% ifequal staff.permission '0' %}checked
-                               class="current-perm"{% endifequal %}></td>
-                    <td><input type="radio" name="permission" value="1" {% ifequal staff.permission '1' %}checked
-                               class="current-perm"{% endifequal %}></td>
-                    <td><input type="radio" name="permission" value="2" {% ifequal staff.permission '2' %}checked
-                               class="current-perm"{% endifequal %}></td>
-                    <td><input type="radio" name="permission" value="3" {% ifequal staff.permission '3' %}checked
-                               class="current-perm"{% endifequal %}></td>
-                    <td>
-                        <button value="{{ staff.username }}" class="change_permission" type="button">应用</button>
-                    </td>
-                </tr>
-            </form>
-        {% endfor %}
-    </table>
 {% endblock %}
 
 

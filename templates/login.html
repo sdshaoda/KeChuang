@@ -84,7 +84,7 @@
         }
 
         {#点击验证码图片刷新#}
-        $('#loginForm .captcha').click({'form_id': 'loginForm'}, refresh_captcha);
+        $('img.captcha').click({'form_id': 'loginForm'}, refresh_captcha);
 
         {#为验证码添加合适的样式#}
         $('input#id_captcha_1').addClass('form-control').attr('placeholder', '点击图片刷新')

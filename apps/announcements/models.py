@@ -1,4 +1,4 @@
-# _*_ coding:utf-8 _*_
+# coding:utf-8
 from __future__ import unicode_literals
 
 from datetime import datetime
@@ -15,7 +15,7 @@ class Announcement(models.Model):
 
     title = models.CharField(max_length=50, verbose_name=u'公告标题')
     content = models.TextField(verbose_name=u'公告正文')
-    remark = models.CharField(max_length=200, verbose_name=u'备注', default='')
+    remark = models.CharField(max_length=200, verbose_name=u'备注', null=True, blank=True)
 
     add_time = models.DateTimeField(default=datetime.now, verbose_name=u'添加时间')
 
@@ -34,7 +34,7 @@ class Document(models.Model):
 
     name = models.CharField(max_length=20, verbose_name=u'公文名称')
     document = models.FileField(upload_to='document/%Y/%m', verbose_name=u'公文')
-    remark = models.CharField(max_length=200, verbose_name=u'备注', default='')
+    remark = models.CharField(max_length=200, verbose_name=u'备注', null=True, blank=True)
 
     add_time = models.DateTimeField(default=datetime.now, verbose_name=u'添加时间')
 

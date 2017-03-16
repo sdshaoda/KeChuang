@@ -23,7 +23,7 @@ class Department(models.Model):
 
 # 用户信息
 class UserProfile(AbstractUser):
-    department = models.ForeignKey(Department, verbose_name=u'所在部门')
+    department = models.ForeignKey(Department, verbose_name=u'所在部门', null=True, blank=True)
 
     name = models.CharField(max_length=10, verbose_name=u'姓名')
     username = models.CharField(unique=True, max_length=20, verbose_name=u'登录名')

@@ -6,100 +6,209 @@
 {% endblock %}
 
 {% block content %}
-    <form id="edit_form" action="">
-        <table>
-            <tr class="thead">
-                <td colspan="3">
-                    个人资料输入
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <label for="">职工名称：</label>
-                    <input type="hidden" name="username" , value="{{ staff.username }}">
-                    <input type="text" name="name" value="{{ staff.name }}" disabled>
-                </td>
-{#                <td>#}
-{#                    <label for="">职工编号：</label>#}
-{#                    <input type="number" name="staff_num" value="{{ staff.staff_num }}" disabled>#}
-{#                </td>#}
-                <td>
-                    <label for="">入职时间：</label>
-                    <input type="date" name="induction_time" value="{{ staff.induction_time }}" disabled>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <label for="">职务：</label>
-                    <input type="text" name="job" value="{{ staff.job }}" disabled>
-                </td>
-                <td>
-                    <label for="">所属部门：</label>
-                    <select name="department" disabled>
-                        <option value="zhb">综合办</option>
-                        <option value="zgb">总工办</option>
-                        <option value="jc1s">检测一室</option>
-                        <option value="jc2s">检测二室</option>
-                        <option value="jc3s">检测三室</option>
-                        <option value="jc4s">检测四室</option>
-                        <option value="tlsys">土力学实验室</option>
-                        <option value="ytlxsys">岩土力学实验室</option>
-                        <option value="gjgs">钢结构室</option>
-                        <option value="sbyfs">设备研发室</option>
-                    </select>
-                </td>
-                <td>
-                    <label for="">手机号码：</label>
-                    <input type="tel" name="mobile" value="{{ staff.mobile }}">
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <label for="">邮箱地址：</label>
-                    <input type="email" name="email" value="{% if staff.email %}{{ staff.email }}{% endif %}">
-                </td>
-                <td>
-                    <label for="">办公电话：</label>
-                    <input type="text" name="office_phone"
-                           value="{% if staff.office_phone %}{{ staff.office_phone }}{% endif %}">
-                </td>
-                <td>
-                    <label for="">家庭住址：</label>
-                    <input type="text" name="home_address"
-                           value="{% if staff.home_address %}{{ staff.home_address }}{% endif %}">
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <label for="">家庭电话：</label>
-                    <input type="text" name="home_phone"
-                           value="{% if staff.home_phone %}{{ staff.home_phone }}{% endif %}">
-                </td>
-                <td>
-                    <label for="">上传照片：</label>
-                    <input type="file" name="image">
-                </td>
-                <td>
-                    <label for="">上传学历证书：</label>
-                    <input type="file" name="xuelizs">
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <label for="">上传职称证书：</label>
-                    <input type="file" name="zhichengzs">
-                </td>
-                <td>
-                    <label for="">上传资格证书：</label>
-                    <input type="file" name="zigezs">
-                </td>
-                <td></td>
-            </tr>
-        </table>
+    <form class="form-horizontal" id="edit_form" action="">
+        <input type="hidden" name="username" value="{{ staff.username }}">
 
-        <button id="edit_staff" type="button" class="normal">完成</button>
+        <div class="form-group">
+            <label for="name" class="col-md-2 col-sm-2 control-label">职工姓名：</label>
+            <div class="col-md-5 col-sm-10">
+                <input type="text" class="form-control" id="name" name="name" placeholder="职工姓名"
+                       value="{{ staff.name }}">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="induction_time" class="col-md-2 col-sm-2 control-label">入职时间：</label>
+            <div class="col-md-5 col-sm-10">
+                <input type="text" class="form-control" id="induction_time" name="induction_time" placeholder="入职时间"
+                       value="{{ staff.induction_time }}">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="job" class="col-md-2 col-sm-2 control-label">职务：</label>
+            <div class="col-md-5 col-sm-10">
+                <input type="text" class="form-control" id="job" name="job" placeholder="职务" value="{{ staff.job }}">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="department" class="col-md-2 col-sm-2 control-label">所属部门：</label>
+            <div class="col-md-5 col-sm-10">
+                <select class="form-control" id="department" name="department">
+                    {% for department in departments %}
+                        <option value="{{ department.name }}"
+                                {% ifequal request.user.department department %}selected{% endifequal %}>
+                            {{ department.name }}
+                        </option>
+                    {% endfor %}
+                </select>
+                {#                <input type="text" class="form-control" id="name" name="name" placeholder="职工姓名" value="{{ staff.name }}">#}
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="mobile" class="col-md-2 col-sm-2 control-label">手机号码：</label>
+            <div class="col-md-5 col-sm-10">
+                <input type="text" class="form-control" id="mobile" name="mobile" placeholder="手机号码"
+                       value="{{ staff.mobile }}">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="email" class="col-md-2 col-sm-2 control-label">邮箱地址：</label>
+            <div class="col-md-5 col-sm-10">
+                <input type="text" class="form-control" id="email" name="email" placeholder="邮箱地址"
+                       value="{{ staff.email }}">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="office_phone" class="col-md-2 col-sm-2 control-label">办公电话：</label>
+            <div class="col-md-5 col-sm-10">
+                <input type="text" class="form-control" id="office_phone" name="office_phone" placeholder="办公电话"
+                       value="{{ staff.office_phone }}">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="home_address" class="col-md-2 col-sm-2 control-label">家庭住址：</label>
+            <div class="col-md-5 col-sm-10">
+                <input type="text" class="form-control" id="home_address" name="home_address" placeholder="家庭住址"
+                       value="{{ staff.home_address }}">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="home_phone" class="col-md-2 col-sm-2 control-label">家庭电话：</label>
+            <div class="col-md-5 col-sm-10">
+                <input type="text" class="form-control" id="home_phone" name="home_phone" placeholder="家庭电话"
+                       value="{{ staff.home_phone }}">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="image" class="col-md-2 col-sm-2 control-label">上传照片：</label>
+            <div class="col-md-5 col-sm-10">
+                <input type="file" id="image" name="image">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="xuelizs" class="col-md-2 col-sm-2 control-label">上传学历证书：</label>
+            <div class="col-md-5 col-sm-10">
+                <input type="file" id="xuelizs" name="xuelizs">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="zhichengzs" class="col-md-2 col-sm-2 control-label">上传职称证书：</label>
+            <div class="col-md-5 col-sm-10">
+                <input type="file" id="zhichengzs" name="zhichengzs">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="zigezs" class="col-md-2 col-sm-2 control-label">上传资格证书：</label>
+            <div class="col-md-5 col-sm-10">
+                <input type="file" id="zigezs" name="zigezs">
+            </div>
+        </div>
+
+        <button id="edit_staff" type="button" class="btn btn-primary col-md-7">完成</button>
     </form>
 {% endblock %}
+
+
+<table>
+    <tr class="thead">
+        <td colspan="3">
+            个人资料输入
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <label for="">职工名称：</label>
+            <input type="hidden" name="username" value="{{ staff.username }}">
+            <input type="text" name="name" value="{{ staff.name }}" disabled>
+        </td>
+        <td>
+            <label for="">职工编号：</label>
+            <input type="number" name="staff_num" value="{{ staff.staff_num }}" disabled>
+        </td>
+        <td>
+            <label for="">入职时间：</label>
+            <input type="date" name="induction_time" value="{{ staff.induction_time }}" disabled>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <label for="">职务：</label>
+            <input type="text" name="job" value="{{ staff.job }}" disabled>
+        </td>
+        <td>
+            <label for="">所属部门：</label>
+            <select name="department" disabled>
+                <option value="zhb">综合办</option>
+                <option value="zgb">总工办</option>
+                <option value="jc1s">检测一室</option>
+                <option value="jc2s">检测二室</option>
+                <option value="jc3s">检测三室</option>
+                <option value="jc4s">检测四室</option>
+                <option value="tlsys">土力学实验室</option>
+                <option value="ytlxsys">岩土力学实验室</option>
+                <option value="gjgs">钢结构室</option>
+                <option value="sbyfs">设备研发室</option>
+            </select>
+        </td>
+        <td>
+            <label for="">手机号码：</label>
+            <input type="tel" name="mobile" value="{{ staff.mobile }}">
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <label for="">邮箱地址：</label>
+            <input type="email" name="email" value="{% if staff.email %}{{ staff.email }}{% endif %}">
+        </td>
+        <td>
+            <label for="">办公电话：</label>
+            <input type="text" name="office_phone"
+                   value="{% if staff.office_phone %}{{ staff.office_phone }}{% endif %}">
+        </td>
+        <td>
+            <label for="">家庭住址：</label>
+            <input type="text" name="home_address"
+                   value="{% if staff.home_address %}{{ staff.home_address }}{% endif %}">
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <label for="">家庭电话：</label>
+            <input type="text" name="home_phone"
+                   value="{% if staff.home_phone %}{{ staff.home_phone }}{% endif %}">
+        </td>
+        <td>
+            <label for="">上传照片：</label>
+            <input type="file" name="image">
+        </td>
+        <td>
+            <label for="">上传学历证书：</label>
+            <input type="file" name="xuelizs">
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <label for="">上传职称证书：</label>
+            <input type="file" name="zhichengzs">
+        </td>
+        <td>
+            <label for="">上传资格证书：</label>
+            <input type="file" name="zigezs">
+        </td>
+        <td></td>
+    </tr>
+</table>
 
 {% block js %}
     <script>

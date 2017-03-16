@@ -20,19 +20,19 @@ p{
 </style>
 {% endblock %}
 
-{% block content %}
-
-
-<h2>{{ ann.title }}</h2>
-
-
-<div class="ann-info">
-    <span>发布人：{{ ann.person }}</span><span>发布时间：{{ ann.add_time }}</span><span>相关部门：{{ ann.get_department_display }}</span>
-</div>
-
-{{ ann.content }}
+{#{% block content %}#}
+{##}
+{##}
+{#<h2>{{ ann.title }}</h2>#}
+{##}
+{##}
+{#<div class="ann-info">#}
+{#    <span>发布人：{{ ann.person }}</span><span>发布时间：{{ ann.add_time }}</span><span>相关部门：{{ ann.get_department_display }}</span>#}
+{#</div>#}
+{##}
+{#{{ ann.content }}#}
 
 <button class="btn btn-primary" type="button"><a href="{% url 'ann:list' %}">返回</a></button>
-{% endblock %}
+{#{% endblock %}#}
 
 

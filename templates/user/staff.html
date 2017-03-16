@@ -12,37 +12,41 @@
 
 {% block content %}
 
-    <h2>用户管理</h2>
+    {#    <h2>用户管理</h2>#}
 
-    <table>
-        <tr>
-            <th>#</th>
-            <th>姓名</th>
-            <th>部门</th>
-            <th>职务</th>
-            <th>登录名</th>
-            <th>系统权限</th>
-            <th colspan="2">操作</th>
-        </tr>
-
-        {% for staff in all_staffs %}
-            <tr id="{{ staff.id }}">
-                <td>{{ staff.id }}</td>
-                <td>{{ staff.name }}</td>
-                <td>{{ staff.department }}</td>
-                <td>{{ staff.job }}</td>
-                <td class="username">{{ staff.username }}</td>
-                <td>{{ staff.get_permission_display }}</td>
-                <td><a href="{% url 'user:edit' staff.id %}">编辑</a></td>
-                <td>
-                    <button value="{{ staff.id }}" class="delete">删除</button>
-                </td>
+    <div class="table-responsive">
+        <table class="table table-hover">
+            <tr>
+                <th>#</th>
+                <th>姓名</th>
+                <th>部门</th>
+                <th>职务</th>
+                <th>登录名</th>
+                <th>系统权限</th>
+                <th colspan="2">操作</th>
             </tr>
-        {% endfor %}
 
-    </table>
+            {% for staff in all_staffs %}
+                <tr id="{{ staff.id }}">
+                    <td>{{ staff.id }}</td>
+                    <td>{{ staff.name }}</td>
+                    <td>{{ staff.department }}</td>
+                    <td>{{ staff.job }}</td>
+                    <td class="username">{{ staff.username }}</td>
+                    <td>{{ staff.get_permission_display }}</td>
+                    <td>
+                        <a href="{% url 'user:edit' staff.id %}">编辑</a>
+                    </td>
+                    <td>
+                        <a href="javascript:void(0);" value="{{ staff.id }}" class="delete">删除</a>
+                    </td>
+                </tr>
+            {% endfor %}
 
-    <button type="button" class="normal w100"><a href="{% url 'user:add_staff' %}">添加新员工</a></button>
+        </table>
+    </div>
+
+    <a role="button" class="btn btn-primary center-block" href="{% url 'user:add_staff' %}">添加新员工</a>
 
 {% endblock %}
 

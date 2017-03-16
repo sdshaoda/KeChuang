@@ -16,9 +16,9 @@
 
 {% endblock %}
 
-{% block content %}
-
-
+{#{% block content %}#}
+{##}
+{##}
 {#    <div class="handle">#}
 {#        <div class="filter">#}
 {#            筛选：#}
@@ -43,32 +43,32 @@
 {#            <button type="button">确定</button>#}
 {#        </div>#}
 {#    </div>#}
-
-
-    <div class="table-responsive">
-        <table class="table table-hover">
-            <tr>
-                <th>#</th>
-                <th>姓名</th>
-                <th>部门</th>
-                <th>联系电话</th>
-                <th>电子邮箱</th>
-                <th>正负责项目</th>
-                <th>出勤记录</th>
-            </tr>
-            {% for staff in all_staffs %}
-                <tr>
-                    <td>{{ staff.id }}</td>
-                    <td>{{ staff.name }}</td>
-                    <td>{{ staff.get_department_display }}</td>
-                    <td>{% if staff.mobile %}{{ staff.mobile }}{% else %}未填写{% endif %}</td>
-                    <td>{% if staff.email %}{{ staff.email }}{% else %}未填写{% endif %}</td>
-                    <td>无</td>
-                    <td><a href="">点击查看</a></td>
-                </tr>
-            {% endfor %}
-        </table>
-    </div>
-
-{% endblock %}
+{##}
+{##}
+{#    <div class="table-responsive">#}
+{#        <table class="table table-hover">#}
+{#            <tr>#}
+{#                <th>#</th>#}
+{#                <th>姓名</th>#}
+{#                <th>部门</th>#}
+{#                <th>联系电话</th>#}
+{#                <th>电子邮箱</th>#}
+{#                <th>正负责项目</th>#}
+{#                <th>出勤记录</th>#}
+{#            </tr>#}
+{#            {% for staff in all_staffs %}#}
+{#                <tr>#}
+{#                    <td>{{ staff.id }}</td>#}
+{#                    <td>{{ staff.name }}</td>#}
+{#                    <td>{{ staff.get_department_display }}</td>#}
+{#                    <td>{% if staff.mobile %}{{ staff.mobile }}{% else %}未填写{% endif %}</td>#}
+{#                    <td>{% if staff.email %}{{ staff.email }}{% else %}未填写{% endif %}</td>#}
+{#                    <td>无</td>#}
+{#                    <td><a href="">点击查看</a></td>#}
+{#                </tr>#}
+{#            {% endfor %}#}
+{#        </table>#}
+{#    </div>#}
+{##}
+{#{% endblock %}#}
 

@@ -1,4 +1,4 @@
-# _*_ coding:utf-8 _*_
+# coding:utf-8
 from __future__ import unicode_literals
 
 from datetime import datetime
@@ -61,7 +61,7 @@ class Project(models.Model):
     #     ('jkjc', u'基坑监测'), ('jcgc', u'沉降观测'), ('zjjc', u'桩基检测'), ('clsy', u'材料试验'), ('gcwt', u'工程物探')
     # ), verbose_name=u'工程类型')
     ht_scan = models.FileField(upload_to='hetong/%Y/%m', verbose_name=u'合同扫描件', max_length=100, null=True, blank=True)
-    remark = models.CharField(max_length=200, verbose_name=u'备注', default='')
+    remark = models.CharField(max_length=200, verbose_name=u'备注', null=True, blank=True)
 
     add_time = models.DateTimeField(default=datetime.now, verbose_name=u'添加时间')
 
@@ -94,7 +94,7 @@ class ProjectChange(models.Model):
     start_date = models.DateField(default=datetime.now, max_length=20, verbose_name=u'开工日期', null=True, blank=True)
     finish_date = models.DateField(default=datetime.now, max_length=20, verbose_name=u'完工日期', null=True, blank=True)
     ht_scan = models.FileField(upload_to='hetong/%Y/%m', verbose_name=u'合同扫描件', max_length=100, null=True, blank=True)
-    remark = models.CharField(max_length=200, verbose_name=u'备注', default='', null=True, blank=True)
+    remark = models.CharField(max_length=200, verbose_name=u'备注', null=True, blank=True)
 
     add_time = models.DateTimeField(default=datetime.now, verbose_name=u'修改时间')
 

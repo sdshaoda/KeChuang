@@ -55,40 +55,40 @@
 
 {% endblock %}
 
-{% block content %}
-
-
-    <div class="table-responsive">
-        <table class="table table-hover">
-            <tr>
-                <th>#</th>
-                <th>公文名称</th>
-                <th>下载</th>
-            </tr>
-            {% for doc in docs %}
-                <tr>
-                    <td>{{ doc.id }}</td>
-                    <td>{{ doc.name }}</td>
-                    <td><a href="">点击下载</a></td>
-                </tr>
-            {% endfor %}
-        </table>
-    </div>
-
-    <form method="post" enctype="multipart/form-data" action="{% url 'ann:doc_upload' %}">
-        <div class="input-area">
-            <label for="name">公文名称：</label>
-            <span class="input">
-                <input id="name" type="text" name="name">
-            </span>
-        </div>
-        <div class="input-area">
-            <label for="document">公文文件：</label>
-            <input id="document" name="document" value="公文文件" type="file">
-        </div>
-        <button class="normal w90" type="submit">上传公文</button>
-        {% csrf_token %}
-    </form>
-{% endblock %}
+{#{% block content %}#}
+{##}
+{##}
+{#    <div class="table-responsive">#}
+{#        <table class="table table-hover">#}
+{#            <tr>#}
+{#                <th>#</th>#}
+{#                <th>公文名称</th>#}
+{#                <th>下载</th>#}
+{#            </tr>#}
+{#            {% for doc in docs %}#}
+{#                <tr>#}
+{#                    <td>{{ doc.id }}</td>#}
+{#                    <td>{{ doc.name }}</td>#}
+{#                    <td><a href="">点击下载</a></td>#}
+{#                </tr>#}
+{#            {% endfor %}#}
+{#        </table>#}
+{#    </div>#}
+{##}
+{#    <form method="post" enctype="multipart/form-data" action="{% url 'ann:doc_upload' %}">#}
+{#        <div class="input-area">#}
+{#            <label for="name">公文名称：</label>#}
+{#            <span class="input">#}
+{#                <input id="name" type="text" name="name">#}
+{#            </span>#}
+{#        </div>#}
+{#        <div class="input-area">#}
+{#            <label for="document">公文文件：</label>#}
+{#            <input id="document" name="document" value="公文文件" type="file">#}
+{#        </div>#}
+{#        <button class="normal w90" type="submit">上传公文</button>#}
+{#        {% csrf_token %}#}
+{#    </form>#}
+{#{% endblock %}#}
 
 

@@ -50,18 +50,18 @@
                 <th>发布人</th>
                 <th>操作</th>
             </tr>
-            {% for ann in all_anns %}
-                <tr id="{{ ann.id }}">
-                    <td>{{ ann.id }}</td>
-                    <td><a href="{% url 'ann:detail' ann.id %}">{{ ann.title }}</a></td>
-                    <td>{{ ann.add_time }}</td>
-                    <td>{{ ann.get_department_display }}</td>
-                    <td>{{ ann.person }}</td>
-                    <td>
-                        <a href="javascript:void(0);" value="{{ ann.id }}" id="delete_ann">删除</a>
-                    </td>
-                </tr>
-            {% endfor %}
+{#            {% for ann in all_anns %}#}
+{#                <tr id="{{ ann.id }}">#}
+{#                    <td>{{ ann.id }}</td>#}
+{#                    <td><a href="{% url 'ann:detail' ann.id %}">{{ ann.title }}</a></td>#}
+{#                    <td>{{ ann.add_time }}</td>#}
+{#                    <td>{{ ann.get_department_display }}</td>#}
+{#                    <td>{{ ann.person }}</td>#}
+{#                    <td>#}
+{#                        <a href="javascript:void(0);" value="{{ ann.id }}" id="delete_ann">删除</a>#}
+{#                    </td>#}
+{#                </tr>#}
+{#            {% endfor %}#}
         </table>
     </div>
 
