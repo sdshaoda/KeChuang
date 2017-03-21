@@ -80,7 +80,7 @@ class ListView(View):
         all_staffs = UserProfile.objects.all().order_by('id')
         staffs = []
         for staff in all_staffs:
-            if staff.name:
+            if not staff.is_superuser:
                 staffs.append(staff)
 
         return render(request, 'user/list.html', {
@@ -105,8 +105,6 @@ class EditStaffView(View):
         user_name = request.POST.get('username', '')
         user = UserProfile.objects.get(username=user_name)
 
-        # department = request.POST.get('department', '')
-        # job = request.POST.get('job', '')
         mobile = request.POST.get('mobile', '')
         email = request.POST.get('email', '')
         office_phone = request.POST.get('office_phone', '')
@@ -120,8 +118,6 @@ class EditStaffView(View):
         xuelizs = request.FILES.get('xuelizs', '')
         zhichengzs = request.FILES.get('zhichengzs', '')
 
-        # user.department = department
-        # user.job = job
         user.mobile = mobile
         user.email = email
         user.office_phone = office_phone
@@ -149,7 +145,7 @@ class AddressView(View):
         all_staffs = UserProfile.objects.all().order_by('id')
         staffs = []
         for staff in all_staffs:
-            if staff.name:
+            if not staff.is_superuser:
                 staffs.append(staff)
 
         return render(request, 'user/address.html', {
@@ -164,7 +160,7 @@ class PermView(View):
         all_staffs = UserProfile.objects.all().order_by('id')
         staffs = []
         for staff in all_staffs:
-            if staff.name:
+            if not staff.is_superuser:
                 staffs.append(staff)
 
         return render(request, 'user/permission.html', {
@@ -190,7 +186,7 @@ class StaffView(View):
         all_staffs = UserProfile.objects.all().order_by('id')
         staffs = []
         for staff in all_staffs:
-            if staff.name:
+            if not staff.is_superuser:
                 staffs.append(staff)
 
         return render(request, 'user/staff.html', {
@@ -225,7 +221,6 @@ class AddStaffView(View):
             department = Department.objects.get(name=department_name)
             job = request.POST.get('job', '')
             induction_time = request.POST.get('induction_time', '')
-            # staff_num = request.POST.get('staff_num', '')
             permission = request.POST.get('permission', '')
 
             user_profile = UserProfile()
@@ -234,7 +229,6 @@ class AddStaffView(View):
             user_profile.department = department
             user_profile.job = job
             user_profile.induction_time = induction_time
-            # user_profile.staff_num = staff_num
             user_profile.permission = permission
             user_profile.is_active = True
             user_profile.password = make_password(pass_word)
@@ -244,7 +238,7 @@ class AddStaffView(View):
             all_staffs = UserProfile.objects.all().order_by('id')
             staffs = []
             for staff in all_staffs:
-                if staff.name:
+                if not staff.is_superuser:
                     staffs.append(staff)
 
             # 返回员工信息页
@@ -258,8 +252,6 @@ class AddStaffView(View):
 # 删除员工 Ajax × 405错误
 class DeleteStaffView(View):
     def post(self, request):
-        # user_name = request.POST.get('username', '')
-        # user = UserProfile.objects.get(username=user_name)
         # 根据 id 删除员工
         staff_id = request.POST.get('staff_id', '')
         user = UserProfile.objects.get(id=staff_id)

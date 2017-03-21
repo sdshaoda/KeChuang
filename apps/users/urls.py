@@ -13,6 +13,7 @@ urlpatterns = [
     url(r'^staff/edit/$', EditStaffView.as_view(), name='edit_staff'),
     # 通讯录
     url(r'^address/', AddressView.as_view(), name='address'),
+
     # 人员权限管理
     url(r'^permission/', PermView.as_view(), name='permission'),
     # 员工信息管理
@@ -21,6 +22,7 @@ urlpatterns = [
     url(r'^staff/delete/', DeleteStaffView.as_view(), name='delete_staff'),
     # 添加新员工
     url(r'^add_staff/', AddStaffView.as_view(), name='add_staff'),
+
     # 重置密码
     url(r'^reset/', ResetView.as_view(), name='reset'),
     # 修改密码

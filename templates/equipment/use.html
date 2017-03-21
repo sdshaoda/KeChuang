@@ -3,145 +3,75 @@
 {% block title %}设备领用{% endblock %}
 
 {% block style %}
-<style>
-.w112{
-    width: 112px;
-}
-textarea{
-    width: 87%;
-}
-</style>
+    <style>
+        .w112 {
+            width: 112px;
+        }
+
+        textarea {
+            width: 87%;
+        }
+    </style>
 {% endblock %}
 
 {% block content %}
 
+    <form class="form-horizontal" method="post" action="{% url 'equ:equ_use' %}">
 
-<table>
-    <tr>
-        <th colspan="3">设备领用登记</th>
-    </tr>
-    <tr>
-        <td>
-            <label for="">设备名称：</label>
-            <input type="text">
-        </td>
-        <td>
-            <label for="">设备型号：</label>
-            <input type="text">
-        </td>
-        <td>
-            <label for="">购买价格：</label>
-            <input type="text">
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <label for="">购买日期：</label>
-            <input type="text">
-        </td>
-        <td>
-            <label for="">计量有效期：</label>
-            <input type="text">
-        </td>
-        <td>
-            <label for="">领取时间：</label>
-            <input type="text">
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <label for="">领用部门：</label>
-            <select>
-                <option value="">XX部</option>
-                <option value="">XX部</option>
-                <option value="">XX部</option>
-                <option value="">XX部</option>
-            </select>
-        </td>
-        <td>
-            <label for="">领用人：</label>
-            <input type="text">
-        </td>
-        <td>
-            <label for="">归还时间：</label>
-            <input type="date">
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <label for="">挂靠项目：</label>
-            <input type="text">
-        </td>
-        <td>
-        </td>
-        <td>
-        </td>
-    </tr>
-    <tr>
-        <td colspan="3">
-            <label for="" class="w112">使用说明：</label>
-            <textarea name="" id="" cols="30" rows="10"></textarea>
-        </td>
-    </tr>
-</table>
+        <input type="hidden" name="equ_id" value="{{ equ.id }}">
 
+        <div class="form-group">
+            <label for="equi_name" class="col-md-2 col-sm-2 control-label required">设备名称：</label>
+            <div class="col-md-5 col-sm-10">
+                <input type="text" class="form-control" id="equi_name" name="equi_name" placeholder="设备名称"
+                       value="{{ equ.equi_name }}" required disabled>
+            </div>
+        </div>
 
-<button type="button" class="normal w90"><a href="/equipment/apply">提交申请</a></button>
+        <div class="form-group">
+            <label for="person" class="col-md-2 col-sm-2 control-label required">申请人：</label>
+            <div class="col-md-5 col-sm-10">
+                <input type="text" class="form-control" id="person" name="person" placeholder="申请人"
+                       value="{{ request.user.name }}" required disabled>
+            </div>
+        </div>
 
+        <div class="form-group">
+            <label for="type" class="col-md-2 col-sm-2 control-label required">申请类型：</label>
+            <div class="col-md-5 col-sm-10">
+                <select class="form-control" id="type" name="type" required disabled>
+                    <option value="0" selected>
+                        领用
+                    </option>
+                </select>
+            </div>
+        </div>
 
+        <div class="form-group">
+            <label for="use_date" class="col-md-2 col-sm-2 control-label required">领用时间：</label>
+            <div class="col-md-5 col-sm-10">
+                <input type="date" class="form-control" id="use_date" name="use_date" required>
+            </div>
+        </div>
 
+        <div class="form-group">
+            <label for="revert_date" class="col-md-2 col-sm-2 control-label required">归还时间：</label>
+            <div class="col-md-5 col-sm-10">
+                <input type="date" class="form-control" id="revert_date" name="revert_date" required>
+            </div>
+        </div>
 
+        <div class="form-group">
+            <label for="remark" class="col-md-2 col-sm-2 control-label">备注：</label>
+            <div class="col-md-5 col-sm-10">
+                <input type="text" class="form-control" id="remark" name="remark" placeholder="备注，可不填">
+            </div>
+        </div>
 
-<!--
-<form>
-    <div class="input-area">
-        <label for="">设备名称</label>
-        <input type="text" name="" value="">
-    </div>
-    <div class="input-area">
-        <label for="">设备型号</label>
-        <input type="text" name="" value="">
-    </div>
-    <div class="input-area">
-        <label for="">购买价格</label>
-        <input type="text" name="" value="">
-    </div>
-    <div class="input-area">
-        <label for="">购买日期</label>
-        <input type="text" name="" value="">
-    </div>
-    <div class="input-area">
-        <label for="">计量有效期</label>
-        <input type="text" name="" value="">
-    </div>
-    <div class="input-area">
-        <label for="">领用部门</label>
-        <input type="text" name="" value="">
-    </div>
-    <div class="input-area">
-        <label for="">领用人</label>
-        <input type="text" name="" value="">
-    </div>
-    <div class="input-area">
-        <label for="">领取时间</label>
-        <input type="text" name="" value="">
-    </div>
-    <div class="input-area">
-        <label for="">使用周期</label>
-        <input type="text" name="" value="">
-    </div>
-    <div class="input-area">
-        <label for="">挂靠项目</label>
-        <input type="text" name="" value="">
-    </div>
-    <div class="input-area">
-        <label for="">使用维修说明</label>
-        <input type="text" name="" value="">
-    </div>
+        {% csrf_token %}
 
-    <button type="button"><a href="">提交申请</a></button>
-</form>
--->
+        <button type="submit" class="btn btn-primary col-md-7">确定</button>
+    </form>
 {% endblock %}
 
 

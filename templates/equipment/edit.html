@@ -8,80 +8,103 @@
 
 {% block content %}
 
-    <form class="form-horizontal" method="post" action="">
+    <form class="form-horizontal" method="post" action="{% url 'equ:add' %}">
 
         <div class="form-group">
-            <label for="equi_name" class="col-md-2 col-sm-2 control-label">设备名称：</label>
+            <label for="equi_name" class="col-md-2 col-sm-2 control-label required">设备名称：</label>
             <div class="col-md-5 col-sm-10">
                 <input type="text" class="form-control" id="equi_name" name="equi_name" placeholder="设备名称"
-                       value="{{ equ.equi_name }}">
+                       value="{{ equ.equi_name }}" required>
             </div>
         </div>
 
         <div class="form-group">
-            <label for="equi_type" class="col-md-2 col-sm-2 control-label">设备类型：</label>
+            <label for="equi_type" class="col-md-2 col-sm-2 control-label required">设备类型：</label>
             <div class="col-md-5 col-sm-10">
-                <input type="text" class="form-control" id="equi_type" name="equi_type" placeholder="设备类型"
-                       value="{{ equ.equi_type }}">
+                <select class="form-control" id="equi_type" name="equi_type" required>
+                    {% for type in equ_types %}
+                        <option value="{{ type.id }}" {% ifequal equ.equi_type type %}selected{% endifequal %}>
+                            {{ type.name }}
+                        </option>
+                    {% endfor %}
+                </select>
             </div>
         </div>
 
         <div class="form-group">
-            <label for="equi_person" class="col-md-2 col-sm-2 control-label">设备负责人：</label>
-            <selection>
-
-            </selection>
+            <label for="equi_person" class="col-md-2 col-sm-2 control-label required">设备负责人：</label>
+            <div class="col-md-5 col-sm-10">
+                <select class="form-control" id="equi_person" name="equi_person" required>
+                    {% for staff in staffs %}
+                        <option value="{{ staff.id }}" {% ifequal equ.equi_person staff %}selected{% endifequal %}>
+                            {{ staff.name }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
         </div>
 
         <div class="form-group">
-            <label for="equi_num" class="col-md-2 col-sm-2 control-label">设备型号：</label>
+            <label for="equi_num" class="col-md-2 col-sm-2 control-label required">设备型号：</label>
             <div class="col-md-5 col-sm-10">
                 <input type="text" class="form-control" id="equi_num" name="equi_num" placeholder="设备型号"
-                       value="{{ equ.equi_num }}">
+                       value="{{ equ.equi_num }}" required>
             </div>
         </div>
 
         <div class="form-group">
-            <label for="equi_status" class="col-md-2 col-sm-2 control-label">设备状态：</label>
+            <label for="equi_status" class="col-md-2 col-sm-2 control-label required">设备状态：</label>
             <div class="col-md-5 col-sm-10">
-                <input type="text" class="form-control" id="equi_status" name="equi_status" placeholder="设备状态"
-                       value="{{ equ.equi_status }}">
+                <select class="form-control" id="equi_status" name="equi_status" required>
+                    <option value="0">正常</option>
+                    <option value="1">限制使用</option>
+                    <option value="2">停用</option>
+                </select>
             </div>
         </div>
 
         <div class="form-group">
-            <label for="effect_date" class="col-md-2 col-sm-2 control-label">计量有效期：</label>
+            <label for="effect_date" class="col-md-2 col-sm-2 control-label required">计量有效期：</label>
             <div class="col-md-5 col-sm-10">
                 <input type="date" class="form-control" id="effect_date" name="effect_date"
-                       value="{{ equ.effect_date }}">
+                       value="{{ equ.effect_date|date:"Y-m-d" }}" required>
             </div>
         </div>
 
         <div class="form-group">
-            <label for="equi_money" class="col-md-2 col-sm-2 control-label">购买价格：</label>
+            <label for="equi_money" class="col-md-2 col-sm-2 control-label required">购买价格：</label>
             <div class="col-md-5 col-sm-10">
                 <input type="text" class="form-control" id="equi_money" name="equi_money" placeholder="购买价格"
-                       value="{{ equ.equi_money }}">
+                       value="{{ equ.equi_money }}" required>
             </div>
         </div>
 
         <div class="form-group">
-            <label for="buy_date" class="col-md-2 col-sm-2 control-label">购买日期：</label>
+            <label for="buy_date" class="col-md-2 col-sm-2 control-label required">购买日期：</label>
             <div class="col-md-5 col-sm-10">
-                <input type="date" class="form-control" id="buy_date" name="buy_date" value="{{ equ.buy_date }}">
+                <input type="date" class="form-control" id="buy_date" name="buy_date" value="{{ equ.buy_date|date:"Y-m-d" }}"
+                       required>
             </div>
         </div>
 
         <div class="form-group">
             <label for="remark" class="col-md-2 col-sm-2 control-label">备注：</label>
             <div class="col-md-5 col-sm-10">
-                <input type="text" class="form-control" id="remark" name="remark" placeholder="备注"
+                <input type="text" class="form-control" id="remark" name="remark" placeholder="备注，可不填"
                        value="{{ equ.remark }}">
             </div>
         </div>
 
+    {% csrf_token %}
+
+        {#添加设备#}
+        <button type="submit" class="btn btn-primary col-md-7"
+                style="display: {% ifequal type 'add' %}block{% else %}none{% endifequal %}">确定
+        </button>
     </form>
 
-    <a href="" role="button" class="btn btn-primary col-md-7">确定</a>
+    {#编辑设备#}
+    <a href="" role="button" class="btn btn-primary col-md-7"
+       style="display: {% ifequal type 'edit' %}block{% else %}none{% endifequal %}">确定</a>
 {% endblock %}
 

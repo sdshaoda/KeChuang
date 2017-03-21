@@ -14,6 +14,7 @@ urlpatterns = [
     url(r'^detail/(?P<pro_id>\d+)$', DetailView.as_view(), name='detail'),
     # 删除工程
     url(r'^delete/', DeleteView.as_view(), name='address'),
+
     # 工程申请
     url(r'^apply/', ApplyView.as_view(), name='apply'),
     # 工程审核

@@ -17,7 +17,10 @@ urlpatterns = [
     # 退出
     url(r'^logout$', LogoutView.as_view(), name='logout'),
     # 后台
-    url(r'^xadmin/', xadmin.site.urls),
+    url(r'^admin/', xadmin.site.urls),
+    # 文件上传
+    url(r'^media/(?P<path>.*)$', serve, {'document_root': MEDIA_ROOT}),
+
     # 用户管理
     url(r'^user/', include('users.urls', namespace='user')),
     # 工程管理
@@ -26,6 +29,4 @@ urlpatterns = [
     url(r'^equipment/', include('equipments.urls', namespace='equ')),
     # 公告管理
     url(r'^announcement/', include('announcements.urls', namespace='ann')),
-    # 文件上传
-    url(r'^media/(?P<path>.*)$', serve, {'document_root': MEDIA_ROOT}),
 ]

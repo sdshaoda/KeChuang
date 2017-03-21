@@ -39,7 +39,6 @@ class Equipment(models.Model):
     effect_date = models.DateField(default=datetime.now, verbose_name=u'计量有效期')
     equi_money = models.CharField(max_length=10, verbose_name=u'购买价格')
     buy_date = models.DateField(default=datetime.now, verbose_name=u'购买日期')
-
     remark = models.CharField(max_length=200, verbose_name=u'备注', null=True, blank=True)
 
     add_time = models.DateTimeField(default=datetime.now, verbose_name=u'添加时间')
@@ -55,9 +54,9 @@ class Equipment(models.Model):
 # 设备变更记录
 class EquipmentChange(models.Model):
     equipment = models.ForeignKey(Equipment, verbose_name='设备名称')
+
     equi_type = models.CharField(max_length=20, verbose_name=u'设备类型')
     equi_person = models.CharField(max_length=20, verbose_name=u'设备负责人')
-
     equi_num = models.CharField(max_length=20, verbose_name=u'设备型号')
     equi_status = models.CharField(default='0', max_length=10, choices=(
         ('0', u'正常'),
@@ -67,6 +66,7 @@ class EquipmentChange(models.Model):
     effect_date = models.DateField(default=datetime.now, verbose_name=u'计量有效期')
     equi_money = models.CharField(max_length=10, verbose_name=u'购买价格')
     buy_date = models.DateField(default=datetime.now, verbose_name=u'购买日期')
+    remark = models.CharField(max_length=200, verbose_name=u'备注', null=True, blank=True)
 
     add_time = models.DateTimeField(default=datetime.now, verbose_name=u'添加时间')
 
