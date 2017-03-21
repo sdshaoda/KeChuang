@@ -9,70 +9,30 @@
 {% block content %}
 
 
-<table>
-    <tr>
-        <th>#</th>
-        <th>申请人</th>
-        <th>所在部门</th>
-        <th>设备序号</th>
-        <th>设备名称</th>
-        <th>申请类型</th>
-        <th>操作</th>
-    </tr>
-    <tr>
-        <td>06</td>
-        <td>李四</td>
-        <td>XX部</td>
-        <td>11</td>
-        <td>设备名称01</td>
-        <td>领用设备</td>
-        <td><button type="button">同意</button></td>
-    </tr>
-    <tr>
-        <td>05</td>
-        <td>李四</td>
-        <td>XX部</td>
-        <td>11</td>
-        <td>设备名称01</td>
-        <td>领用设备</td>
-        <td><button type="button">同意</button></td>
-    </tr>
-    <tr>
-        <td>04</td>
-        <td>李四</td>
-        <td>XX部</td>
-        <td>11</td>
-        <td>设备名称01</td>
-        <td>归还设备</td>
-        <td><button type="button">同意</button></td>
-    </tr>
-    <tr>
-        <td>03</td>
-        <td>李四</td>
-        <td>XX部</td>
-        <td>11</td>
-        <td>设备名称01</td>
-        <td>归还设备</td>
-        <td><button type="button">同意</button></td>
-    </tr>
-    <tr>
-        <td>02</td>
-        <td>李四</td>
-        <td>XX部</td>
-        <td>11</td>
-        <td>设备名称01</td>
-        <td>归还设备</td>
-        <td><button type="button">同意</button></td>
-    </tr>
-    <tr>
-        <td>01</td>
-        <td>李四</td>
-        <td>XX部</td>
-        <td>11</td>
-        <td>设备名称01</td>
-        <td>归还设备</td>
-        <td><button type="button">同意</button></td>
-    </tr>
-</table>
+    <div class="table-responsive">
+        <table class="table table-hover">
+            <tr>
+                <th>#</th>
+                <th>申请人</th>
+                <th>所在部门</th>
+                <th>设备名称</th>
+                <th>申请类型</th>
+                <th>归还时间</th>
+                <th colspan="2">操作</th>
+            </tr>
+            {% for equ in equs %}
+                <tr>
+                    <td>06</td>
+                    <td>李四</td>
+                    <td>XX部</td>
+                    <td>设备名称01</td>
+                    <td>领用</td>
+                    <td>2017-3-17 23:47:55</td>
+                    <td><a href="">同意</a></td>
+                    <td><a href="">拒绝</a></td>
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
 {% endblock %}
 

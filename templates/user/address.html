@@ -3,72 +3,67 @@
 {% block title %}通讯录{% endblock %}
 
 {% block style %}
-{#    <style>#}
-{##}
-{#        .handle {#}
-{#            margin-top: 20px;#}
-{#        }#}
-{##}
-{#        table {#}
-{#            margin-top: 60px;#}
-{#        }#}
-{#    </style>#}
+    {#    <style>#}
+    {##}
+    {#        .handle {#}
+    {#            margin-top: 20px;#}
+    {#        }#}
+    {##}
+    {#        table {#}
+    {#            margin-top: 60px;#}
+    {#        }#}
+    {#    </style>#}
 
 {% endblock %}
 
-{#{% block content %}#}
-{##}
-{##}
-{#    <div class="handle">#}
-{#        <div class="filter">#}
-{#            筛选：#}
-{#            <select>#}
-{#                <option value="">部门</option>#}
-{#                <option value="">姓名</option>#}
-{#                <option value="">职工编号</option>#}
-{#            </select>#}
-{#            <input type="text" name="" value="">#}
-{#            <button type="button">确定</button>#}
-{#        </div>#}
-{#        <div class="sort">#}
-{#            排序：#}
-{#            <select>#}
-{#                <option value="">部门</option>#}
-{#                <option value="">职工编号</option>#}
-{#            </select>#}
-{#            <select name="" id="">#}
-{#                <option value="">从高到底</option>#}
-{#                <option value="">从底到高</option>#}
-{#            </select>#}
-{#            <button type="button">确定</button>#}
-{#        </div>#}
-{#    </div>#}
-{##}
-{##}
-{#    <div class="table-responsive">#}
-{#        <table class="table table-hover">#}
-{#            <tr>#}
-{#                <th>#</th>#}
-{#                <th>姓名</th>#}
-{#                <th>部门</th>#}
-{#                <th>联系电话</th>#}
-{#                <th>电子邮箱</th>#}
-{#                <th>正负责项目</th>#}
-{#                <th>出勤记录</th>#}
-{#            </tr>#}
-{#            {% for staff in all_staffs %}#}
-{#                <tr>#}
-{#                    <td>{{ staff.id }}</td>#}
-{#                    <td>{{ staff.name }}</td>#}
-{#                    <td>{{ staff.get_department_display }}</td>#}
-{#                    <td>{% if staff.mobile %}{{ staff.mobile }}{% else %}未填写{% endif %}</td>#}
-{#                    <td>{% if staff.email %}{{ staff.email }}{% else %}未填写{% endif %}</td>#}
-{#                    <td>无</td>#}
-{#                    <td><a href="">点击查看</a></td>#}
-{#                </tr>#}
-{#            {% endfor %}#}
-{#        </table>#}
-{#    </div>#}
-{##}
-{#{% endblock %}#}
+{% block content %}
+
+    {#    <div class="handle">#}
+    {#        <div class="filter">#}
+    {#            筛选：#}
+    {#            <select>#}
+    {#                <option value="">部门</option>#}
+    {#                <option value="">姓名</option>#}
+    {#                <option value="">职工编号</option>#}
+    {#            </select>#}
+    {#            <input type="text" name="" value="">#}
+    {#            <button type="button">确定</button>#}
+    {#        </div>#}
+    {#        <div class="sort">#}
+    {#            排序：#}
+    {#            <select>#}
+    {#                <option value="">部门</option>#}
+    {#                <option value="">职工编号</option>#}
+    {#            </select>#}
+    {#            <select name="" id="">#}
+    {#                <option value="">从高到底</option>#}
+    {#                <option value="">从底到高</option>#}
+    {#            </select>#}
+    {#            <button type="button">确定</button>#}
+    {#        </div>#}
+    {#    </div>#}
+
+
+    <div class="table-responsive">
+        <table class="table table-hover">
+            <tr>
+                <th>#</th>
+                <th>姓名</th>
+                <th>部门</th>
+                <th>联系电话</th>
+                <th>电子邮箱</th>
+            </tr>
+            {% for staff in all_staffs %}
+                <tr>
+                    <td>{{ staff.id }}</td>
+                    <td>{{ staff.name }}</td>
+                    <td>{{ staff.department.name }}</td>
+                    <td>{% if staff.mobile %}{{ staff.mobile }}{% else %}未填写{% endif %}</td>
+                    <td>{% if staff.email %}{{ staff.email }}{% else %}未填写{% endif %}</td>
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
+
+{% endblock %}
 

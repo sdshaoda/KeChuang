@@ -7,16 +7,16 @@
 {% block content %}
     <form class="form-horizontal" action="{% url 'user:add_staff' %}" method="post">
         <div class="form-group">
-            <label for="name" class="col-md-2 col-sm-2 control-label">姓名：</label>
+            <label for="name" class="col-md-2 col-sm-2 control-label required">姓名：</label>
             <div class="col-md-5 col-sm-10">
-                <input type="text" class="form-control" id="name" name="name" placeholder="姓名">
+                <input type="text" class="form-control" id="name" name="name" placeholder="姓名" required>
             </div>
         </div>
 
         <div class="form-group">
-            <label for="department" class="col-md-2 col-sm-2 control-label">部门：</label>
+            <label for="department" class="col-md-2 col-sm-2 control-label required">部门：</label>
             <div class="col-md-5 col-sm-10">
-                <select class="form-control" id="department" name="department">
+                <select class="form-control" id="department" name="department" required>
                     {% for department in departments %}
                         <option value="{{ department.name }}">{{ department.name }}</option>
                     {% endfor %}
@@ -25,44 +25,44 @@
         </div>
 
         <div class="form-group">
-            <label for="job" class="col-md-2 col-sm-2 control-label">职务：</label>
+            <label for="job" class="col-md-2 col-sm-2 control-label required">职务：</label>
             <div class="col-md-5 col-sm-10">
-                <input type="text" class="form-control" id="job" name="job" placeholder="职务">
+                <input type="text" class="form-control" id="job" name="job" placeholder="职务" required>
             </div>
         </div>
 
         <div class="form-group">
-            <label for="induction_time" class="col-md-2 col-sm-2 control-label">入职时间：</label>
+            <label for="induction_time" class="col-md-2 col-sm-2 control-label required">入职时间：</label>
             <div class="col-md-5 col-sm-10">
-                <input type="date" class="form-control" id="induction_time" name="induction_time" placeholder="入职时间">
+                <input type="date" class="form-control" id="induction_time" name="induction_time" placeholder="入职时间" required>
             </div>
         </div>
 
         <div class="form-group">
-            <label for="name" class="col-md-2 col-sm-2 control-label">登录名：</label>
+            <label for="name" class="col-md-2 col-sm-2 control-label required">登录名：</label>
             <div class="col-md-5 col-sm-10">
-                <input type="text" class="form-control" id="username" name="username" placeholder="登录名">
+                <input type="text" class="form-control" id="username" name="username" placeholder="登录名" required>
             </div>
         </div>
 
         <div class="form-group">
-            <label for="password" class="col-md-2 col-sm-2 control-label">密码：</label>
+            <label for="password" class="col-md-2 col-sm-2 control-label required">密码：</label>
             <div class="col-md-5 col-sm-10">
-                <input type="text" class="form-control" id="password" name="password" placeholder="密码">
+                <input type="text" class="form-control" id="password" name="password" placeholder="密码" required>
             </div>
         </div>
 
         <div class="form-group">
-            <label for="password_repeat" class="col-md-2 col-sm-2 control-label">重复密码：</label>
+            <label for="password_repeat" class="col-md-2 col-sm-2 control-label required">重复密码：</label>
             <div class="col-md-5 col-sm-10">
-                <input type="text" class="form-control" id="password_repeat" name="password_repeat" placeholder="姓名">
+                <input type="text" class="form-control" id="password_repeat" name="password_repeat" placeholder="姓名" required>
             </div>
         </div>
 
         <div class="form-group">
-            <label for="permission" class="col-md-2 col-sm-2 control-label">系统权限：</label>
+            <label for="permission" class="col-md-2 col-sm-2 control-label required">系统权限：</label>
             <div class="col-md-5 col-sm-10">
-                <select class="form-control" id="permission" name="permission">
+                <select class="form-control" id="permission" name="permission" required>
                     <option value="0">检测员</option>
                     <option value="1">部门负责</option>
                     <option value="2">公司负责</option>

@@ -48,9 +48,9 @@
             <th>职务</th>
             <th>负责项目</th>
             <th>出勤记录</th>
-            <th>学历证书</th>
-            <th>职称证书</th>
-            <th>资格证书</th>
+            <th colspan="2">学历（证书）</th>
+            <th colspan="2">职称（证书）</th>
+            <th colspan="2">资格（证书）</th>
         </tr>
         </thead>
         <tbody>
@@ -62,12 +62,48 @@
                 <td>{{ staff.job }}</td>
                 <td>待完善</td>
                 <td>待完善</td>
-                <td>待完善</td>
-                <td>待完善</td>
-                <td>待完善</td>
-                {#                <td><a href="">查看</a></td>#}
-                {#                <td><a href="">查看</a></td>#}
-                {#                <td><a href="">查看</a></td>#}
+                <td>
+                    {% if staff.xueli %}
+                        {{ staff.xueli }}
+                    {% else %}
+                        未填写
+                    {% endif %}
+                </td>
+                <td>
+                    {% if staff.xuelizs %}
+                        <a href="{{ MEDIA_URL }}{{ staff.xuelizs }}">下载</a>
+                    {% else %}
+                        未上传
+                    {% endif %}
+                </td>
+                <td>
+                    {% if staff.zhicheng %}
+                        {{ staff.zhicheng }}
+                    {% else %}
+                        未填写
+                    {% endif %}
+                </td>
+                <td>
+                    {% if staff.zhichengzs %}
+                        <a href="{{ MEDIA_URL }}{{ staff.zhichengzs }}">下载</a>
+                    {% else %}
+                        未上传
+                    {% endif %}
+                </td>
+                <td>
+                    {% if staff.zige %}
+                        {{ staff.zige }}
+                    {% else %}
+                        未填写
+                    {% endif %}
+                </td>
+                <td>
+                    {% if staff.zigezs %}
+                        <a href="{{ MEDIA_URL }}{{ staff.zigezs }}">下载</a>
+                    {% else %}
+                        未上传
+                    {% endif %}
+                </td>
             </tr>
         {% endfor %}
         </tbody>

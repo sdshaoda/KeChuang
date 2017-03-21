@@ -40,10 +40,6 @@ class Equipment(models.Model):
     equi_money = models.CharField(max_length=10, verbose_name=u'购买价格')
     buy_date = models.DateField(default=datetime.now, verbose_name=u'购买日期')
 
-    person = models.CharField(default=u'仓库', max_length=20, verbose_name=u'保管人')
-    department = models.CharField(default=u'仓库', max_length=20, verbose_name=u'所在部门')
-    use_date = models.DateField(default=datetime.now, verbose_name=u'领用时间')
-    revert_date = models.DateField(default=datetime.now, verbose_name=u'归还时间')
     remark = models.CharField(max_length=200, verbose_name=u'备注', null=True, blank=True)
 
     add_time = models.DateTimeField(default=datetime.now, verbose_name=u'添加时间')
@@ -71,12 +67,6 @@ class EquipmentChange(models.Model):
     effect_date = models.DateField(default=datetime.now, verbose_name=u'计量有效期')
     equi_money = models.CharField(max_length=10, verbose_name=u'购买价格')
     buy_date = models.DateField(default=datetime.now, verbose_name=u'购买日期')
-
-    person = models.CharField(default=u'仓库', max_length=20, verbose_name=u'保管人')
-    department = models.CharField(default=u'仓库', max_length=20, verbose_name=u'所在部门')
-    use_date = models.DateField(default=datetime.now, verbose_name=u'领用时间')
-    revert_date = models.DateField(default=datetime.now, verbose_name=u'归还时间')
-    remark = models.CharField(max_length=200, verbose_name=u'备注', null=True, blank=True)
 
     add_time = models.DateTimeField(default=datetime.now, verbose_name=u'添加时间')
 

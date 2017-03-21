@@ -14,8 +14,53 @@
     </style>
 {% endblock %}
 
-{#{% block content %}#}
-{#    <form method="post" action="{% url 'ann:publish' %}">#}
+{% block content %}
+    <form class="form-horizontal" method="post" action="{% url 'ann:publish' %}">
+        <input type="hidden" name="person" value="{{ request.user.username }}">
+
+        <div class="form-group">
+            <label for="title" class="col-md-2 col-sm-2 control-label required">公告标题：</label>
+            <div class="col-md-5 col-sm-10">
+                <input type="text" class="form-control" id="title" name="title" placeholder="公告标题"
+                       value="{{ staff.name }}" required>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="title" class="col-md-2 col-sm-2 control-label required">发布者：</label>
+            <div class="col-md-5 col-sm-10">
+                <input type="text" class="form-control" id="title" name="title" placeholder="发布者"
+                       value="{{ request.user.name }}" disabled required>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="department" class="col-md-2 col-sm-2 control-label required">相关部门：</label>
+            <div class="col-md-5 col-sm-10">
+                <select class="form-control" id="department" name="department" required>
+                    {% for department in departments %}
+                        <option value="{{ department.name }}"
+                                {% ifequal request.user.department department %}selected{% endifequal %}>
+                            {{ department.name }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="content" class="col-md-2 col-sm-2 control-label required">公告正文：</label>
+            <div class="col-md-10 col-sm-10">
+                <textarea class="form-control" name="content" id="content" placeholder="公告正文" cols="30" rows="10" required></textarea>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="remark" class="col-md-2 col-sm-2 control-label">备注：</label>
+            <div class="col-md-5 col-sm-10">
+                <input type="text" class="form-control" id="remark" name="remark" placeholder="备注，可不填">
+            </div>
+        </div>
 {#        <table>#}
 {#            <tr>#}
 {#                <th colspan="2">发布公告</th>#}
@@ -53,10 +98,10 @@
 {#            </tr>#}
 {#        </table>#}
 {##}
-{#        <button class="normal" type="submit">发布</button>#}
-{#        {% csrf_token %}#}
-{#    </form>#}
-{#{% endblock %}#}
+        <button class="btn btn-primary col-md-7" type="submit">发布</button>
+        {% csrf_token %}
+    </form>
+{% endblock %}
 
 
 

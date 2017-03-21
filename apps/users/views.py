@@ -107,30 +107,38 @@ class EditStaffView(View):
 
         # department = request.POST.get('department', '')
         # job = request.POST.get('job', '')
-        # mobile = request.POST.get('mobile', '')
-        # email = request.POST.get('email', '')
-        # office_phone = request.POST.get('office_phone', '')
-        # home_phone = request.POST.get('home_phone', '')
-        # home_address = request.POST.get('home_address', '')
-        # # image = request.POST.get('image', '')
-        # # zigezs = request.POST.get('zigezs', '')
-        # # xuelizs = request.POST.get('xuelizs', '')
-        # # zhichengzs = request.POST.get('zhichengzs', '')
-        #
+        mobile = request.POST.get('mobile', '')
+        email = request.POST.get('email', '')
+        office_phone = request.POST.get('office_phone', '')
+        home_phone = request.POST.get('home_phone', '')
+        home_address = request.POST.get('home_address', '')
+        xueli = request.POST.get('xueli', '')
+        zhicheng = request.POST.get('zhicheng', '')
+        zige = request.POST.get('zige', '')
+        image = request.FILES.get('image', '')
+        zigezs = request.FILES.get('zigezs', '')
+        xuelizs = request.FILES.get('xuelizs', '')
+        zhichengzs = request.FILES.get('zhichengzs', '')
+
         # user.department = department
         # user.job = job
-        # user.mobile = mobile
-        # user.email = email
-        # user.office_phone = office_phone
-        # user.home_phone = home_phone
-        # user.home_address = home_address
-        # # user.image = image
-        # # user.zigezs = zigezs
-        # # user.xuelizs = xuelizs
-        # # user.zhichengzs = zhichengzs
+        user.mobile = mobile
+        user.email = email
+        user.office_phone = office_phone
+        user.home_phone = home_phone
+        user.home_address = home_address
+        user.xueli = xueli
+        user.zhicheng = zhicheng
+        user.zige = zige
+        user.image = image
+        user.zigezs = zigezs
+        user.xuelizs = xuelizs
+        user.zhichengzs = zhichengzs
         user.save()
 
-        # return HttpResponse('{"status":"fail","msg":"修改员工信息失败"}', content_type='application/json')
+        # 修改的是自己的档案
+        if user_name == request.user.username:
+            return HttpResponse('{"status":"success","msg":"编辑个人档案成功"}', content_type='application/json')
         return HttpResponse('{"status":"success","msg":"修改员工信息成功"}', content_type='application/json')
 
 
@@ -247,7 +255,7 @@ class AddStaffView(View):
             return HttpResponse('{"status":"fail","msg":"添加员工失败"}', content_type='application/json')
 
 
-# 删除员工 Ajax ×
+# 删除员工 Ajax × 405错误
 class DeleteStaffView(View):
     def post(self, request):
         # user_name = request.POST.get('username', '')

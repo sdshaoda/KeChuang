@@ -3,17 +3,24 @@
 {% block title %}编辑档案{% endblock %}
 
 {% block style %}
+    <style>
+    #edit_staff{
+        margin-bottom: 50px;
+    }
+    </style>
 {% endblock %}
 
 {% block content %}
-    <form class="form-horizontal" id="edit_form" action="">
+    <form class="form-horizontal" method="post" enctype="multipart/form-data" id="edit_staff_form"
+          action="{% url "user:edit_staff" %}">
+
         <input type="hidden" name="username" value="{{ staff.username }}">
 
         <div class="form-group">
             <label for="name" class="col-md-2 col-sm-2 control-label">职工姓名：</label>
             <div class="col-md-5 col-sm-10">
                 <input type="text" class="form-control" id="name" name="name" placeholder="职工姓名"
-                       value="{{ staff.name }}">
+                       value="{{ staff.name }}" disabled>
             </div>
         </div>
 
@@ -21,21 +28,22 @@
             <label for="induction_time" class="col-md-2 col-sm-2 control-label">入职时间：</label>
             <div class="col-md-5 col-sm-10">
                 <input type="text" class="form-control" id="induction_time" name="induction_time" placeholder="入职时间"
-                       value="{{ staff.induction_time }}">
+                       value="{{ staff.induction_time }}" disabled>
             </div>
         </div>
 
         <div class="form-group">
             <label for="job" class="col-md-2 col-sm-2 control-label">职务：</label>
             <div class="col-md-5 col-sm-10">
-                <input type="text" class="form-control" id="job" name="job" placeholder="职务" value="{{ staff.job }}">
+                <input type="text" class="form-control" id="job" name="job" placeholder="职务" value="{{ staff.job }}"
+                       disabled>
             </div>
         </div>
 
         <div class="form-group">
             <label for="department" class="col-md-2 col-sm-2 control-label">所属部门：</label>
             <div class="col-md-5 col-sm-10">
-                <select class="form-control" id="department" name="department">
+                <select class="form-control" id="department" name="department" disabled>
                     {% for department in departments %}
                         <option value="{{ department.name }}"
                                 {% ifequal request.user.department department %}selected{% endifequal %}>
@@ -43,7 +51,6 @@
                         </option>
                     {% endfor %}
                 </select>
-                {#                <input type="text" class="form-control" id="name" name="name" placeholder="职工姓名" value="{{ staff.name }}">#}
             </div>
         </div>
 
@@ -51,7 +58,7 @@
             <label for="mobile" class="col-md-2 col-sm-2 control-label">手机号码：</label>
             <div class="col-md-5 col-sm-10">
                 <input type="text" class="form-control" id="mobile" name="mobile" placeholder="手机号码"
-                       value="{{ staff.mobile }}">
+                       value="{% if staff.mobile %}{{ staff.mobile }}{% endif %}">
             </div>
         </div>
 
@@ -59,7 +66,7 @@
             <label for="email" class="col-md-2 col-sm-2 control-label">邮箱地址：</label>
             <div class="col-md-5 col-sm-10">
                 <input type="text" class="form-control" id="email" name="email" placeholder="邮箱地址"
-                       value="{{ staff.email }}">
+                       value="{% if staff.email %}{{ staff.email }}{% endif %}">
             </div>
         </div>
 
@@ -67,7 +74,7 @@
             <label for="office_phone" class="col-md-2 col-sm-2 control-label">办公电话：</label>
             <div class="col-md-5 col-sm-10">
                 <input type="text" class="form-control" id="office_phone" name="office_phone" placeholder="办公电话"
-                       value="{{ staff.office_phone }}">
+                       value="{% if staff.office_phone %}{{ staff.office_phone }}{% endif %}">
             </div>
         </div>
 
@@ -75,7 +82,7 @@
             <label for="home_address" class="col-md-2 col-sm-2 control-label">家庭住址：</label>
             <div class="col-md-5 col-sm-10">
                 <input type="text" class="form-control" id="home_address" name="home_address" placeholder="家庭住址"
-                       value="{{ staff.home_address }}">
+                       value="{% if staff.home_address %}{{ staff.home_address }}{% endif %}">
             </div>
         </div>
 
@@ -83,7 +90,31 @@
             <label for="home_phone" class="col-md-2 col-sm-2 control-label">家庭电话：</label>
             <div class="col-md-5 col-sm-10">
                 <input type="text" class="form-control" id="home_phone" name="home_phone" placeholder="家庭电话"
-                       value="{{ staff.home_phone }}">
+                       value="{% if staff.home_phone %}{{ staff.home_phone }}{% endif %}">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="xueli" class="col-md-2 col-sm-2 control-label">学历：</label>
+            <div class="col-md-5 col-sm-10">
+                <input type="text" class="form-control" id="xueli" name="xueli" placeholder="学历"
+                       value="{% if staff.xueli %}{{ staff.xueli }}{% endif %}">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="zhicheng" class="col-md-2 col-sm-2 control-label">职称：</label>
+            <div class="col-md-5 col-sm-10">
+                <input type="text" class="form-control" id="zhicheng" name="zhicheng" placeholder="多个职称可用逗号隔开"
+                       value="{% if staff.zhicheng %}{{ staff.zhicheng }}{% endif %}">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="zige" class="col-md-2 col-sm-2 control-label">资格：</label>
+            <div class="col-md-5 col-sm-10">
+                <input type="text" class="form-control" id="zige" name="zige" placeholder="多个资格可用逗号隔开"
+                       value="{% if staff.zige %}{{ staff.zige }}{% endif %}">
             </div>
         </div>
 
@@ -91,6 +122,11 @@
             <label for="image" class="col-md-2 col-sm-2 control-label">上传照片：</label>
             <div class="col-md-5 col-sm-10">
                 <input type="file" id="image" name="image">
+                <p class="help-block">
+                    {% if staff.image %}
+                        已有照片，选择可重新上传
+                    {% endif %}
+                </p>
             </div>
         </div>
 
@@ -98,6 +134,11 @@
             <label for="xuelizs" class="col-md-2 col-sm-2 control-label">上传学历证书：</label>
             <div class="col-md-5 col-sm-10">
                 <input type="file" id="xuelizs" name="xuelizs">
+                <p class="help-block">
+                    {% if staff.xuelizs %}
+                        已有学历证书，选择可重新上传
+                    {% endif %}
+                </p>
             </div>
         </div>
 
@@ -105,6 +146,11 @@
             <label for="zhichengzs" class="col-md-2 col-sm-2 control-label">上传职称证书：</label>
             <div class="col-md-5 col-sm-10">
                 <input type="file" id="zhichengzs" name="zhichengzs">
+                <p class="help-block">
+                    {% if staff.zhichengzs %}
+                        已有职称证书，选择可重新上传
+                    {% endif %}
+                </p>
             </div>
         </div>
 
@@ -112,6 +158,11 @@
             <label for="zigezs" class="col-md-2 col-sm-2 control-label">上传资格证书：</label>
             <div class="col-md-5 col-sm-10">
                 <input type="file" id="zigezs" name="zigezs">
+                <p class="help-block">
+                    {% if staff.zigezs %}
+                        已有资格证书，选择可重新上传
+                    {% endif %}
+                </p>
             </div>
         </div>
 
@@ -119,106 +170,18 @@
     </form>
 {% endblock %}
 
-
-<table>
-    <tr class="thead">
-        <td colspan="3">
-            个人资料输入
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <label for="">职工名称：</label>
-            <input type="hidden" name="username" value="{{ staff.username }}">
-            <input type="text" name="name" value="{{ staff.name }}" disabled>
-        </td>
-        <td>
-            <label for="">职工编号：</label>
-            <input type="number" name="staff_num" value="{{ staff.staff_num }}" disabled>
-        </td>
-        <td>
-            <label for="">入职时间：</label>
-            <input type="date" name="induction_time" value="{{ staff.induction_time }}" disabled>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <label for="">职务：</label>
-            <input type="text" name="job" value="{{ staff.job }}" disabled>
-        </td>
-        <td>
-            <label for="">所属部门：</label>
-            <select name="department" disabled>
-                <option value="zhb">综合办</option>
-                <option value="zgb">总工办</option>
-                <option value="jc1s">检测一室</option>
-                <option value="jc2s">检测二室</option>
-                <option value="jc3s">检测三室</option>
-                <option value="jc4s">检测四室</option>
-                <option value="tlsys">土力学实验室</option>
-                <option value="ytlxsys">岩土力学实验室</option>
-                <option value="gjgs">钢结构室</option>
-                <option value="sbyfs">设备研发室</option>
-            </select>
-        </td>
-        <td>
-            <label for="">手机号码：</label>
-            <input type="tel" name="mobile" value="{{ staff.mobile }}">
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <label for="">邮箱地址：</label>
-            <input type="email" name="email" value="{% if staff.email %}{{ staff.email }}{% endif %}">
-        </td>
-        <td>
-            <label for="">办公电话：</label>
-            <input type="text" name="office_phone"
-                   value="{% if staff.office_phone %}{{ staff.office_phone }}{% endif %}">
-        </td>
-        <td>
-            <label for="">家庭住址：</label>
-            <input type="text" name="home_address"
-                   value="{% if staff.home_address %}{{ staff.home_address }}{% endif %}">
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <label for="">家庭电话：</label>
-            <input type="text" name="home_phone"
-                   value="{% if staff.home_phone %}{{ staff.home_phone }}{% endif %}">
-        </td>
-        <td>
-            <label for="">上传照片：</label>
-            <input type="file" name="image">
-        </td>
-        <td>
-            <label for="">上传学历证书：</label>
-            <input type="file" name="xuelizs">
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <label for="">上传职称证书：</label>
-            <input type="file" name="zhichengzs">
-        </td>
-        <td>
-            <label for="">上传资格证书：</label>
-            <input type="file" name="zigezs">
-        </td>
-        <td></td>
-    </tr>
-</table>
-
 {% block js %}
     <script>
         $('#edit_staff').click(function () {
-            console.log($('#edit_form').serializeArray())
+            console.log($('#edit_staff_form').serializeArray())
             $.ajax({
                 cache: false,
                 url: '{% url "user:edit_staff" %}',
                 type: 'POST',
-                data: $('#edit_form').serializeArray(),
+                {#                data: $('#edit_staff_form').serializeArray(),#}
+                data: new FormData($('#edit_staff_form')[0]),
+                processData: false,
+                contentType: false,
                 async: true,
                 dataType: 'json',
                 beforeSend: function (xhr, settings) {
@@ -226,6 +189,7 @@
                 },
                 success: function (data) {
                     if (data.status === 'success') {
+                        console.log(data)
                         $('#msg').text(data.msg)
                     }
                     $('#msg').text(data.msg)

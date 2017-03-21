@@ -8,72 +8,80 @@
 
 {% block content %}
 
-<table>
-    <tr>
-        <th colspan="2">
-            设备资料输入
-        </th>
-    </tr>
-    <tr>
-        <td>
-            <label for="">设备名称：</label>
-            <input type="text" name="" value="">
-        </td>
-        <td>
-            <label for="">设备型号：</label>
-            <input type="text" name="" value="">
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <label for="">购买价格：</label>
-            <input type="text" name="" value="">
-        </td>
-        <td>
-            <label for="">购买日期：</label>
-            <input type="text" name="" value="">
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <label for="">所在部门：</label>
-            <input type="text" name="" value="">
-        </td>
-        <td>
-            <label for="">保管人：</label>
-            <input type="text" name="" value="">
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <label for="">设备状态：</label>
-            <select name="" id="">
-            <option value="">良好</option>
-            <option value="">一般</option>
-            <option value="">较差</option>
-            <option value="">待修</option>
-            <option value="">报废</option>
-        </select>
-        </td>
-        <td>
-            <label for="">设备分类：</label>
-            <select>
-            <option value="">检测设备</option>
-            <option value="">监测设备</option>
-            <option value="">物探设备</option>
-            <option value="">材料试验</option>
-        </select>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <label for="">计量有效期：</label>
-            <input type="date" name="" value="">
-        </td>
-        <td></td>
-    </tr>
-</table>
+    <form class="form-horizontal" method="post" action="">
 
-<button class="normal" type="button"><a href="/equipment/view">确定</a></button>
+        <div class="form-group">
+            <label for="equi_name" class="col-md-2 col-sm-2 control-label">设备名称：</label>
+            <div class="col-md-5 col-sm-10">
+                <input type="text" class="form-control" id="equi_name" name="equi_name" placeholder="设备名称"
+                       value="{{ equ.equi_name }}">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="equi_type" class="col-md-2 col-sm-2 control-label">设备类型：</label>
+            <div class="col-md-5 col-sm-10">
+                <input type="text" class="form-control" id="equi_type" name="equi_type" placeholder="设备类型"
+                       value="{{ equ.equi_type }}">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="equi_person" class="col-md-2 col-sm-2 control-label">设备负责人：</label>
+            <selection>
+
+            </selection>
+        </div>
+
+        <div class="form-group">
+            <label for="equi_num" class="col-md-2 col-sm-2 control-label">设备型号：</label>
+            <div class="col-md-5 col-sm-10">
+                <input type="text" class="form-control" id="equi_num" name="equi_num" placeholder="设备型号"
+                       value="{{ equ.equi_num }}">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="equi_status" class="col-md-2 col-sm-2 control-label">设备状态：</label>
+            <div class="col-md-5 col-sm-10">
+                <input type="text" class="form-control" id="equi_status" name="equi_status" placeholder="设备状态"
+                       value="{{ equ.equi_status }}">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="effect_date" class="col-md-2 col-sm-2 control-label">计量有效期：</label>
+            <div class="col-md-5 col-sm-10">
+                <input type="date" class="form-control" id="effect_date" name="effect_date"
+                       value="{{ equ.effect_date }}">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="equi_money" class="col-md-2 col-sm-2 control-label">购买价格：</label>
+            <div class="col-md-5 col-sm-10">
+                <input type="text" class="form-control" id="equi_money" name="equi_money" placeholder="购买价格"
+                       value="{{ equ.equi_money }}">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="buy_date" class="col-md-2 col-sm-2 control-label">购买日期：</label>
+            <div class="col-md-5 col-sm-10">
+                <input type="date" class="form-control" id="buy_date" name="buy_date" value="{{ equ.buy_date }}">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="remark" class="col-md-2 col-sm-2 control-label">备注：</label>
+            <div class="col-md-5 col-sm-10">
+                <input type="text" class="form-control" id="remark" name="remark" placeholder="备注"
+                       value="{{ equ.remark }}">
+            </div>
+        </div>
+
+    </form>
+
+    <a href="" role="button" class="btn btn-primary col-md-7">确定</a>
 {% endblock %}
 

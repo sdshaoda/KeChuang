@@ -22,13 +22,50 @@
         th, td {
             text-align: center;
         }
+
+        .required:after {
+            content: '*';
+            color: red;
+        }
+
+        {#        模态框#}
+        #dialog {
+            display: none;
+        {#            width: 480px;#} text-align: center;
+            margin: 0 auto;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 20px 5px;
+            background: #fff;
+            color: #f00;
+            font-size: 18px;
+            font-weight: bold;
+            position: fixed;
+            top: 50px;
+            left: 50%;
+            transform: translate(-50%, 0);
+            z-index: 10;
+        }
+
+        #close:after {
+            content: 'X';
+            color: #333;
+            float: right;
+            position: relative;
+            top: -20px;
+        }
+
+        #close:after:hover {
+            cursor: pointer;
+            background: #f00;
+        }
     </style>
 </head>
 <body>
-{#<div id="dialog">#}
-{#    <span id="close"></span>#}
-{#    <p id="msg">{{ msg }}</p>#}
-{#</div>#}
+<div id="dialog" class="col-md-7 col-sm-10 col-xs-11">
+    <span id="close"></span>
+    <div id="msg">{{ msg }}</div>
+</div>
 
 {#顶部导航栏#}
 <nav class="navbar navbar-default navbar-static-top">
@@ -208,21 +245,20 @@
 
 
 <script>
-    {#    // 弹窗#}
-    {#    setInterval(function () {#}
-    {#        if ($('#msg').text() === '') {#}
-    {#            $('#dialog').slideUp()#}
-    {#        } else {#}
-    {#            $('#dialog').slideDown()#}
-    {#        }#}
-    {#    }, 1000)#}
-    {##}
-    {#    $('#close').click(function () {#}
-    {#        $('#dialog').slideUp()#}
-    {#        $('#msg').text('')#}
-    {#    })#}
-    {##}
-    {##}
+    {#模态框#}
+    setInterval(function () {
+        if ($('#msg').text() === '') {
+            $('#dialog').slideUp()
+        } else {
+            $('#dialog').slideDown()
+        }
+    }, 2000)
+
+    {#点击隐藏模态框#}
+    $('html').click(function () {
+        $('#dialog').slideUp()
+        $('#msg').text('')
+    })
 
     {#根据 sessionStorage ，显示左侧导航位置和路径面包屑#}
     var navHead = sessionStorage.getItem('left-nav-head')
@@ -232,6 +268,10 @@
     $('a.list-group-item:contains(' + navItem + ')').addClass('active').parents('.panel-collapse').addClass('in')
     {#面包屑#}
     $('ol.breadcrumb').html('<li>' + navHead + '</li><li class="active">' + navItem + '</li>')
+
+    {#初始化 sessionStorage#}
+    sessionStorage.setItem('left-nav-head', '公告公文管理')
+    sessionStorage.setItem('left-nav-item', '浏览公告')
 
     // 左侧导航点击，保存到 sessionStorage
     $('a.list-group-item').click(function () {

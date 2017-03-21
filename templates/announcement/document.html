@@ -3,92 +3,108 @@
 {% block title %}公文管理{% endblock %}
 
 {% block style %}
-
-    <style>
-        button.w90 {
-            width: 90px;
-        }
-
-        form {
-            width: 500px;
-            margin: 0 auto;
-            margin-top: 50px;
-            padding: 20px;
-            border: 1px solid #888;
-            border-radius: 10px;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-around;
-        }
-
-        .input-area {
-            width: 300px;
-            margin: 0 auto;
-        }
-
-        label {
-            display: inline-block;
-            width: 100px;
-            text-align: right;
-            font-size: 18px;
-            line-height: 18px;
-        }
-
-        span.input {
-            display: inline-block;
-            width: 195px;
-            border: 1px solid #bbb;
-            border-radius: 5px;
-            margin: 8px 0;
-            padding: 3px 8px;
-            background: #fff;
-        }
-
-        input {
-            width: 180px;
-            border: none;
-            outline: none;
-            font-size: 18px;
-            line-height: 18px;
-        }
-    </style>
-
+    {#    <style>#}
+    {#        button.w90 {#}
+    {#            width: 90px;#}
+    {#        }#}
+    {##}
+    {#        form {#}
+    {#            width: 500px;#}
+    {#            margin: 0 auto;#}
+    {#            margin-top: 50px;#}
+    {#            padding: 20px;#}
+    {#            border: 1px solid #888;#}
+    {#            border-radius: 10px;#}
+    {#            display: flex;#}
+    {#            flex-direction: column;#}
+    {#            justify-content: space-around;#}
+    {#        }#}
+    {##}
+    {#        .input-area {#}
+    {#            width: 300px;#}
+    {#            margin: 0 auto;#}
+    {#        }#}
+    {##}
+    {#        label {#}
+    {#            display: inline-block;#}
+    {#            width: 100px;#}
+    {#            text-align: right;#}
+    {#            font-size: 18px;#}
+    {#            line-height: 18px;#}
+    {#        }#}
+    {##}
+    {#        span.input {#}
+    {#            display: inline-block;#}
+    {#            width: 195px;#}
+    {#            border: 1px solid #bbb;#}
+    {#            border-radius: 5px;#}
+    {#            margin: 8px 0;#}
+    {#            padding: 3px 8px;#}
+    {#            background: #fff;#}
+    {#        }#}
+    {##}
+    {#        input {#}
+    {#            width: 180px;#}
+    {#            border: none;#}
+    {#            outline: none;#}
+    {#            font-size: 18px;#}
+    {#            line-height: 18px;#}
+    {#        }#}
+    {#    </style>#}
 {% endblock %}
 
-{#{% block content %}#}
-{##}
-{##}
-{#    <div class="table-responsive">#}
-{#        <table class="table table-hover">#}
-{#            <tr>#}
-{#                <th>#</th>#}
-{#                <th>公文名称</th>#}
-{#                <th>下载</th>#}
-{#            </tr>#}
-{#            {% for doc in docs %}#}
-{#                <tr>#}
-{#                    <td>{{ doc.id }}</td>#}
-{#                    <td>{{ doc.name }}</td>#}
-{#                    <td><a href="">点击下载</a></td>#}
-{#                </tr>#}
-{#            {% endfor %}#}
-{#        </table>#}
-{#    </div>#}
-{##}
-{#    <form method="post" enctype="multipart/form-data" action="{% url 'ann:doc_upload' %}">#}
-{#        <div class="input-area">#}
-{#            <label for="name">公文名称：</label>#}
-{#            <span class="input">#}
-{#                <input id="name" type="text" name="name">#}
-{#            </span>#}
-{#        </div>#}
-{#        <div class="input-area">#}
-{#            <label for="document">公文文件：</label>#}
-{#            <input id="document" name="document" value="公文文件" type="file">#}
-{#        </div>#}
-{#        <button class="normal w90" type="submit">上传公文</button>#}
-{#        {% csrf_token %}#}
-{#    </form>#}
-{#{% endblock %}#}
+{% block content %}
+    <div class="table-responsive">
+        <table class="table table-hover">
+            <tr>
+                <th>#</th>
+                <th>公文名称</th>
+                <th>相关部门</th>
+                <th>上传者</th>
+                <th colspan="2">操作</th>
+            </tr>
+            {% for doc in docs %}
+                <tr>
+                    <td>{{ doc.id }}</td>
+                    <td>{{ doc.name }}</td>
+                    <td>{{ doc.department.name }}</td>
+                    <td>{{ doc.person }}</td>
+                    <td><a href="{{ MEDIA_URL }}{{ doc.document }}">下载</a></td>
+                    <td><a class="delete_doc" id="{{ doc.id }}" href="">删除</a></td>
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
+{% endblock %}
 
 
+{% block js %}
+    <script>
+        $('.delete_doc').click(function () {
+            var doc_id = $(this).attr('id')
+            $.ajax({
+                cache: false,
+                url: '{% url 'ann:delete_doc' %}',
+                type: 'POST',
+                data: {'doc_id': doc_id},
+                async: true,
+                dataType: 'json',
+                beforeSend: function (xhr, settings) {
+                    xhr.setRequestHeader("X-CSRFToken", "{{ csrf_token }}");
+                },
+                success: function (data) {
+                    if (data.status === 'success') {
+                        $('#msg').text(data.msg)
+                    }
+                    $('#msg').text(data.msg)
+                    setTimeout(function () {
+                        $('#msg').text('')
+                    }, 2000)
+                },
+                error: function () {
+                    $('#msg').text('出错了')
+                }
+            })
+        })
+    </script>
+{% endblock %}

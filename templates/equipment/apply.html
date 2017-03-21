@@ -7,10 +7,32 @@
 {% endblock %}
 
 {% block content %}
-    <h2 class="warning">您的设备变动申请已提交给管理员审核！请耐心等候</h2>
+{#    <h2 class="warning">您的设备变动申请已提交给管理员审核！请耐心等候</h2>#}
 
+    <div class="table-responsive">
+        <table class="table table-hover">
+            <tr>
+                <th>#</th>
+                <th>设备名称</th>
+                <th>设备状态</th>
+                <th>申请类型</th>
+                <th>归还时间</th>
+                <th>申请状态</th>
+            </tr>
+            {% for equ in equs %}
+                <tr>
+                    <td>{{ equ.id }}</td>
+                    <td>{{ equ.name }}</td>
+                    <td>{{ equ.equi_status }}</td>
+                    <td>{{ equ.type }}</td>
+                    <td>{{ equ.revert_date }}</td>
+                    <td>{{ equ.status }}</td>
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
 
-    <button type="button" class="normal"><a href="/equipment/view">返回</a></button>
+    <a href="" role="button" class="btn btn-primary">返回</a>
 {% endblock %}
 
 

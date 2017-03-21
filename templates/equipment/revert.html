@@ -8,33 +8,26 @@
 
 {% block content %}
 
-<table>
-    <thead>
-        <tr>
-            <th>#</th>
-            <th>设备名称</th>
-            <th>领用时间</th>
-            <th>应还时间</th>
-            <th>操作</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td>1</td>
-            <td>设备名称1</td>
-            <td>2016/02/03</td>
-            <td>2017/02/03</td>
-            <td><a href="/common/apply">归还</a></td>
-        </tr>
-        <tr>
-            <td>2</td>
-            <td>设备名称2</td>
-            <td>2016/02/03</td>
-            <td>2017/02/03</td>
-            <td><a href="/equipment/apply">归还</a></td>
-        </tr>
-    </tbody>
-</table>
+    <div class="table-responsive">
+        <table class="table table-hover">
+            <tr>
+                <th>#</th>
+                <th>设备名称</th>
+                <th>领用时间</th>
+                <th>应还时间</th>
+                <th>操作</th>
+            </tr>
+            {% for equ in equs %}
+                <tr>
+                    <td>{{ equ.id }}</td>
+                    <td>{{ equ.name }}</td>
+                    <td>{{ equ.use_date }}</td>
+                    <td>{{ equ.revert_date }}</td>
+                    <td><a href="">归还</a></td>
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
 {% endblock %}
 
 

@@ -7,38 +7,76 @@
 
 {% block content %}
 
-    <form class="form-horizontal" method="post" enctype="multipart/form-data" action="{% url 'ann:doc_upload' %}">
+    <form class="form-horizontal" id="upload_form" method="post" enctype="multipart/form-data" action="">
+        <input type="hidden" name="person" value="{{ request.user.username }}">
+
         <div class="form-group">
-            <label for="name" class="col-md-2 col-sm-2 control-label">公文名称：</label>
+            <label for="name" class="col-md-2 col-sm-2 control-label required">公文名称：</label>
             <div class="col-md-5 col-sm-10">
-                <input type="text" class="form-control" id="name" placeholder="输入公文名称">
+                <input type="text" class="form-control" id="name" name="name" placeholder="输入公文名称" required>
             </div>
         </div>
+
         <div class="form-group">
-            <label for="document" class="col-md-2 col-sm-2 control-label">公文文件：</label>
+            <label for="document" class="col-md-2 col-sm-2 control-label required">公文文件：</label>
             <div class="col-md-5 col-sm-10">
-                <input type="file" id="document">
-                {#                <p class="help-block">Example block-level help text here.</p>#}
+                <input type="file" id="document" name="document" required>
             </div>
         </div>
-        <button type="submit" class="btn btn-primary">上传公文</button>
+
+        <div class="form-group">
+            <label for="department" class="col-md-2 col-sm-2 control-label required">相关部门：</label>
+            <div class="col-md-5 col-sm-10">
+                <select class="form-control" id="department" name="department" required>
+                    {% for department in departments %}
+                        <option value="{{ department.name }}"
+                                {% ifequal request.user.department department %}selected{% endifequal %}>
+                            {{ department.name }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="remark" class="col-md-2 col-sm-2 control-label">备注：</label>
+            <div class="col-md-5 col-sm-10">
+                <input type="text" class="form-control" id="remark" name="remark" placeholder="备注，可不填">
+            </div>
+        </div>
+
+        <button type="button" id="upload" class="btn btn-primary col-md-7">上传公文</button>
         {% csrf_token %}
     </form>
-
-    {#    <form method="post" enctype="multipart/form-data" action="{% url 'ann:doc_upload' %}">#}
-    {#        <div class="input-area">#}
-    {#            <label for="name">公文名称：</label>#}
-    {#            <span class="input">#}
-    {#                <input id="name" type="text" name="name">#}
-    {#            </span>#}
-    {#        </div>#}
-    {#        <div class="input-area">#}
-    {#            <label for="document">公文文件：</label>#}
-    {#            <input id="document" name="document" value="公文文件" type="file">#}
-    {#        </div>#}
-    {#        <button class="normal w90" type="submit">上传公文</button>#}
-    {#        {% csrf_token %}#}
-    {#    </form>#}
 {% endblock %}
 
 
+{% block js %}
+    <script>
+        $('#upload').click(function () {
+            $.ajax({
+                cache: false,
+                url: '{% url 'ann:doc_upload' %}',
+                type: 'POST',
+                data: $('#upload_form').serializeArray(),
+                async: true,
+                dataType: 'json',
+                beforeSend: function (xhr, settings) {
+                    xhr.setRequestHeader("X-CSRFToken", "{{ csrf_token }}");
+                },
+                success: function (data) {
+                    if (data.status === 'success') {
+                        $('#msg').text(data.msg)
+                    }
+                    $('#msg').text(data.msg)
+                    setTimeout(function () {
+                        $('#msg').text('')
+                    }, 2000)
+                },
+                error: function () {
+                    $('#msg').text('出错了')
+                }
+            })
+        })
+    </script>
+{% endblock %}

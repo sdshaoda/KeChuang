@@ -4,10 +4,11 @@
 <head>
     <title>登录 - 武汉中科科创工程检测有限公司</title>
     <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
-    {#            <link rel='stylesheet' href='/static/css/login.css'/>#}
+    {#                <link rel='stylesheet' href='/static/css/login.css'/>#}
     <script src="{% static 'js/jquery.js' %}"></script>
-    {#    <script src="{% static 'js/bootstrap.js' %}"></script>#}
+    {#        <script src="{% static 'js/bootstrap.js' %}"></script>#}
     <style>
+        {#        登录框#}
         .login {
             padding: 0;
             border: 1px solid #bbb;
@@ -19,6 +20,7 @@
             transform: translate(-50%, 0);
         }
 
+        {#登录框头部#}
         .login-header {
             height: 60px;
             color: #fff;
@@ -28,6 +30,7 @@
             text-align: center;
         }
 
+        {#        登录框主体#}
         .login-main {
             padding: 20px 30px;
             display: flex;
@@ -35,16 +38,50 @@
             justify-content: space-around;
         }
 
+        {#        验证码#}
         img.captcha {
             height: 35px;
+        }
+
+        {#        模态框#}
+        #dialog {
+            display: none;
+        {#            width: 480px;#} text-align: center;
+            margin: 0 auto;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 20px 5px;
+            background: #fff;
+            color: #f00;
+            font-size: 18px;
+            font-weight: bold;
+            position: fixed;
+            top: 50px;
+            left: 50%;
+            transform: translate(-50%, 0);
+            z-index: 10;
+        }
+
+        #close:after {
+            content: 'X';
+            color: #333;
+            float: right;
+            position: relative;
+            top: -20px;
+        }
+
+        #close:after:hover {
+            cursor: pointer;
+            background: #f00;
         }
     </style>
 </head>
 <body>
-{#<div id="dialog">#}
-{#    <span id="close"></span>#}
-{#    <div id="msg">{{ msg }}</div>#}
-{#</div>#}
+<div id="dialog" class="col-md-7">
+    <span id="close"></span>
+    <div id="msg">{{ msg }}</div>
+</div>
+
 
 <div class="login col-md-4 col-sm-6 col-xs-8">
     <div class="login-header bg-primary">武汉中科科创工程检测有限公司</div>
@@ -73,6 +110,22 @@
 
 <script>
     $(document).ready(function () {
+
+{#        模态框#}
+        setInterval(function () {
+            if ($('#msg').text() === '') {
+                $('#dialog').slideUp()
+            } else {
+                $('#dialog').slideDown()
+            }
+        }, 2000)
+
+{#        点击隐藏模态框#}
+        $('html').click(function () {
+            $('#dialog').slideUp()
+            $('#msg').text('')
+        })
+
 
         //刷新验证码
         function refresh_captcha(event) {

@@ -67,6 +67,9 @@ class ProjectApply(models.Model):
 class EquipmentApply(models.Model):
     equi_name = models.ForeignKey(Equipment, verbose_name=u'设备名称')
     person = models.ForeignKey(UserProfile, verbose_name=u'申请人')
+    department = models.CharField(max_length=20, verbose_name=u'所在部门')
+    use_date = models.DateField(default=datetime.now, verbose_name=u'领用时间')
+    revert_date = models.DateField(default=datetime.now, verbose_name=u'归还时间')
     type = models.CharField(default='0', max_length=2, choices=(
         ('0', u'领用'), ('1', u'归还')
     ), verbose_name=u'申请类型')

@@ -1,7 +1,7 @@
 # coding:utf-8
 from django.conf.urls import url
 
-from .views import ListView, PublishView, DetailView, DocListView, DeleteAnnView, DocUploadView
+from .views import ListView, PublishView, DetailView, DocListView, DeleteAnnView, DocUploadView, DeleteDocView
 
 urlpatterns = [
     # 浏览公告
@@ -16,4 +16,6 @@ urlpatterns = [
     url(r'^document/list', DocListView.as_view(), name='doc_list'),
     # 上传公文
     url(r'^document/upload', DocUploadView.as_view(), name='doc_upload'),
+    # 删除公文
+    url(r'^document/delete/', DeleteDocView.as_view(), name='delete_doc'),
 ]
