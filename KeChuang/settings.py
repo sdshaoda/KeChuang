@@ -3,6 +3,7 @@
 import os
 import sys
 
+# 路径
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 sys.path.insert(0, os.path.join(BASE_DIR, 'apps'))
@@ -11,12 +12,15 @@ sys.path.insert(0, os.path.join(BASE_DIR, 'extra_apps'))
 
 SECRET_KEY = '&op0-flpkhx@7iar$qc%8$a+lju4j(o2u@+y^*21gh-a2))973'
 
+# 开发模式
 DEBUG = True
 
 # ALLOWED_HOSTS = [u'shaoda.natapp1.cc', u'127.0.0.1']
 
+# 主机名
 ALLOWED_HOSTS = []
 
+# APP注册
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -40,12 +44,15 @@ INSTALLED_APPS = [
     'captcha',
 ]
 
+# 用户模型
 AUTH_USER_MODEL = "users.UserProfile"
+
+# 重载登录方法
 AUTHENTICATION_BACKENDS = (
     'users.views.CustomBackend',
 )
 
-
+# 中间件
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -56,8 +63,10 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+# 根URL配置
 ROOT_URLCONF = 'KeChuang.urls'
 
+# 模板引擎配置
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -75,8 +84,10 @@ TEMPLATES = [
     },
 ]
 
+# WSGI配置
 WSGI_APPLICATION = 'KeChuang.wsgi.application'
 
+# 数据库配置
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
@@ -87,6 +98,7 @@ DATABASES = {
     }
 }
 
+# 密码验证
 AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
@@ -102,6 +114,7 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+# 国际化相关配置
 LANGUAGE_CODE = 'zh-hans'
 
 TIME_ZONE = 'Asia/Shanghai'
@@ -112,14 +125,14 @@ USE_L10N = True
 
 USE_TZ = False
 
+# 静态文件相关配置
 STATIC_URL = '/static/'
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'static'),
 )
-
 # STATIC_ROOT = os.path.join(BASE_DIR, "static/")
 
-# 配置邮箱，在发送验证码时会用到
+# 邮箱配置，在发送验证码时会用到
 EMAIL_HOST = 'smtp.126.com'
 EMAIL_PORT = 25
 EMAIL_HOST_USER = 'sdshaoda@126.com'
@@ -127,7 +140,7 @@ EMAIL_HOST_PASSWORD = 'SDshaoda'
 EMAIL_USE_TLS = False
 EMAIL_FROM = 'sdshaoda@126.com'
 
-# 上传文件配置
+# 上传文件相关配置
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 

@@ -3,13 +3,18 @@
 {% block title %}编辑档案{% endblock %}
 
 {% block style %}
+    <style>
+        #edit_staff {
+            margin-bottom: 50px;
+        }
+    </style>
 {% endblock %}
 
 {% block content %}
     <form class="form-horizontal" method="post" enctype="multipart/form-data" id="edit_staff_form"
           action="{% url "user:edit_staff" %}">
 
-        <input type="hidden" name="username" value="{{ staff.username }}">
+        <input type="hidden" name="id" value="{{ staff.id }}">
 
         <div class="form-group">
             <label for="name" class="col-md-2 col-sm-2 control-label">职工姓名：</label>
@@ -162,6 +167,7 @@
         </div>
 
         <button id="edit_staff" type="button" class="btn btn-primary col-md-7">完成</button>
+
     </form>
 {% endblock %}
 
@@ -199,4 +205,3 @@
         })
     </script>
 {% endblock %}
-

@@ -74,7 +74,7 @@
                         <td><input type="radio" name="permission" value="3" {% ifequal staff.permission '3' %}checked
                                    class="current-perm"{% endifequal %}></td>
                         <td>
-                            <button value="{{ staff.username }}" class="change_permission btn btn-default" type="button">应用</button>
+                            <button value="{{ staff.id }}" class="change_permission btn btn-default" type="button">应用</button>
                         </td>
                     </tr>
                 </form>
@@ -88,7 +88,7 @@
     <script>
         $('.change_permission').click(function () {
             var data = {}
-            data.username = $(this).val()
+            data.id = $(this).val()
             var permission = ''
             var inputRadio = $(this).parents('.perm_tr').children().children('input[type=radio]')
             for (var i = 0, l = inputRadio.length; i < l; i++) {

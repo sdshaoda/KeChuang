@@ -4,6 +4,10 @@
 
 {% block style %}
     <style>
+        h2{
+            text-align: center;
+        }
+
         .ann-info {
             margin: 5px;
             text-align: center;
@@ -19,6 +23,11 @@
             line-height: 20px;
             margin-bottom: 5px;
         }
+
+        .btn-block{
+            margin-top: 50px;
+            margin-bottom: 50px;
+        }
     </style>
 {% endblock %}
 
@@ -27,12 +36,12 @@
     <h2>{{ ann.title }}</h2>
 
     <div class="ann-info">
-        <span>发布人：{{ ann.person }}</span><span>发布时间：{{ ann.add_time }}</span><span>相关部门：{{ ann.get_department_display }}</span>
+        <span>发布人：{{ ann.person }}</span><span>发布时间：{{ ann.add_time }}</span><span>相关部门：{{ ann.department.name }}</span>
     </div>
 
     {{ ann.content }}
 
-    <a class="btn btn-primary" role="button" href="{% url 'ann:list' %}">返回</a>
+    <a class="btn btn-primary btn-block" role="button" href="{% url 'ann:list' %}">返回</a>
 {% endblock %}
 
 

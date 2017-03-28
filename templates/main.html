@@ -83,9 +83,11 @@
                     <ul class="dropdown-menu">
                         <li><a href="{% url 'user:edit' request.user.id %}">个人档案</a></li>
                         <li><a href="{% url 'user:change' %}">修改密码</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li><a href="{% url 'logout' %}">注销</a></li>
                     </ul>
                 </li>
-                <li><a href="{% url 'logout' %}">注销</a></li>
+                <li><a href="javascript:void(0);">你的系统权限为：{{ request.user.get_permission_display }}</a></li>
             </ul>
         </div>
     </div>
@@ -188,10 +190,13 @@
                 </div>
                 <div id="collapseFive" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingFive">
                     <div class="panel-body list-group">
-                        <a href="{% url 'user:permission' %}" class="list-group-item">人员权限管理</a>
-                        <a href="{% url 'user:staff' %}" class="list-group-item">员工信息管理</a>
-                        <a href="{% url 'user:reset' %}" class="list-group-item">员工密码修改</a>
-                        <a href="{% url 'user:change' %}" class="list-group-item">个人密码修改</a>
+                        {% if request.user.permission == '2' or request.user.permission == '3' %}
+                            <a href="{% url 'user:permission' %}" class="list-group-item">人员权限管理</a>
+                            <a href="{% url 'user:staff' %}" class="list-group-item">员工信息管理</a>
+                            <a href="{% url 'user:reset' %}" class="list-group-item">员工密码修改</a>
+                        {% else %}
+                        {% endif %}
+                            <a href="{% url 'user:change' %}" class="list-group-item">个人密码修改</a>
                     </div>
                 </div>
             </div>
@@ -270,8 +275,8 @@
     $('ol.breadcrumb').html('<li>' + navHead + '</li><li class="active">' + navItem + '</li>')
 
     {#初始化 sessionStorage#}
-{#    sessionStorage.setItem('left-nav-head', '公告公文管理')#}
-{#    sessionStorage.setItem('left-nav-item', '浏览公告')#}
+    {#    sessionStorage.setItem('left-nav-head', '公告公文管理')#}
+    {#    sessionStorage.setItem('left-nav-item', '浏览公告')#}
 
     // 左侧导航点击，保存到 sessionStorage
     $('a.list-group-item').click(function () {

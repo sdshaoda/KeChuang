@@ -1,7 +1,7 @@
 # coding:utf-8
 from __future__ import unicode_literals
 
-from datetime import datetime
+from datetime import datetime, date
 
 from django.db import models
 
@@ -54,9 +54,9 @@ class Project(models.Model):
     wt_dw = models.CharField(max_length=50, verbose_name=u'委托单位', null=True, blank=True)
     mobile = models.CharField(max_length=20, verbose_name=u'联系电话', null=True, blank=True)
     pro_address = models.CharField(max_length=50, verbose_name=u'项目地址', null=True, blank=True)
-    sign_date = models.DateField(default=datetime.now, max_length=20, verbose_name=u'签订日期', null=True, blank=True)
-    start_date = models.DateField(default=datetime.now, max_length=20, verbose_name=u'开工日期', null=True, blank=True)
-    finish_date = models.DateField(default=datetime.now, max_length=20, verbose_name=u'完工日期', null=True, blank=True)
+    sign_date = models.DateField(default=date.today, max_length=20, verbose_name=u'签订日期', null=True, blank=True)
+    start_date = models.DateField(default=date.today, max_length=20, verbose_name=u'开工日期', null=True, blank=True)
+    finish_date = models.DateField(default=date.today, max_length=20, verbose_name=u'完工日期', null=True, blank=True)
     ht_scan = models.FileField(upload_to='hetong/%Y/%m', verbose_name=u'合同扫描件', max_length=100, null=True, blank=True)
     remark = models.CharField(max_length=200, verbose_name=u'备注', null=True, blank=True)
 
@@ -86,9 +86,9 @@ class ProjectChange(models.Model):
     wt_dw = models.CharField(max_length=50, verbose_name=u'委托单位', null=True, blank=True)
     mobile = models.CharField(max_length=20, verbose_name=u'联系电话', null=True, blank=True)
     pro_address = models.CharField(max_length=50, verbose_name=u'项目地址', null=True, blank=True)
-    sign_date = models.DateField(default=datetime.now, max_length=20, verbose_name=u'签订日期', null=True, blank=True)
-    start_date = models.DateField(default=datetime.now, max_length=20, verbose_name=u'开工日期', null=True, blank=True)
-    finish_date = models.DateField(default=datetime.now, max_length=20, verbose_name=u'完工日期', null=True, blank=True)
+    sign_date = models.DateField(default=date.today, max_length=20, verbose_name=u'签订日期', null=True, blank=True)
+    start_date = models.DateField(default=date.today, max_length=20, verbose_name=u'开工日期', null=True, blank=True)
+    finish_date = models.DateField(default=date.today, max_length=20, verbose_name=u'完工日期', null=True, blank=True)
     ht_scan = models.FileField(upload_to='hetong/%Y/%m', verbose_name=u'合同扫描件', max_length=100, null=True, blank=True)
     remark = models.CharField(max_length=200, verbose_name=u'备注', null=True, blank=True)
 

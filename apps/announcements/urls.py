@@ -3,6 +3,7 @@ from django.conf.urls import url
 
 from .views import ListView, PublishView, DetailView, DocListView, DeleteAnnView, DocUploadView, DeleteDocView
 
+# namespace='ann'
 urlpatterns = [
     # 发布公告
     url(r'^publish/', PublishView.as_view(), name='publish'),

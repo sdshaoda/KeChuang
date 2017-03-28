@@ -8,31 +8,92 @@
 
 {% block content %}
 
-
     <div class="table-responsive">
         <table class="table table-hover">
             <tr>
                 <th>#</th>
-                <th>申请人</th>
-                <th>所在部门</th>
                 <th>设备名称</th>
+                <th>设备状态</th>
+                <th>申请人</th>
                 <th>申请类型</th>
+                <th>领用时间</th>
                 <th>归还时间</th>
                 <th colspan="2">操作</th>
             </tr>
-            {% for equ in equs %}
+            {% for equ_apply in equ_applys %}
                 <tr>
-                    <td>06</td>
-                    <td>李四</td>
-                    <td>XX部</td>
-                    <td>设备名称01</td>
-                    <td>领用</td>
-                    <td>2017-3-17 23:47:55</td>
-                    <td><a href="">同意</a></td>
-                    <td><a href="">拒绝</a></td>
+                    <td>{{ equ_apply.id }}</td>
+                    <td>{{ equ_apply.equipment.equi_name }}</td>
+                    <td>{{ equ_apply.equipment.get_equi_status_display }}</td>
+                    <td>{{ equ_apply.person.name }}</td>
+                    <td>{{ equ_apply.get_type_display }}</td>
+                    <td>{{ equ_apply.use_date }}</td>
+                    <td>{{ equ_apply.revert_date }}</td>
+                    <td>
+                        <a value="{{ equ_apply.id }}" href="javascript:void(0);" class="agree">同意</a>
+                    </td>
+                    <td>
+                        <a value="{{ equ_apply.id }}" href="javascript:void(0);" class="refuse">拒绝</a>
+                    </td>
                 </tr>
             {% endfor %}
         </table>
     </div>
+
 {% endblock %}
 
+{% block js %}
+    <script>
+        {#同意#}
+        $('.agree').click(function () {
+            var equ_apply_id = $(this).attr('value')
+            $.ajax({
+                cache: false,
+                url: '{% url "equ:agree" %}',
+                type: 'POST',
+                data: {'equ_apply_id': equ_apply_id},
+                async: true,
+                dataType: 'json',
+                beforeSend: function (xhr, settings) {
+                    xhr.setRequestHeader("X-CSRFToken", "{{ csrf_token }}");
+                },
+                success: function (data) {
+                    $('#msg').text(data.msg)
+                    setTimeout(function () {
+                        $('#msg').text('')
+                        $('a.agree[value=' + equ_apply_id + ']').closest('tr').remove()
+                    }, 2000)
+                },
+                error: function () {
+                    $('#msg').text('出错了')
+                }
+            })
+        })
+
+        {#拒绝#}
+        $('.refuse').click(function () {
+            var equ_apply_id = $(this).attr('value')
+            $.ajax({
+                cache: false,
+                url: '{% url "equ:refuse" %}',
+                type: 'POST',
+                data: {'equ_apply_id': equ_apply_id},
+                async: true,
+                dataType: 'json',
+                beforeSend: function (xhr, settings) {
+                    xhr.setRequestHeader("X-CSRFToken", "{{ csrf_token }}");
+                },
+                success: function (data) {
+                    $('#msg').text(data.msg)
+                    setTimeout(function () {
+                        $('#msg').text('')
+                        $('a.refuse[value=' + equ_apply_id + ']').closest('tr').remove()
+                    }, 2000)
+                },
+                error: function () {
+                    $('#msg').text('出错了')
+                }
+            })
+        })
+    </script>
+{% endblock %}

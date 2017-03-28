@@ -1,7 +1,7 @@
 # coding:utf-8
 from __future__ import unicode_literals
 
-from datetime import datetime
+from datetime import datetime, date
 
 from django.contrib.auth.models import AbstractUser
 from django.db import models
@@ -29,7 +29,7 @@ class UserProfile(AbstractUser):
     username = models.CharField(unique=True, max_length=20, verbose_name=u'登录名')
 
     job = models.CharField(max_length=20, verbose_name=u'职务')
-    induction_time = models.DateField(max_length=20, default=datetime.now, verbose_name=u'入职时间')
+    induction_time = models.DateField(max_length=20, default=date.today, verbose_name=u'入职时间')
     permission = models.CharField(default='0', max_length=2, choices=(
         ('0', u'检测员'),
         ('1', u'部门负责'),

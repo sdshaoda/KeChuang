@@ -17,10 +17,10 @@
                 <th>应还时间</th>
                 <th>操作</th>
             </tr>
-            {% for equ in equs %}
+            {% for equ in equ_applys %}
                 <tr>
                     <td>{{ equ.id }}</td>
-                    <td>{{ equ.name }}</td>
+                    <td>{{ equ.equipment.equi_name }}</td>
                     <td>{{ equ.use_date }}</td>
                     <td>{{ equ.revert_date }}</td>
                     <td><a href="">归还</a></td>

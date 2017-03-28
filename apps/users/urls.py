@@ -4,6 +4,7 @@ from django.conf.urls import url
 from .views import ListView, EditView, EditStaffView, DeleteStaffView, AddressView, PermView, StaffView, ResetView, \
     ChangeView, AddStaffView
 
+# namespace='user'
 urlpatterns = [
     # 人员浏览
     url(r'^list/', ListView.as_view(), name='list'),

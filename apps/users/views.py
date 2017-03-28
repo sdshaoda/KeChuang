@@ -99,11 +99,10 @@ class EditView(View):
         })
 
 
-# 编辑档案 Ajax √
+# 编辑档案 Ajax
 class EditStaffView(View):
     def post(self, request):
-        user_name = request.POST.get('username', '')
-        user = UserProfile.objects.get(username=user_name)
+        staff_id = request.POST.get('id', '')
 
         mobile = request.POST.get('mobile', '')
         email = request.POST.get('email', '')
@@ -118,6 +117,8 @@ class EditStaffView(View):
         xuelizs = request.FILES.get('xuelizs', '')
         zhichengzs = request.FILES.get('zhichengzs', '')
 
+        # 更新用户信息
+        user = UserProfile.objects.get(id=staff_id)
         user.mobile = mobile
         user.email = email
         user.office_phone = office_phone
@@ -133,7 +134,7 @@ class EditStaffView(View):
         user.save()
 
         # 修改的是自己的档案
-        if user_name == request.user.username:
+        if staff_id == request.user.id:
             return HttpResponse('{"status":"success","msg":"编辑个人档案成功"}', content_type='application/json')
         return HttpResponse('{"status":"success","msg":"修改员工信息成功"}', content_type='application/json')
 
@@ -153,7 +154,7 @@ class AddressView(View):
         })
 
 
-# 人员权限管理 GET Ajax √
+# 人员权限管理 GET Ajax
 class PermView(View):
     def get(self, request):
         # 筛除超级用户
@@ -169,9 +170,9 @@ class PermView(View):
 
     def post(self, request):
         # 根据用户名和权限值 重设权限
-        user_name = request.POST.get('username', '')
+        staff_id = request.POST.get('id', '')
         permission = request.POST.get('permission', '')
-        user = UserProfile.objects.get(username=user_name)
+        user = UserProfile.objects.get(id=staff_id)
         user.permission = permission
         user.save()
         if user.permission == permission:

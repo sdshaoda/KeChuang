@@ -3,6 +3,7 @@ from django.conf.urls import url
 
 from .views import ListView, EditView, AddProView, VerifyView, DetailView, ApplyView, DeleteView, AttenView
 
+# namespace='pro'
 urlpatterns = [
     # 添加工程
     url(r'^add/$', AddProView.as_view(), name='add'),

@@ -6,7 +6,9 @@
 
 {% block content %}
 
-    <form class="form-horizontal" method="post" action="{% url 'equ:add' %}">
+    <form id="edit_equ_form" class="form-horizontal" method="post" action="{% url 'equ:add' %}">
+
+        <input type="hidden" id="equi_id" name="equi_id" value="{{ equ.id }}">
 
         <div class="form-group">
             <label for="equi_name" class="col-md-2 col-sm-2 control-label required">设备名称：</label>
@@ -80,8 +82,8 @@
         <div class="form-group">
             <label for="buy_date" class="col-md-2 col-sm-2 control-label required">购买日期：</label>
             <div class="col-md-5 col-sm-10">
-                <input type="date" class="form-control" id="buy_date" name="buy_date" value="{{ equ.buy_date|date:"Y-m-d" }}"
-                       required>
+                <input type="date" class="form-control" id="buy_date" name="buy_date"
+                       value="{{ equ.buy_date|date:"Y-m-d" }}" required>
             </div>
         </div>
 
@@ -93,7 +95,7 @@
             </div>
         </div>
 
-    {% csrf_token %}
+        {% csrf_token %}
 
         {#添加设备#}
         <button type="submit" class="btn btn-primary col-md-7"
@@ -102,7 +104,34 @@
     </form>
 
     {#编辑设备#}
-    <a href="" role="button" class="btn btn-primary col-md-7"
+    <a href="javascript:void(0);" role="button" id="edit_equ" class="btn btn-primary col-md-7"
        style="display: {% ifequal type 'edit' %}block{% else %}none{% endifequal %}">确定</a>
 {% endblock %}
 
+{% block js %}
+    <script>
+        $('#edit_equ').click(function () {
+            console.log($('#edit_equ_form').serializeArray())
+            $.ajax({
+                cache: false,
+                url: '{% url "equ:equ_edit" %}',
+                type: 'POST',
+                data: $('#edit_equ_form').serializeArray(),
+                async: true,
+                dataType: 'json',
+                beforeSend: function (xhr, settings) {
+                    xhr.setRequestHeader("X-CSRFToken", "{{ csrf_token }}");
+                },
+                success: function (data) {
+                    $('#msg').text(data.msg)
+                    setTimeout(function () {
+                        $('#msg').text('')
+                    }, 2000)
+                },
+                error: function () {
+                    $('#msg').text('出错了')
+                }
+            })
+        })
+    </script>
+{% endblock %}

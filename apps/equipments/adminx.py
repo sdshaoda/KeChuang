@@ -1,7 +1,7 @@
 # coding:utf-8
 import xadmin
 
-from .models import Equipment, EquipmentType, EquipmentChange
+from .models import Equipment, EquipmentType
 
 
 # 设备类型Admin
@@ -22,15 +22,15 @@ class EquipmentAdmin(object):
 
 
 # 设备变更记录Admin
-class EquipmentChangeAdmin(object):
-    list_display = ['equipment', 'equi_type', 'equi_person', 'equi_num', 'equi_status', 'effect_date', 'equi_money',
-                    'buy_date', 'person', 'department', 'use_date', 'revert_date', 'remark', 'add_time']
-    search_fields = ['equipment', 'equi_type', 'equi_person', 'equi_num', 'equi_status', 'effect_date', 'equi_money',
-                     'buy_date', 'person', 'department', 'use_date', 'revert_date', 'remark']
-    list_filter = ['equipment', 'equi_type', 'equi_person', 'equi_num', 'equi_status', 'effect_date', 'equi_money',
-                   'buy_date', 'person', 'department', 'use_date', 'revert_date', 'remark', 'add_time']
+# class EquipmentChangeAdmin(object):
+    # list_display = ['equipment', 'equi_type', 'equi_person', 'equi_num', 'equi_status', 'effect_date', 'equi_money',
+    #                 'buy_date', 'person', 'department', 'use_date', 'revert_date', 'remark', 'add_time']
+    # search_fields = ['equipment', 'equi_type', 'equi_person', 'equi_num', 'equi_status', 'effect_date', 'equi_money',
+    #                  'buy_date', 'person', 'department', 'use_date', 'revert_date', 'remark']
+    # list_filter = ['equipment', 'equi_type', 'equi_person', 'equi_num', 'equi_status', 'effect_date', 'equi_money',
+    #                'buy_date', 'person', 'department', 'use_date', 'revert_date', 'remark', 'add_time']
 
 
 xadmin.site.register(EquipmentType, EquipmentTypeAdmin)
 xadmin.site.register(Equipment, EquipmentAdmin)
-xadmin.site.register(EquipmentChange, EquipmentChangeAdmin)
+# xadmin.site.register(EquipmentChange, EquipmentChangeAdmin)
