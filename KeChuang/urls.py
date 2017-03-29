@@ -12,9 +12,9 @@ from users.views import LoginView, LogoutView
 urlpatterns = [
     # 验证码
     url(r'^captcha/', include('captcha.urls')),
-    # 登录
+    # 登录 GET POST
     url(r'^$', LoginView.as_view(), name='login'),
-    # 退出
+    # 退出 GET
     url(r'^logout$', LogoutView.as_view(), name='logout'),
     # 后台
     url(r'^admin/', xadmin.site.urls),

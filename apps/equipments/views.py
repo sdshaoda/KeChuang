@@ -4,25 +4,29 @@ from django.shortcuts import render
 from django.views.generic import View
 
 from equipments.models import Equipment, EquipmentType
-from operation.models import EquipmentApply
+from operation.models import EquipmentApply, EquipmentStaff, EquipmentPerson
 from users.models import UserProfile
 
 
-# 设备浏览
+# 设备浏览 GET
 class ListView(View):
     def get(self, request):
-        # 浏览所有设备
+
+        # 获取所有设备信息，根据添加时间排序
         equs = Equipment.objects.all().order_by('-add_time')
+
         return render(request, 'equipment/list.html', {
             'equs': equs
         })
 
 
-# 设备领用
+# 设备领用 GET
 class UseView(View):
     def get(self, request, equ_id):
+
         # 通过 equ_id 获取当前设备信息
         equ = Equipment.objects.get(id=equ_id)
+
         return render(request, 'equipment/use.html', {
             'equ': equ
         })
@@ -31,7 +35,8 @@ class UseView(View):
 # 设备领用 POST
 class UseEquView(View):
     def post(self, request):
-        # 根据表单信息，保存到 EquipmentApply 中
+
+        # 获取表单信息
         equ_id = request.POST.get('equi_id', '')
         person_id = request.POST.get('person_id', '')
         use_date = request.POST.get('use_date', '')
@@ -49,39 +54,60 @@ class UseEquView(View):
         equ_apply.remark = remark
         equ_apply.save()
 
+        # 获取当前用户
         staff = UserProfile.objects.get(id=request.user.id)
+        # 获取当前用户的 设备申请 信息
         equ_applys = EquipmentApply.objects.filter(person=staff).order_by('-add_time')
+
+        # 转到 设备申请 页面
         return render(request, 'equipment/apply.html', {
             'equ_applys': equ_applys,
             'staff': staff
         })
 
 
-# 设备归还
+# 设备归还 GET
 class RevertView(View):
     def get(self, request):
-        # 只显示用户自己领用的设备
+
+        # 获取当前用户
         staff = UserProfile.objects.get(id=request.user.id)
-        equ_applys = EquipmentApply.objects.filter(person=staff, status='1')
+
+        # 获取设备保管人为当前用户的 设备信息
+        equs = EquipmentStaff.objects.filter(person=staff)
+
         return render(request, 'equipment/revert.html', {
-            'equ_applys': equ_applys
+            'equs': equs
         })
 
 
-# 设备资料
+# 设备归还 Ajax
+class RevertEquView(View):
+    def post(self, request):
+
+        # 获取表单信息
+        # 根据 equ_id 获取 设备信息
+
+        return HttpResponse('{"status":"success","msg":"归还申请提交成功"}', content_type='application/json')
+
+
+# 设备资料 GET
 class InfoView(View):
     def get(self, request):
-        # 获取所有的设备信息
+
+        # 获取所有设备信息，根据添加时间排序
         equs = Equipment.objects.all().order_by('-add_time')
+
         return render(request, 'equipment/info.html', {
             'equs': equs
         })
 
 
-# 添加设备
+# 添加设备 GET POST
 class AddView(View):
     def get(self, request):
-        # 需要指定 设备类型 和 设备负责人
+
+        # 获取所有 设备类型 信息，根据添加时间排序
         equ_types = EquipmentType.objects.all().order_by('-add_time')
 
         # 筛除超级用户
@@ -98,7 +124,8 @@ class AddView(View):
         })
 
     def post(self, request):
-        # 新增设备信息
+
+        # 获取表单信息
         equi_name = request.POST.get('equi_name', '')
         equi_type_id = request.POST.get('equi_type', '')
         equi_person_id = request.POST.get('equi_person', '')
@@ -111,41 +138,41 @@ class AddView(View):
 
         # 初始化 设备信息
         equipment = Equipment()
-        equipment.equi_name = equi_name
         equipment.equi_type = EquipmentType.objects.get(id=equi_type_id)
-        equipment.equi_person = UserProfile.objects.get(id=equi_person_id)
+        equipment.equi_name = equi_name
         equipment.equi_num = equi_num
         equipment.equi_status = equi_status
         equipment.effect_date = effect_date
         equipment.equi_money = equi_money
         equipment.buy_date = buy_date
         equipment.remark = remark
+        # 设置为 未领用
+        equipment.use_status = '0'
         equipment.save()
 
-        # 初始化 设备变更记录
-        # equ_change = EquipmentChange()
-        # equ_change.equipment = equipment
-        # equ_change.equi_type = equipment.equi_type.name
-        # equ_change.equi_person = equipment.equi_person.name
-        # equ_change.equi_num = equipment.equi_num
-        # equ_change.equi_status = equipment.equi_status
-        # equ_change.effect_date = equipment.effect_date
-        # equ_change.equi_money = equipment.equi_money
-        # equ_change.buy_date = equipment.buy_date
-        # equ_change.remark = equipment.remark
-        # equ_change.save()
+        # 初始化 设备负责人
+        equipment_person = EquipmentPerson()
+        equipment_person.equipment = equipment
+        equipment_person.person = UserProfile.objects.get(id=equi_person_id)
+        equipment_person.save()
 
+        # 获取所有设备信息，根据添加时间排序
         equs = Equipment.objects.all().order_by('-add_time')
+
+        # 转到 设备资料 页面
         return render(request, 'equipment/info.html', {
             'equs': equs
         })
 
 
-# 编辑设备资料 GET
+# 编辑设备 GET
 class EditView(View):
     def get(self, request, equ_id):
+
+        # 通过 equ_id 获取当前设备信息
         equ = Equipment.objects.get(id=equ_id)
 
+        # 获取所有 设备类型
         equ_types = EquipmentType.objects.all().order_by('-add_time')
 
         # 筛除超级用户
@@ -163,14 +190,15 @@ class EditView(View):
         })
 
 
-# 编辑设备资料 Ajax
+# 编辑设备 Ajax
 class EditEquView(View):
     def post(self, request):
-        # 更改设备信息
+
+        # 获取表单信息
         equi_id = request.POST.get('equi_id', '')
-        equi_name = request.POST.get('equi_name', '')
         equi_type_id = request.POST.get('equi_type', '')
         equi_person_id = request.POST.get('equi_person', '')
+        equi_name = request.POST.get('equi_name', '')
         equi_num = request.POST.get('equi_num', '')
         equi_status = request.POST.get('equi_status', '')
         effect_date = request.POST.get('effect_date', '')
@@ -180,9 +208,8 @@ class EditEquView(View):
 
         # 更改 设备信息
         equipment = Equipment.objects.get(id=equi_id)
-        equipment.equi_name = equi_name
         equipment.equi_type = EquipmentType.objects.get(id=equi_type_id)
-        equipment.equi_person = UserProfile.objects.get(id=equi_person_id)
+        equipment.equi_name = equi_name
         equipment.equi_num = equi_num
         equipment.equi_status = equi_status
         equipment.effect_date = effect_date
@@ -190,6 +217,11 @@ class EditEquView(View):
         equipment.buy_date = buy_date
         equipment.remark = remark
         equipment.save()
+
+        # 更改 设备负责人 信息
+        equipment_person = EquipmentPerson.objects.get(equipment=equipment)
+        equipment_person.person = UserProfile.objects.get(id=equi_person_id)
+        equipment_person.save()
 
         # 初始化 设备变更记录
         # equ_change = EquipmentChange()
@@ -207,35 +239,45 @@ class EditEquView(View):
         return HttpResponse('{"status":"success","msg":"编辑设备资料成功"}', content_type='application/json')
 
 
-# 设备申请
+# 设备申请 GET
 class ApplyView(View):
     def get(self, request):
+
+        # 获取当前用户
         staff = UserProfile.objects.get(id=request.user.id)
+
+        # 获取当前用户的 设备申请 信息
         equ_applys = EquipmentApply.objects.filter(person=staff).order_by('-add_time')
+
         return render(request, 'equipment/apply.html', {
             'equ_applys': equ_applys,
             'staff': staff
         })
 
 
-# 设备审核
+# 设备审核 GET
 class VerifyView(View):
     def get(self, request):
 
-        # 只处理设备负责人为自己，且未被审核的
-        equ_applys = EquipmentApply.objects.filter(status='0')
+        # 获取当前用户
+        staff = UserProfile.objects.get(id=request.user.id)
+
+        # 设备负责人 为当前用户
+        equ_applys = EquipmentPerson.objects.filter(person=staff)
 
         return render(request, 'equipment/verify.html', {
             'equ_applys': equ_applys
         })
 
 
-# 同意领用
+# 同意领用 Ajax
 class AgreeEquView(View):
     def post(self, request):
+
+        # 获取表单信息
         equ_apply_id = request.POST.get('equ_apply_id', '')
 
-        # 修改设备申请相关信息
+        # 修改 设备申请 相关信息
         equ_apply = EquipmentApply.objects.get(id=equ_apply_id)
         equ_apply.status = '1'
         equ_apply.save()
@@ -251,9 +293,11 @@ class AgreeEquView(View):
         return HttpResponse('{"status":"success","msg":"同意设备领用申请操作成功"}', content_type='application/json')
 
 
-# 拒绝领用
+# 拒绝领用 Ajax
 class RefuseEquView(View):
     def post(self, request):
+
+        # 获取表单信息
         equ_apply_id = request.POST.get('equ_apply_id', '')
 
         # 修改设备申请相关信息

@@ -195,7 +195,7 @@ class StaffView(View):
         })
 
 
-# 添加新员工 GET POST Ajax ×
+# 添加新员工 GET POST
 class AddStaffView(View):
     def get(self, request):
         departments = Department.objects.all()
@@ -247,7 +247,9 @@ class AddStaffView(View):
                 'staffs': staffs
             })
         else:
-            return HttpResponse('{"status":"fail","msg":"添加员工失败"}', content_type='application/json')
+            return render(request, 'user/add_staff.html', {
+                'msg': '表单信息填写不合法'
+            })
 
 
 # 删除员工 Ajax × 405错误
@@ -263,7 +265,7 @@ class DeleteStaffView(View):
         return HttpResponse('{"status":"success","msg":"删除员工信息成功"}', content_type='application/json')
 
 
-# 重置密码 GET Ajax √
+# 重置密码 GET Ajax
 class ResetView(View):
     def get(self, request):
         return render(request, 'user/reset.html')
@@ -278,12 +280,13 @@ class ResetView(View):
         encrypt_password = make_password(password)
         user[0].password = encrypt_password
         user[0].save()
+
         if user[0].password == encrypt_password:
             return HttpResponse('{"status":"success","msg":"修改密码成功"}', content_type='application/json')
         return HttpResponse('{"status":"fail","msg":"修改密码失败"}', content_type='application/json')
 
 
-# 更改密码 GET Ajax √
+# 更改密码 GET Ajax
 class ChangeView(View):
     def get(self, request):
         return render(request, 'user/change.html')

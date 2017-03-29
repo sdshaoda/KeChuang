@@ -7,6 +7,7 @@ from .forms import AddProForm
 from users.models import UserProfile
 
 
+# 工程浏览 GET
 class ListView(View):
     def get(self, request):
         all_pro = Project.objects.all().order_by('-sign_date')
@@ -15,6 +16,7 @@ class ListView(View):
         })
 
 
+# 添加工程 GET POST
 class AddProView(View):
     def get(self, request):
         all_staffs = UserProfile.objects.all().order_by('id')
@@ -71,11 +73,19 @@ class AddProView(View):
             return render(request, 'project/add.html')
 
 
-class VerifyView(View):
+# 编辑工程 GET
+class EditView(View):
     def get(self, request):
-        return render(request, 'project/verify.html')
+        return render(request, 'project/edit.html')
 
 
+# 编辑工程 POST
+class EditProView(View):
+    def post(self, request):
+        return render(request, 'project/apply.html')
+
+
+# 工程详情 GET
 class DetailView(View):
     def get(self, request, pro_id):
         pro = Project.objects.get(id=int(pro_id))
@@ -84,21 +94,51 @@ class DetailView(View):
         })
 
 
-class EditView(View):
-    def get(self, request):
-        return render(request, 'project/edit.html')
-
-
+# 删除工程 Ajax
 class DeleteView(View):
     def get(self, request):
         return render(request, 'project/list.html')
 
 
+# 工程申请 GET
 class ApplyView(View):
     def get(self, request):
         return render(request, 'project/apply.html')
 
 
+# 申请详情 GET
+class ApplyDetailView(View):
+    def get(self, request):
+        return render(request, 'project/apply.html')
+
+
+# 工程审核 GET
+class VerifyView(View):
+    def get(self, request):
+        return render(request, 'project/verify.html')
+
+
+# 同意申请 Ajax
+class AgreeProView(View):
+    def get(self, request):
+        return render(request, 'project/verify.html')
+
+
+# 拒绝申请 Ajax
+class RefuseProView(View):
+    def get(self, request):
+        return render(request, 'project/verify.html')
+
+
+# 工程考勤
 class AttenView(View):
     def get(self, request):
+        # 根据 用户 查看考勤记录
+        return render(request, 'project/local.html')
+
+
+# 变更信息
+class ChangeView(View):
+    def get(self, request):
+        # 根据 工程 获取工程信息变更的全部记录
         return render(request, 'project/local.html')
