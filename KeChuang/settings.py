@@ -30,6 +30,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'xadmin',
     'crispy_forms',
+    # 验证码
+    'captcha',
     # 用户
     'users',
     # 工程
@@ -38,10 +40,8 @@ INSTALLED_APPS = [
     'equipments',
     # 公告
     'announcements',
-    # 其他操作
+    # 关联操作
     'operation',
-    # 验证码
-    'captcha',
 ]
 
 # 用户模型
@@ -115,7 +115,7 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 # 国际化相关配置
-LANGUAGE_CODE = 'zh-hans'
+LANGUAGE_CODE = 'zh-Hans'
 
 TIME_ZONE = 'Asia/Shanghai'
 
@@ -130,7 +130,7 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'static'),
 )
-# STATIC_ROOT = os.path.join(BASE_DIR, "static/")
+# STATIC_ROOT = os.path.join(BASE_DIR, "static")
 
 # 邮箱配置，在发送验证码时会用到
 EMAIL_HOST = 'smtp.126.com'

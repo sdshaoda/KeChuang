@@ -47,8 +47,8 @@ class UseEquView(View):
         equ_apply = EquipmentApply()
         equ_apply.equipment = Equipment.objects.get(id=equ_id)
         equ_apply.person = UserProfile.objects.get(id=person_id)
-        equ_apply.type = '0'
-        equ_apply.status = '0'
+        equ_apply.type = '0'    # 申请类型为 领用
+        equ_apply.status = '0'  # 申请状态为 未审核
         equ_apply.use_date = use_date
         equ_apply.revert_date = revert_date
         equ_apply.remark = remark
@@ -86,6 +86,11 @@ class RevertEquView(View):
     def post(self, request):
 
         # 获取表单信息
+
+        # 初始化 设备申请 信息
+        # 申请类型为 归还
+        # 申请状态为 未审核
+
         # 根据 equ_id 获取 设备信息
 
         return HttpResponse('{"status":"success","msg":"归还申请提交成功"}', content_type='application/json')
@@ -146,8 +151,7 @@ class AddView(View):
         equipment.equi_money = equi_money
         equipment.buy_date = buy_date
         equipment.remark = remark
-        # 设置为 未领用
-        equipment.use_status = '0'
+        equipment.use_status = '0'  # 设置为 未领用
         equipment.save()
 
         # 初始化 设备负责人
@@ -155,6 +159,11 @@ class AddView(View):
         equipment_person.equipment = equipment
         equipment_person.person = UserProfile.objects.get(id=equi_person_id)
         equipment_person.save()
+
+        # 初始化 设备保管人
+        equipment_staff = EquipmentStaff()
+        equipment_staff.equipment = equipment
+        equipment_staff.save()
 
         # 获取所有设备信息，根据添加时间排序
         equs = Equipment.objects.all().order_by('-add_time')
@@ -289,6 +298,8 @@ class AgreeEquView(View):
         equ.use_date = equ_apply.use_date
         equ.revert_date = equ_apply.revert_date
         equ.save()
+
+        # 修改 设备保管人
 
         return HttpResponse('{"status":"success","msg":"同意设备领用申请操作成功"}', content_type='application/json')
 

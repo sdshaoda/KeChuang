@@ -23,7 +23,7 @@
                     <td>{{ equ.equipment.equi_name }}</td>
                     <td>{{ equ.use_date }}</td>
                     <td>{{ equ.revert_date }}</td>
-                    <td><a href="">归还</a></td>
+                    <td><a href="{% url 'equ:equ_revert' %}">归还</a></td>
                 </tr>
             {% endfor %}
         </table>

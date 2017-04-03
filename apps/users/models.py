@@ -13,6 +13,10 @@ class Department(models.Model):
     remark = models.CharField(max_length=200, verbose_name=u'备注', null=True, blank=True)
     add_time = models.DateTimeField(default=datetime.now, verbose_name=u'添加时间')
 
+    # 部门下的所有职工
+    def get_staff(self):
+        return self.userprofile_set.filter(id=self.id)
+
     class Meta:
         verbose_name = u'部门信息'
         verbose_name_plural = verbose_name
@@ -30,11 +34,11 @@ class UserProfile(AbstractUser):
 
     job = models.CharField(max_length=20, verbose_name=u'职务')
     induction_time = models.DateField(max_length=20, default=date.today, verbose_name=u'入职时间')
-    permission = models.CharField(default='0', max_length=2, choices=(
+    permission = models.CharField(default='3', max_length=2, choices=(
         ('0', u'检测员'),
         ('1', u'部门负责'),
         ('2', u'公司负责'),
-        ('3', u'管理员'),
+        ('3', u'系统管理员'),
     ), verbose_name=u'系统权限')
     mobile = models.CharField(max_length=11, verbose_name=u'手机号码')
     email = models.EmailField(max_length=20, verbose_name=u'邮箱地址', null=True, blank=True)
@@ -51,6 +55,14 @@ class UserProfile(AbstractUser):
                                   blank=True)
 
     add_time = models.DateTimeField(default=datetime.now, verbose_name=u'添加时间')
+
+    # 设备负责人
+    def get_equipment_person(self):
+        return self.equipmentperson_set.filter(id=self.id)
+
+    # 设备保管人
+    def get_equipment_staff(self):
+        return self.equipmentstaff_set.filter(id=self.id)
 
     class Meta:
         verbose_name = u'职工信息'

@@ -15,6 +15,10 @@ class ProjectType(models.Model):
 
     add_time = models.DateTimeField(default=datetime.now, verbose_name=u'添加时间')
 
+    # 类型下所有工程
+    def get_projects(self):
+        return self.project_set.filter(id=self.id)
+
     class Meta:
         verbose_name = u'工程类型信息'
         verbose_name_plural = verbose_name
@@ -30,6 +34,10 @@ class ProjectStage(models.Model):
 
     add_time = models.DateTimeField(default=datetime.now, verbose_name=u'添加时间')
 
+    # 阶段下所有工程
+    def get_projects(self):
+        return self.project_set.filter(id=self.id)
+
     class Meta:
         verbose_name = u'项目阶段信息'
         verbose_name_plural = verbose_name
@@ -42,7 +50,6 @@ class ProjectStage(models.Model):
 class Project(models.Model):
     pro_type = models.ForeignKey(ProjectType, verbose_name=u'工程类型')
     stage = models.ForeignKey(ProjectStage, verbose_name=u'项目阶段', null=True, blank=True)
-    pro_person = models.ForeignKey(UserProfile, verbose_name=u'项目负责人')
 
     pro_name = models.CharField(max_length=50, verbose_name=u'工程名称')
     wt_person = models.CharField(max_length=20, verbose_name=u'法人委托', null=True, blank=True)
@@ -61,6 +68,22 @@ class Project(models.Model):
     remark = models.CharField(max_length=200, verbose_name=u'备注', null=True, blank=True)
 
     add_time = models.DateTimeField(default=datetime.now, verbose_name=u'添加时间')
+
+    # 工程负责人
+    def get_person(self):
+        return self.projectperson_set.get(id=self.id)
+
+    # 工程成员
+    def get_members(self):
+        return self.projectmember_set.filter(id=self.id)
+
+    # 工程设备
+    def get_equipments(self):
+        return self.projectequipment_set.filter(id=self.id)
+
+    # 工程变更记录
+    def get_change(self):
+        return self.projectchange_set.filter(id=self.id).order_by('-add-time')
 
     class Meta:
         verbose_name = u'工程信息'

@@ -51,12 +51,40 @@
                 <tr>
                     <td>{{ equ.id }}</td>
                     <td>{{ equ.equi_name }}</td>
-                    <td>{% if equ.get_person.person %}{{ equ.get_person.person.name }}{% else %}未设置{% endif %}</td>
+                    <td>
+                        {% if equ.get_person.person %}
+                            {{ equ.get_person.person.name }}
+                        {% else %}
+                            未设置
+                        {% endif %}
+                    </td>
                     <td>{{ equ.get_equi_status_display }}</td>
-                    <td>{% if equ.get_staff.person %}{{ equ.get_staff.person.name }}{% else %}仓库{% endif %}</td>
-                    <td>{{ equ.use_date }}</td>
-                    <td>{{ equ.revert_date }}</td>
-                    <td><a href="{% url 'equ:use' equ.id %}">申请领用</a></td>
+                    <td>
+                        {% if equ.get_staff.person %}
+                            {{ equ.get_staff.person.name }}
+                        {% else %}
+                            仓库
+                        {% endif %}</td>
+                    <td>
+                        {% if equ.use_date %}
+                            {{ equ.use_date }}
+                        {% else %}
+                            无
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if equ.revert_date %}
+                            {{ equ.revert_date }}
+                        {% else %}
+                            无
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if equ.get_person.person %}
+                            <a href="{% url 'equ:use' equ.id %}">申请领用</a>
+                        {% else %}
+                            未设置负责人
+                        {% endif %}</td>
                 </tr>
             {% endfor %}
         </table>

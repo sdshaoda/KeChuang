@@ -16,6 +16,10 @@ class EquipmentType(models.Model):
 
     add_time = models.DateTimeField(default=datetime.now, verbose_name=u'添加时间')
 
+    # 类型下的所有设备
+    def get_equipments(self):
+        return self.equipment_set.filter(id=self.id)
+
     class Meta:
         verbose_name = u'设备类型信息'
         verbose_name_plural = verbose_name
