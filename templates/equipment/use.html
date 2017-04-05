@@ -9,8 +9,12 @@
 
     <form class="form-horizontal" method="post" action="{% url 'equ:equ_use' %}">
 
+        <!-- 设备信息 -->
         <input type="hidden" id="equi_id" name="equi_id" value="{{ equ.id }}">
+        <!-- 当前用户 -->
         <input type="hidden" id="person_id" name="person_id" value="{{ request.user.id }}">
+        <!-- 设备负责人 -->
+        <input type="hidden" id="equipment_person_id" name="equipment_person_id" value="{{ equ.get_person.person.id }}">
 
         <div class="form-group">
             <label for="equi_name" class="col-md-2 col-sm-2 control-label required">设备名称：</label>
@@ -45,14 +49,14 @@
         <div class="form-group">
             <label for="use_date" class="col-md-2 col-sm-2 control-label required">领用时间：</label>
             <div class="col-md-5 col-sm-10">
-                <input type="date" class="form-control" id="use_date" name="use_date" required>
+                <input type="date" class="form-control" id="use_date" name="use_date" placeholder="格式：YYYY-mm-dd" required>
             </div>
         </div>
 
         <div class="form-group">
             <label for="revert_date" class="col-md-2 col-sm-2 control-label required">归还时间：</label>
             <div class="col-md-5 col-sm-10">
-                <input type="date" class="form-control" id="revert_date" name="revert_date" required>
+                <input type="date" class="form-control" id="revert_date" name="revert_date" placeholder="格式：YYYY-mm-dd" required>
             </div>
         </div>
 

@@ -34,73 +34,74 @@
 
 
     <div class="table-responsive">
-    <table class="table table-hover">
-        <thead>
-        <tr>
-            <th>#</th>
-            <th>姓名</th>
-            <th>部门</th>
-            <th>职务</th>
-            <th>负责项目</th>
-            <th>出勤记录</th>
-            <th colspan="2">学历（证书）</th>
-            <th colspan="2">职称（证书）</th>
-            <th colspan="2">资格（证书）</th>
-        </tr>
-        </thead>
-        <tbody>
-        {% for staff in staffs %}
+        <table class="table table-hover">
+            <thead>
             <tr>
-                <td>{{ staff.id }}</td>
-                <td>{{ staff.name }}</td>
-                <td>{{ staff.department.name }}</td>
-                <td>{{ staff.job }}</td>
-                <td>待完善</td>
-                <td>待完善</td>
-                <td>
-                    {% if staff.xueli %}
-                        {{ staff.xueli }}
-                    {% else %}
-                        未填写
-                    {% endif %}
-                </td>
-                <td>
-                    {% if staff.xuelizs %}
-                        <a href="{{ MEDIA_URL }}{{ staff.xuelizs }}">下载</a>
-                    {% else %}
-                        未上传
-                    {% endif %}
-                </td>
-                <td>
-                    {% if staff.zhicheng %}
-                        {{ staff.zhicheng }}
-                    {% else %}
-                        未填写
-                    {% endif %}
-                </td>
-                <td>
-                    {% if staff.zhichengzs %}
-                        <a href="{{ MEDIA_URL }}{{ staff.zhichengzs }}">下载</a>
-                    {% else %}
-                        未上传
-                    {% endif %}
-                </td>
-                <td>
-                    {% if staff.zige %}
-                        {{ staff.zige }}
-                    {% else %}
-                        未填写
-                    {% endif %}
-                </td>
-                <td>
-                    {% if staff.zigezs %}
-                        <a href="{{ MEDIA_URL }}{{ staff.zigezs }}">下载</a>
-                    {% else %}
-                        未上传
-                    {% endif %}
-                </td>
+                <th>#</th>
+                <th>姓名</th>
+                <th>部门</th>
+                <th>职务</th>
+                <th>负责项目</th>
+                <th>出勤记录</th>
+                <th colspan="2">学历（证书）</th>
+                <th colspan="2">职称（证书）</th>
+                <th colspan="2">资格（证书）</th>
             </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+            {% for staff in staffs %}
+                <tr>
+                    <td>{{ staff.id }}</td>
+                    <td>{{ staff.name }}</td>
+                    <td>{{ staff.department.name }}</td>
+                    <td>{{ staff.job }}</td>
+                    <td>待完善</td>
+                    <td>待完善</td>
+                    <td>
+                        {% if staff.xueli %}
+                            {{ staff.xueli }}
+                        {% else %}
+                            未填写
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if staff.xuelizs %}
+                            <a href="{{ MEDIA_URL }}{{ staff.xuelizs }}">下载</a>
+                        {% else %}
+                            未上传
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if staff.zhicheng %}
+                            {{ staff.zhicheng }}
+                        {% else %}
+                            未填写
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if staff.zhichengzs %}
+                            <a href="{{ MEDIA_URL }}{{ staff.zhichengzs }}">下载</a>
+                        {% else %}
+                            未上传
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if staff.zige %}
+                            {{ staff.zige }}
+                        {% else %}
+                            未填写
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if staff.zigezs %}
+                            <a href="{{ MEDIA_URL }}{{ staff.zigezs }}">下载</a>
+                        {% else %}
+                            未上传
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
 {% endblock %}

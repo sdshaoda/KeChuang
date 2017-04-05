@@ -17,18 +17,53 @@
                 <th>应还时间</th>
                 <th>操作</th>
             </tr>
-            {% for equ in equ_applys %}
+            {% for equ in equs %}
                 <tr>
                     <td>{{ equ.id }}</td>
-                    <td>{{ equ.equipment.equi_name }}</td>
+                    <td>{{ equ.equi_name }}</td>
                     <td>{{ equ.use_date }}</td>
                     <td>{{ equ.revert_date }}</td>
-                    <td><a href="{% url 'equ:equ_revert' %}">归还</a></td>
+                    <td>
+                        <form action="">
+                            <input type="hidden" name="equi_id" value="{{ equ.id }}">
+                            <input type="hidden" name="person_id" value="{{ request.user.id }}">
+                            <input type="hidden" name="equipment_person_id" value="{{ equ.get_person.person.id }}">
+                            <input type="hidden" name="use_date" value="{{ equ.use_date|date:"Y-m-d" }}">
+                            <input type="hidden" name="revert_date" value="{{ equ.revert_date|date:"Y-m-d" }}">
+                        </form>
+                        <a class="equ_revert" href="javascript:void(0);">归还</a>
+                    </td>
                 </tr>
             {% endfor %}
         </table>
     </div>
 {% endblock %}
 
-
-
+{% block js %}
+    <script>
+        $('.equ_revert').click(function () {
+            var data = $(this).prev().serializeArray()
+            console.log(data)
+            $.ajax({
+                cache: false,
+                url: '{% url "equ:equ_revert" %}',
+                type: 'POST',
+                data: data,
+                async: true,
+                dataType: 'json',
+                beforeSend: function (xhr, settings) {
+                    xhr.setRequestHeader("X-CSRFToken", "{{ csrf_token }}");
+                },
+                success: function (data) {
+                    $('#msg').text(data.msg)
+                    setTimeout(function () {
+                        $('#msg').text('')
+                    }, 2000)
+                },
+                error: function () {
+                    $('#msg').text('出错了')
+                }
+            })
+        })
+    </script>
+{% endblock %}

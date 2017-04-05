@@ -105,7 +105,7 @@ class EquipmentPerson(models.Model):
 # 设备保管人
 class EquipmentStaff(models.Model):
     equipment = models.ForeignKey(Equipment, verbose_name=u'设备名称')
-    person = models.ForeignKey(UserProfile, verbose_name=u'保管人')
+    person = models.ForeignKey(UserProfile, verbose_name=u'保管人', null=True, blank=True)
 
     remark = models.CharField(max_length=200, verbose_name=u'备注', null=True, blank=True)
 
@@ -125,14 +125,15 @@ class EquipmentApply(models.Model):
     equipment = models.ForeignKey(Equipment, verbose_name=u'设备名称')
     person = models.ForeignKey(UserProfile, verbose_name=u'申请人')
 
+    equipment_person_id = models.CharField(max_length=10, verbose_name=u'设备负责人id')
     type = models.CharField(default='0', max_length=2, choices=(
         ('0', u'领用'), ('1', u'归还')
     ), verbose_name=u'申请类型')
     status = models.CharField(default='0', max_length=2, choices=(
         ('0', u'审核中'), ('1', u'审核通过'), ('2', u'审核未通过')
     ), verbose_name=u'审核状态')
-    use_date = models.DateField(default=date.today, verbose_name=u'领用时间')
-    revert_date = models.DateField(default=date.today, verbose_name=u'归还时间')
+    use_date = models.DateField(default=date.today, verbose_name=u'领用时间', null=True, blank=True)
+    revert_date = models.DateField(default=date.today, verbose_name=u'归还时间', null=True, blank=True)
     remark = models.CharField(max_length=200, verbose_name=u'备注', null=True, blank=True)
 
     add_time = models.DateTimeField(default=datetime.now, verbose_name=u'申请时间')

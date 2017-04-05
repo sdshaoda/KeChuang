@@ -28,12 +28,15 @@ class DepartmentAdmin(object):
 # 用户信息Admin
 class UserProfileAdmin(object):
     list_display = ['department', 'name', 'username', 'job', 'induction_time', 'permission', 'mobile',
-                    'email', 'office_phone', 'home_phone', 'home_address', 'image', 'zigezs', 'xuelizs', 'zhichengzs',
+                    'email', 'office_phone', 'home_phone', 'home_address', 'xueli', 'zhicheng', 'zige', 'image',
+                    'zigezs', 'xuelizs', 'zhichengzs',
                     'add_time']
     search_fields = ['department', 'name', 'username', 'job', 'induction_time', 'permission', 'mobile',
-                     'email', 'office_phone', 'home_phone', 'home_address', 'image', 'zigezs', 'xuelizs', 'zhichengzs']
+                     'email', 'office_phone', 'home_phone', 'home_address', 'xueli', 'zhicheng', 'zige', 'image',
+                     'zigezs', 'xuelizs', 'zhichengzs']
     list_filter = ['department', 'name', 'username', 'job', 'induction_time', 'permission', 'mobile',
-                   'email', 'office_phone', 'home_phone', 'home_address', 'image', 'zigezs', 'xuelizs', 'zhichengzs',
+                   'email', 'office_phone', 'home_phone', 'home_address', 'xueli', 'zhicheng', 'zige', 'image',
+                   'zigezs', 'xuelizs', 'zhichengzs',
                    'add_time']
 
 

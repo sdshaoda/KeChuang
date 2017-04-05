@@ -48,7 +48,7 @@ class ProjectStage(models.Model):
 
 # 工程信息
 class Project(models.Model):
-    pro_type = models.ForeignKey(ProjectType, verbose_name=u'工程类型')
+    pro_type = models.ForeignKey(ProjectType, verbose_name=u'工程类型', null=True, blank=True)
     stage = models.ForeignKey(ProjectStage, verbose_name=u'项目阶段', null=True, blank=True)
 
     pro_name = models.CharField(max_length=50, verbose_name=u'工程名称')

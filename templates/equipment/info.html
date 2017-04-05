@@ -52,9 +52,27 @@
                     <td>{{ equ.id }}</td>
                     <td>{{ equ.equi_name }}</td>
                     <td>{{ equ.equi_num }}</td>
-                    <td>{% if equ.get_person.person %}{{ equ.get_person.person.name }}{% else %}未设置{% endif %}</td>
-                    <td>{% if equ.get_staff.person %}{{ equ.get_staff.person.name }}{% else %}仓库{% endif %}</td>
-                    <td>{% if equ.get_staff.person %}{{ equ.get_staff.person.department.name }}{% else %}仓库{% endif %}</td>
+                    <td>
+                        {% if equ.get_person.person %}
+                            {{ equ.get_person.person.name }}
+                        {% else %}
+                            未设置
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if equ.get_staff.person %}
+                            {{ equ.get_staff.person.name }}
+                        {% else %}
+                            仓库
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if equ.get_staff.person %}
+                            {{ equ.get_staff.person.department.name }}
+                        {% else %}
+                            仓库
+                        {% endif %}
+                    </td>
                     <td>{{ equ.get_equi_status_display }}</td>
                     <td>{{ equ.effect_date }}</td>
                     <td>{{ equ.equi_type }}</td>

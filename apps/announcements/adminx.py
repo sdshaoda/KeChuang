@@ -13,9 +13,9 @@ class AnnouncementAdmin(object):
 
 # 公文信息Admin
 class DocumentAdmin(object):
-    list_display = ['name', 'document', 'remark', 'add_time']
-    search_fields = ['name', 'document', 'remark']
-    list_filter = ['name', 'document', 'remark', 'add_time']
+    list_display = ['person', 'department', 'name', 'document', 'remark', 'add_time']
+    search_fields = ['person', 'department', 'name', 'document', 'remark']
+    list_filter = ['person', 'department', 'name', 'document', 'remark', 'add_time']
 
 
 xadmin.site.register(Announcement, AnnouncementAdmin)

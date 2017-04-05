@@ -13,22 +13,22 @@ class EquipmentTypeAdmin(object):
 
 # 设备信息Admin
 class EquipmentAdmin(object):
-    list_display = ['equi_type', 'equi_person', 'equi_name', 'equi_num', 'equi_status', 'effect_date', 'equi_money',
-                    'buy_date', 'person', 'department', 'use_date', 'revert_date', 'remark', 'add_time']
-    search_fields = ['equi_type', 'equi_person', 'equi_name', 'equi_num', 'equi_status', 'effect_date', 'equi_money',
-                     'buy_date', 'person', 'department', 'use_date', 'revert_date', 'remark']
-    list_filter = ['equi_type', 'equi_person', 'equi_name', 'equi_num', 'equi_status', 'effect_date', 'equi_money',
-                   'buy_date', 'person', 'department', 'use_date', 'revert_date', 'remark', 'add_time']
+    list_display = ['equi_type', 'equi_name', 'equi_num', 'equi_status', 'effect_date', 'equi_money',
+                    'buy_date', 'use_status', 'use_date', 'revert_date', 'remark', 'add_time']
+    search_fields = ['equi_type', 'equi_name', 'equi_num', 'equi_status', 'effect_date', 'equi_money',
+                     'buy_date', 'use_status', 'use_date', 'revert_date', 'remark']
+    list_filter = ['equi_type', 'equi_name', 'equi_num', 'equi_status', 'effect_date', 'equi_money',
+                   'buy_date', 'use_status', 'use_date', 'revert_date', 'remark', 'add_time']
 
 
 # 设备变更记录Admin
 # class EquipmentChangeAdmin(object):
-    # list_display = ['equipment', 'equi_type', 'equi_person', 'equi_num', 'equi_status', 'effect_date', 'equi_money',
-    #                 'buy_date', 'person', 'department', 'use_date', 'revert_date', 'remark', 'add_time']
-    # search_fields = ['equipment', 'equi_type', 'equi_person', 'equi_num', 'equi_status', 'effect_date', 'equi_money',
-    #                  'buy_date', 'person', 'department', 'use_date', 'revert_date', 'remark']
-    # list_filter = ['equipment', 'equi_type', 'equi_person', 'equi_num', 'equi_status', 'effect_date', 'equi_money',
-    #                'buy_date', 'person', 'department', 'use_date', 'revert_date', 'remark', 'add_time']
+# list_display = ['equipment', 'equi_type', 'equi_person', 'equi_num', 'equi_status', 'effect_date', 'equi_money',
+#                 'buy_date', 'person', 'department', 'use_date', 'revert_date', 'remark', 'add_time']
+# search_fields = ['equipment', 'equi_type', 'equi_person', 'equi_num', 'equi_status', 'effect_date', 'equi_money',
+#                  'buy_date', 'person', 'department', 'use_date', 'revert_date', 'remark']
+# list_filter = ['equipment', 'equi_type', 'equi_person', 'equi_num', 'equi_status', 'effect_date', 'equi_money',
+#                'buy_date', 'person', 'department', 'use_date', 'revert_date', 'remark', 'add_time']
 
 
 xadmin.site.register(EquipmentType, EquipmentTypeAdmin)

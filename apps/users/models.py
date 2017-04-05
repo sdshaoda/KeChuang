@@ -40,7 +40,7 @@ class UserProfile(AbstractUser):
         ('2', u'公司负责'),
         ('3', u'系统管理员'),
     ), verbose_name=u'系统权限')
-    mobile = models.CharField(max_length=11, verbose_name=u'手机号码')
+    mobile = models.CharField(max_length=11, verbose_name=u'手机号码', null=True, blank=True)
     email = models.EmailField(max_length=20, verbose_name=u'邮箱地址', null=True, blank=True)
     office_phone = models.CharField(max_length=20, verbose_name=u'办公电话', null=True, blank=True)
     home_phone = models.CharField(max_length=20, verbose_name=u'家庭电话', null=True, blank=True)

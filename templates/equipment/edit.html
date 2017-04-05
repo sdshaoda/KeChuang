@@ -67,7 +67,7 @@
             <label for="effect_date" class="col-md-2 col-sm-2 control-label required">计量有效期：</label>
             <div class="col-md-5 col-sm-10">
                 <input type="date" class="form-control" id="effect_date" name="effect_date"
-                       value="{{ equ.effect_date|date:"Y-m-d" }}" required>
+                       value="{{ equ.effect_date|date:"Y-m-d" }}" placeholder="格式：YYYY-mm-dd" required>
             </div>
         </div>
 
@@ -83,7 +83,7 @@
             <label for="buy_date" class="col-md-2 col-sm-2 control-label required">购买日期：</label>
             <div class="col-md-5 col-sm-10">
                 <input type="date" class="form-control" id="buy_date" name="buy_date"
-                       value="{{ equ.buy_date|date:"Y-m-d" }}" required>
+                       value="{{ equ.buy_date|date:"Y-m-d" }}" placeholder="格式：YYYY-mm-dd" required>
             </div>
         </div>
 
@@ -111,7 +111,6 @@
 {% block js %}
     <script>
         $('#edit_equ').click(function () {
-            console.log($('#edit_equ_form').serializeArray())
             $.ajax({
                 cache: false,
                 url: '{% url "equ:equ_edit" %}',

@@ -11,7 +11,7 @@ from users.models import UserProfile
 
 # 设备类型
 class EquipmentType(models.Model):
-    name = models.CharField(max_length=20, verbose_name=u'设备类型名称', default='')
+    name = models.CharField(max_length=20, verbose_name=u'设备类型名称')
     remark = models.CharField(max_length=200, verbose_name=u'备注', null=True, blank=True)
 
     add_time = models.DateTimeField(default=datetime.now, verbose_name=u'添加时间')
@@ -30,7 +30,7 @@ class EquipmentType(models.Model):
 
 # 设备基本信息
 class Equipment(models.Model):
-    equi_type = models.ForeignKey(EquipmentType, verbose_name=u'设备类型')
+    equi_type = models.ForeignKey(EquipmentType, verbose_name=u'设备类型', null=True, blank=True)
 
     # 设备基本信息
     equi_name = models.CharField(max_length=20, verbose_name=u'设备名称')
