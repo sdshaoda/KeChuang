@@ -13,11 +13,11 @@ class EquipmentTypeAdmin(object):
 
 # 设备信息Admin
 class EquipmentAdmin(object):
-    list_display = ['equi_type', 'equi_name', 'equi_num', 'equi_status', 'effect_date', 'equi_money',
+    list_display = ['equi_type', 'equi_name', 'file_num', 'equi_num', 'equi_status', 'effect_date', 'equi_money',
                     'buy_date', 'use_status', 'use_date', 'revert_date', 'remark', 'add_time']
-    search_fields = ['equi_type', 'equi_name', 'equi_num', 'equi_status', 'effect_date', 'equi_money',
+    search_fields = ['equi_type', 'equi_name', 'file_num', 'equi_num', 'equi_status', 'effect_date', 'equi_money',
                      'buy_date', 'use_status', 'use_date', 'revert_date', 'remark']
-    list_filter = ['equi_type', 'equi_name', 'equi_num', 'equi_status', 'effect_date', 'equi_money',
+    list_filter = ['equi_type', 'equi_name', 'file_num', 'equi_num', 'equi_status', 'effect_date', 'equi_money',
                    'buy_date', 'use_status', 'use_date', 'revert_date', 'remark', 'add_time']
 
 

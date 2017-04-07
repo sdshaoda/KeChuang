@@ -34,6 +34,7 @@ class Equipment(models.Model):
 
     # 设备基本信息
     equi_name = models.CharField(max_length=20, verbose_name=u'设备名称')
+    file_num = models.CharField(max_length=20, verbose_name=u'档案编号')
     equi_num = models.CharField(max_length=20, verbose_name=u'设备型号')
     equi_status = models.CharField(default='0', max_length=10, choices=(
         ('0', u'正常'),

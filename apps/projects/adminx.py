@@ -20,13 +20,13 @@ class ProjectStageAdmin(object):
 
 # 工程信息Admin
 class ProjectAdmin(object):
-    list_display = ['pro_type', 'stage', 'pro_name', 'wt_person', 'ht_person', 'ht_name', 'ht_num',
+    list_display = ['pro_type', 'pro_stage', 'pro_name', 'wt_person', 'ht_person', 'ht_name', 'ht_num',
                     'ht_money', 'js_money', 'wt_dw', 'mobile', 'pro_address', 'sign_date', 'start_date', 'finish_date',
                     'remark', 'add_time']
-    search_fields = ['pro_type', 'stage', 'pro_name', 'wt_person', 'ht_person', 'ht_name', 'ht_num',
+    search_fields = ['pro_type', 'pro_stage', 'pro_name', 'wt_person', 'ht_person', 'ht_name', 'ht_num',
                      'ht_money', 'js_money', 'wt_dw', 'mobile', 'pro_address', 'sign_date', 'start_date', 'finish_date',
                      'remark']
-    list_filter = ['pro_type', 'stage', 'pro_name', 'wt_person', 'ht_person', 'ht_name', 'ht_num',
+    list_filter = ['pro_type', 'pro_stage', 'pro_name', 'wt_person', 'ht_person', 'ht_name', 'ht_num',
                    'ht_money', 'js_money', 'wt_dw', 'mobile', 'pro_address', 'sign_date', 'start_date', 'finish_date',
                    'remark', 'add_time']
 

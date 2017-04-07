@@ -198,7 +198,7 @@
                 cache: false,
                 url: '{% url "user:edit_staff" %}',
                 type: 'POST',
-                {#                data: $('#edit_staff_form').serializeArray(),#}
+                {#data: $('#edit_staff_form').serializeArray(),#}
                 data: new FormData($('#edit_staff_form')[0]),
                 processData: false,
                 contentType: false,

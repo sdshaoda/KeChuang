@@ -2,7 +2,8 @@
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.views.generic import View
-from .models import Project
+from .models import Project, ProjectType, ProjectStage, ProjectChange
+from operation.models import ProjectChange, ProjectPerson, ProjectMember, ProjectApply, ProjectEquipment
 from .forms import AddProForm
 from users.models import UserProfile
 
@@ -11,68 +12,94 @@ from users.models import UserProfile
 class ListView(View):
     def get(self, request):
 
-        all_pro = Project.objects.all().order_by('-add_time')
+        pros = Project.objects.all().order_by('-add_time')
 
         return render(request, 'project/list.html', {
-            'all_pro': all_pro
+            'pros': pros
         })
 
 
 # 添加工程 GET POST
 class AddProView(View):
     def get(self, request):
+
+        # 筛除超级用户
         all_staffs = UserProfile.objects.all().order_by('id')
         staffs = []
         for staff in all_staffs:
-            if staff.name:
+            if not staff.is_superuser:
                 staffs.append(staff)
+
+        # 工程类型
+        pro_types = ProjectType.objects.all()
+
+        # 项目阶段
+        pro_stages = ProjectStage.objects.all()
+
         return render(request, 'project/add.html', {
-            'staffs': staffs
+            'pro_persons': staffs,
+            'pro_types': pro_types,
+            'pro_stages': pro_stages
         })
 
     def post(self, request):
-        add_pro_form = AddProForm(request.POST)
-        add_pro_form.is_valid()
-        if add_pro_form.is_valid():
-            pro_name = request.POST.get('pro_name', '')
-            # ht_num = request.POST.get('ht_num', '')
-            # ht_name = request.POST.get('ht_name', '')
-            # ht_money = request.POST.get('ht_money', '')
-            # wt_dw = request.POST.get('wt_dw', '')
-            # wt_person = request.POST.get('wt_person', '')
-            # mobile = request.POST.get('mobile', '')
-            # pro_address = request.POST.get('pro_address', '')
-            # represent_person = request.POST.get('represent_person', '')
-            # sign_date = request.POST.get('sign_date', '')
-            # start_date = request.POST.get('start_date', '')
-            # finish_date = request.POST.get('finish_date', '')
-            # pro_person_username = request.POST.get('pro_person', '')
-            # pro_person = UserProfile.objects.get(username=pro_person_username)
-            # pro_type = request.POST.get('pro_type', '')
-            # equipment = request.POST.get('equipment', '')
-            # ht_scan = request.FILES.get('ht_scan', '')
-            #
-            pro_info = Project()
-            pro_info.pro_name = pro_name
-            # pro_info.ht_num = ht_num
-            # pro_info.ht_name = ht_name
-            # pro_info.ht_money = ht_money
-            # pro_info.wt_dw = wt_dw
-            # pro_info.wt_person = wt_person
-            # pro_info.mobile = mobile
-            # pro_info.pro_address = pro_address
-            # pro_info.represent_person = represent_person
-            # pro_info.sign_date = sign_date
-            # pro_info.start_date = start_date
-            # pro_info.finish_date = finish_date
-            # pro_info.pro_person = pro_person
-            # pro_info.pro_type = pro_type
-            # pro_info.equipment = equipment
-            # pro_info.ht_scan = ht_scan
-            pro_info.save()
-            return render(request, 'project/list.html')
-        else:
-            return render(request, 'project/add.html')
+        # add_pro_form = AddProForm(request.POST)
+        # add_pro_form.is_valid()
+        # if add_pro_form.is_valid():
+
+        pro_name = request.POST.get('pro_name', '')
+        pro_person_id = request.POST.get('pro_person_id', '')
+        pro_type_id = request.POST.get('pro_type_id', '')
+        pro_stage_id = request.POST.get('pro_stage_id', '')
+        wt_person = request.POST.get('wt_person', '')
+        ht_person = request.POST.get('ht_person', '')
+        ht_name = request.POST.get('ht_name', '')
+        ht_num = request.POST.get('ht_num', '')
+        ht_money = request.POST.get('ht_money', '')
+        js_money = request.POST.get('js_money', '')
+        wt_dw = request.POST.get('wt_dw', '')
+        mobile = request.POST.get('mobile', '')
+        pro_address = request.POST.get('pro_address', '')
+        sign_date = request.POST.get('sign_date', '')
+        start_date = request.POST.get('start_date', '')
+        finish_date = request.POST.get('finish_date', '')
+        ht_scan = request.FILES.get('ht_scan', '')
+        remark = request.POST.get('remark', '')
+
+        # 初始化 工程 信息
+        project = Project()
+        project.pro_name = pro_name
+        project.pro_type_id = pro_type_id
+        project.pro_stage_id = pro_stage_id
+        project.wt_person = wt_person
+        project.ht_person = ht_person
+        project.ht_name = ht_name
+        project.ht_num = ht_num
+        project.ht_money = ht_money
+        project.js_money = js_money
+        project.wt_dw = wt_dw
+        project.mobile = mobile
+        project.pro_address = pro_address
+        project.sign_date = sign_date
+        project.start_date = start_date
+        project.finish_date = finish_date
+        project.ht_scan = ht_scan
+        project.remark = remark
+        project.save()
+
+        # 初始化 工程负责人 信息
+        project_person = ProjectPerson()
+        project_person.project = project
+        project_person.person_id = pro_person_id
+        project_person.save()
+
+        pros = Project.objects.all().order_by('-add_time')
+
+        return render(request, 'project/list.html', {
+            'pros': pros
+        })
+        # else:
+        #     return render(request, 'project/add.html')
 
 
 # 工程详情 GET

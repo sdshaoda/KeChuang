@@ -3,11 +3,11 @@
 {% block title %}浏览工程{% endblock %}
 
 {% block style %}
-{#    <style>#}
-{#        table {#}
-{#            margin-top: 40px;#}
-{#        }#}
-{#    </style>#}
+    {#    <style>#}
+    {#        table {#}
+    {#            margin-top: 40px;#}
+    {#        }#}
+    {#    </style>#}
 {% endblock %}
 
 {% block content %}
@@ -46,25 +46,70 @@
                 <th>#</th>
                 <th>工程名称</th>
                 <th>负责人</th>
-                <th>签订日期</th>
-                <th>金额</th>
                 <th>工程类型</th>
+                <th>项目阶段</th>
+                <th>签订日期</th>
+                <th>合同金额</th>
                 <th>委托单位</th>
                 <th>详细信息</th>
                 <th>工程合同</th>
                 <th colspan="2">操作</th>
             </tr>
-            {% for pro in all_pro %}
+            {% for pro in pros %}
                 <tr>
                     <td>{{ pro.id }}</td>
                     <td>{{ pro.pro_name }}</td>
-                    <td>{{ pro.pro_person }}</td>
-                    <td>{{ pro.sign_date }}</td>
-                    <td>{{ pro.ht_money }}</td>
-                    <td>{{ pro.get_pro_type_display }}</td>
-                    <td>{{ pro.wt_dw }}</td>
+                    <td>
+                        {% if pro.get_person.person.name %}
+                            {{ pro.get_person.person.name }}
+                        {% else %}
+                            未填写
+                        {% endif %}
+                        {{ pro.get_person.person.name }}
+                    </td>
+                    <td>
+                        {% if pro.pro_type.name %}
+                            {{ pro.pro_type.name }}
+                        {% else %}
+                            未填写
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if pro.pro_stage.name %}
+                            {{ pro.pro_stage.name }}
+                        {% else %}
+                            未填写
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if pro.sign_date %}
+                            {{ pro.sign_date }}
+                        {% else %}
+                            未填写
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if pro.ht_money %}
+                            {{ pro.ht_money }}
+                        {% else %}
+                            未填写
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if pro.wt_dw %}
+                            {{ pro.wt_dw }}
+                        {% else %}
+                            未填写
+                        {% endif %}
+                    </td>
                     <td><a href="{% url 'pro:detail' pro.id %}">查看</a></td>
-                    <td><a href="{{ MEDIA_URL }}{{ pro.ht_scan }}">下载</a></td>
+                    <td>
+                        {% if pro.ht_scan %}
+                            <a href="{{ MEDIA_URL }}{{ pro.ht_scan }}" target="_blank">查看</a>
+                        {% else %}
+                            未上传
+                        {% endif %}
+                    </td>
                     <td><a href="{% url 'pro:detail' pro.id %}">修改</a></td>
                     <td><a href="{% url 'pro:detail' pro.id %}">删除</a></td>
                 </tr>

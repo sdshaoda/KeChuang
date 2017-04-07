@@ -12,146 +12,197 @@
         {#        button {#}
         {#            clear: both;#}
         {#        }#}
-    .submit{
-        position: fixed;
-        bottom: 10px;
-        right: 30px;
-    }
+        {#    .submit{#}
+        {#        position: fixed;#}
+        {#        bottom: 10px;#}
+        {#        right: 30px;#}
+        {#    }#}
     </style>
 {% endblock %}
 
-{#{% block content %}#}
-{#    <nav class="navbar navbar-default navbar-static-top">#}
-{#        <div class="container-fluid">#}
-{#            <div class="navbar-header">#}
-{#                <a class="navbar-brand" href="#">工程资料信息</a>#}
-{#            </div>#}
-{##}
-{#            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">#}
-{##}
-{#            </div>#}
-{#        </div>#}
-{#    </nav>#}
-{##}
-{#    <form class="form-horizontal" method="post" enctype="multipart/form-data" action="{% url 'pro:add' %}">#}
-{#        <div class="form-group">#}
-{#            <label for="pro_name" class="col-md-2 col-sm-2 control-label">工程名称：</label>#}
-{#            <div class="col-md-5 col-sm-10">#}
-{#                <input type="text" class="form-control" id="pro_name" placeholder="工程名称">#}
-{#            </div>#}
-{#        </div>#}
-{##}
-{#        <div class="form-group">#}
-{#            <label for="pro_name" class="col-md-2 col-sm-2 control-label">项目负责人：</label>#}
-{#            <div class="col-md-5 col-sm-10">#}
-{#                <input type="text" class="form-control" id="pro_name" placeholder="项目负责人">#}
-{#            </div>#}
-{#        </div>#}
-{##}
-{#        <div class="form-group">#}
-{#            <label for="pro_name" class="col-md-2 col-sm-2 control-label">工程类型：</label>#}
-{#            <div class="col-md-5 col-sm-10">#}
-{#                <input type="text" class="form-control" id="pro_name" placeholder="工程类型">#}
-{#            </div>#}
-{#        </div>#}
-{##}
-{#        <div class="form-group">#}
-{#            <label for="pro_name" class="col-md-2 col-sm-2 control-label">委托人：</label>#}
-{#            <div class="col-md-5 col-sm-10">#}
-{#                <input type="text" class="form-control" id="pro_name" placeholder="委托人">#}
-{#            </div>#}
-{#        </div>#}
-{##}
-{#        <div class="form-group">#}
-{#            <label for="pro_name" class="col-md-2 col-sm-2 control-label">合同名称：</label>#}
-{#            <div class="col-md-5 col-sm-10">#}
-{#                <input type="text" class="form-control" id="pro_name" placeholder="合同名称">#}
-{#            </div>#}
-{#        </div>#}
-{##}
-{#        <div class="form-group">#}
-{#            <label for="pro_name" class="col-md-2 col-sm-2 control-label">合同编号：</label>#}
-{#            <div class="col-md-5 col-sm-10">#}
-{#                <input type="text" class="form-control" id="pro_name" placeholder="合同编号">#}
-{#            </div>#}
-{#        </div>#}
-{##}
-{#        <div class="form-group">#}
-{#            <label for="pro_name" class="col-md-2 col-sm-2 control-label">合同金额：</label>#}
-{#            <div class="col-md-5 col-sm-10">#}
-{#                <input type="text" class="form-control" id="pro_name" placeholder="合同金额">#}
-{#            </div>#}
-{#        </div>#}
-{##}
-{#        <div class="form-group">#}
-{#            <label for="pro_name" class="col-md-2 col-sm-2 control-label">联系电话：</label>#}
-{#            <div class="col-md-5 col-sm-10">#}
-{#                <input type="text" class="form-control" id="pro_name" placeholder="联系电话">#}
-{#            </div>#}
-{#        </div>#}
-{##}
-{#        <div class="form-group">#}
-{#            <label for="pro_name" class="col-md-2 col-sm-2 control-label">项目地址：</label>#}
-{#            <div class="col-md-5 col-sm-10">#}
-{#                <input type="text" class="form-control" id="pro_name" placeholder="项目地址">#}
-{#            </div>#}
-{#        </div>#}
-{##}
-{#        <div class="form-group">#}
-{#            <label for="pro_name" class="col-md-2 col-sm-2 control-label">公司代表：</label>#}
-{#            <div class="col-md-5 col-sm-10">#}
-{#                <input type="text" class="form-control" id="pro_name" placeholder="公司代表">#}
-{#            </div>#}
-{#        </div>#}
-{##}
-{#        <div class="form-group">#}
-{#            <label for="pro_name" class="col-md-2 col-sm-2 control-label">签订日期：</label>#}
-{#            <div class="col-md-5 col-sm-10">#}
-{#                <input type="text" class="form-control" id="pro_name" placeholder="签订日期">#}
-{#            </div>#}
-{#        </div>#}
-{##}
-{#        <div class="form-group">#}
-{#            <label for="pro_name" class="col-md-2 col-sm-2 control-label">开工时间：</label>#}
-{#            <div class="col-md-5 col-sm-10">#}
-{#                <input type="text" class="form-control" id="pro_name" placeholder="开工时间">#}
-{#            </div>#}
-{#        </div>#}
-{##}
-{#        <div class="form-group">#}
-{#            <label for="pro_name" class="col-md-2 col-sm-2 control-label">完工时间：</label>#}
-{#            <div class="col-md-5 col-sm-10">#}
-{#                <input type="text" class="form-control" id="pro_name" placeholder="完工时间">#}
-{#            </div>#}
-{#        </div>#}
-{##}
-{#        <div class="form-group">#}
-{#            <label for="pro_name" class="col-md-2 col-sm-2 control-label">检测设备：</label>#}
-{#            <div class="col-md-5 col-sm-10">#}
-{#                <input type="text" class="form-control" id="pro_name" placeholder="检测设备">#}
-{#            </div>#}
-{#        </div>#}
-{##}
-{#        <div class="form-group">#}
-{#            <label for="pro_name" class="col-md-2 col-sm-2 control-label">上传合同扫描件：</label>#}
-{#            <div class="col-md-5 col-sm-10">#}
-{#                <input type="text" class="form-control" id="pro_name" placeholder="上传合同扫描件">#}
-{#            </div>#}
-{#        </div>#}
-{##}
-{#        <div class="form-group">#}
-{#            <label for="ht_scan" class="col-md-2 col-sm-2 control-label">上传合同扫描件：</label>#}
-{#            <div class="col-md-5 col-sm-10">#}
-{#                <input type="file" id="ht_scan" name="ht_scan">#}
-{#            </div>#}
-            {#    <p class="help-block">Example block-level help text here.</p>#}
-{#        </div>#}
-{##}
-{#        <button type="submit" class="btn btn-primary col-md-3 submit">添加</button>#}
-{#        {% csrf_token %}#}
-{#    </form>#}
-{##}
-{#{% endblock %}#}
+{% block content %}
+    {#    <nav class="navbar navbar-default navbar-static-top">#}
+    {#        <div class="container-fluid">#}
+    {#            <div class="navbar-header">#}
+    {#                <a class="navbar-brand" href="#">工程资料信息</a>#}
+    {#            </div>#}
+    {##}
+    {#            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">#}
+    {##}
+    {#            </div>#}
+    {#        </div>#}
+    {#    </nav>#}
+
+    <form class="form-horizontal" method="post" enctype="multipart/form-data" action="{% url 'pro:add' %}">
+
+        <div class="form-group">
+            <label for="pro_name" class="col-md-2 col-sm-2 control-label required">工程名称：</label>
+            <div class="col-md-5 col-sm-10">
+                <input type="text" class="form-control" id="pro_name" name="pro_name" placeholder="工程名称" required>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="pro_person_id" class="col-md-2 col-sm-2 control-label required">项目负责人：</label>
+            <div class="col-md-5 col-sm-10">
+                <select class="form-control" id="pro_person_id" name="pro_person_id">
+                    {% for pro_person in pro_persons %}
+                        <option value="{{ pro_person.id }}">{{ pro_person.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="pro_type_id" class="col-md-2 col-sm-2 control-label">工程类型：</label>
+            <div class="col-md-5 col-sm-10">
+                <select class="form-control" id="pro_type_id" name="pro_type_id">
+                    {% for pro_type in pro_types %}
+                        <option value="{{ pro_type.id }}">{{ pro_type.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="pro_stage_id" class="col-md-2 col-sm-2 control-label">项目阶段：</label>
+            <div class="col-md-5 col-sm-10">
+                <select class="form-control" id="pro_stage_id" name="pro_stage_id">
+                    {% for pro_stage in pro_stages %}
+                        <option value="{{ pro_stage.id }}">{{ pro_stage.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="wt_person" class="col-md-2 col-sm-2 control-label">法人委托：</label>
+            <div class="col-md-5 col-sm-10">
+                <input type="text" class="form-control" id="wt_person" name="wt_person" placeholder="法人委托">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="ht_person" class="col-md-2 col-sm-2 control-label">合同签署人：</label>
+            <div class="col-md-5 col-sm-10">
+                <input type="text" class="form-control" id="ht_person" name="ht_person" placeholder="合同签署人">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="ht_name" class="col-md-2 col-sm-2 control-label">合同名称：</label>
+            <div class="col-md-5 col-sm-10">
+                <input type="text" class="form-control" id="ht_name" name="ht_name" placeholder="合同名称">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="ht_num" class="col-md-2 col-sm-2 control-label">合同编号：</label>
+            <div class="col-md-5 col-sm-10">
+                <input type="text" class="form-control" id="ht_num" name="ht_num" placeholder="合同编号">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="ht_money" class="col-md-2 col-sm-2 control-label">合同金额：</label>
+            <div class="col-md-5 col-sm-10">
+                <input type="text" class="form-control" id="ht_money" name="ht_money" placeholder="合同金额">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="js_money" class="col-md-2 col-sm-2 control-label">结算金额：</label>
+            <div class="col-md-5 col-sm-10">
+                <input type="text" class="form-control" id="js_money" name="js_money" placeholder="结算金额">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="wt_dw" class="col-md-2 col-sm-2 control-label">委托单位：</label>
+            <div class="col-md-5 col-sm-10">
+                <input type="text" class="form-control" id="wt_dw" name="wt_dw" placeholder="委托单位">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="mobile" class="col-md-2 col-sm-2 control-label">联系电话：</label>
+            <div class="col-md-5 col-sm-10">
+                <input type="text" class="form-control" id="mobile" name="mobile" placeholder="联系电话">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="pro_address" class="col-md-2 col-sm-2 control-label">项目地址：</label>
+            <div class="col-md-5 col-sm-10">
+                <input type="text" class="form-control" id="pro_address" name="pro_address" placeholder="项目地址">
+            </div>
+        </div>
+
+        {#        <div class="form-group">#}
+        {#            <label for="pro_name" class="col-md-2 col-sm-2 control-label">公司代表：</label>#}
+        {#            <div class="col-md-5 col-sm-10">#}
+        {#                <input type="text" class="form-control" id="pro_name" name="pro_name" placeholder="公司代表">#}
+        {#            </div>#}
+        {#        </div>#}
+
+        <div class="form-group">
+            <label for="sign_date" class="col-md-2 col-sm-2 control-label">签订日期：</label>
+            <div class="col-md-5 col-sm-10">
+                <input type="date" class="form-control" id="sign_date" name="sign_date"
+                       placeholder="签订日期，格式：YYYY-mm-dd">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="start_date" class="col-md-2 col-sm-2 control-label">开工日期：</label>
+            <div class="col-md-5 col-sm-10">
+                <input type="date" class="form-control" id="start_date" name="start_date"
+                       placeholder="开工时间，格式：YYYY-mm-dd">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="finish_date" class="col-md-2 col-sm-2 control-label">完工日期：</label>
+            <div class="col-md-5 col-sm-10">
+                <input type="date" class="form-control" id="finish_date" name="finish_date"
+                       placeholder="完工时间，格式：YYYY-mm-dd">
+            </div>
+        </div>
+        {##}
+        {#        <div class="form-group">#}
+        {#            <label for="pro_name" class="col-md-2 col-sm-2 control-label">检测设备：</label>#}
+        {#            <div class="col-md-5 col-sm-10">#}
+        {#                <input type="text" class="form-control" id="pro_name" name="pro_name" placeholder="检测设备">#}
+        {#            </div>#}
+        {#        </div>#}
+
+        {#        <div class="form-group">#}
+        {#            <label for="pro_name" class="col-md-2 col-sm-2 control-label">上传合同扫描件：</label>#}
+        {#            <div class="col-md-5 col-sm-10">#}
+        {#                <input type="text" class="form-control" id="pro_name" name="pro_name" placeholder="上传合同扫描件">#}
+        {#            </div>#}
+        {#        </div>#}
+
+        <div class="form-group">
+            <label for="ht_scan" class="col-md-2 col-sm-2 control-label">上传合同扫描件：</label>
+            <div class="col-md-5 col-sm-10">
+                <input type="file" id="ht_scan" name="ht_scan">
+            </div>
+            <p class="help-block"></p>
+        </div>
+
+        <div class="form-group">
+            <label for="remark" class="col-md-2 col-sm-2 control-label">备注：</label>
+            <div class="col-md-5 col-sm-10">
+                <input type="text" class="form-control" id="remark" name="remark" placeholder="备注">
+            </div>
+        </div>
+
+        <button style="margin-bottom: 100px" type="submit" class="btn btn-primary col-md-7">添加</button>
+        {% csrf_token %}
+    </form>
+
+{% endblock %}
 
 
 

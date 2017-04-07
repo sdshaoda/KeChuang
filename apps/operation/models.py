@@ -24,7 +24,7 @@ class ProjectPerson(models.Model):
         verbose_name_plural = verbose_name
 
     def __unicode__(self):
-        return self.equipment
+        return self.project
 
 
 # 工程项目成员
@@ -41,7 +41,7 @@ class ProjectMember(models.Model):
         verbose_name_plural = verbose_name
 
     def __unicode__(self):
-        return self.member
+        return self.project
 
 
 # 工程设备
