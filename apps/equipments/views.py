@@ -291,7 +291,7 @@ class AgreeEquView(View):
             equ_staff.person = None                 # 删除设备保管人中的信息
             equ_staff.save()
 
-            return HttpResponse('{"status":"success","msg":"同意设备领用申请操作成功"}', content_type='application/json')
+            return HttpResponse('{"status":"success","msg":"同意设备归还申请操作成功"}', content_type='application/json')
 
 
 # 拒绝领用 Ajax

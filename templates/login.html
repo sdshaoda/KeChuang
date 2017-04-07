@@ -3,12 +3,13 @@
 {% load staticfiles %}
 <head>
     <title>登录 - 武汉中科科创工程检测有限公司</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
-    {#                <link rel='stylesheet' href='/static/css/login.css'/>#}
+    {#<link rel='stylesheet' href='/static/css/login.css'/>#}
     <script src="{% static 'js/jquery.js' %}"></script>
-    {#        <script src="{% static 'js/bootstrap.js' %}"></script>#}
+    {#<script src="{% static 'js/bootstrap.js' %}"></script>#}
     <style>
-        {#        登录框#}
+        {#登录框#}
         .login {
             padding: 0;
             border: 1px solid #bbb;
@@ -30,23 +31,20 @@
             text-align: center;
         }
 
-        {#        登录框主体#}
+        {#登录框主体#}
         .login-main {
             padding: 20px 30px;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-around;
         }
 
-        {#        验证码#}
+        {#验证码#}
         img.captcha {
             height: 35px;
         }
 
-        {#        模态框#}
+        {#模态框#}
         #dialog {
             display: none;
-        {#            width: 480px;#} text-align: center;
+            text-align: center;
             margin: 0 auto;
             border: 1px solid #ccc;
             border-radius: 5px;
@@ -82,8 +80,9 @@
     <div id="msg">{{ msg }}</div>
 </div>
 
+<p style="text-align:center;">我们推荐您使用最新的<a href="https://www.baidu.com/s?ie=utf-8&f=8&rsv_bp=0&rsv_idx=1&tn=baidu&wd=chrome&rsv_pq=849f379300025f64&rsv_t=b809hd6EdOFyGwiXI0IQOVbVfDf4SXjjlbTa%2BGtdHDNO%2FNvQlCr3M8jSh74&rqlang=cn&rsv_enter=1&rsv_sug3=4&rsv_sug1=4&rsv_sug7=100" target="_blank">Chrome浏览器</a>，以获得最佳的用户体验</p>
 
-<div class="login col-md-4 col-sm-6 col-xs-8">
+<div class="login col-md-5 col-sm-8 col-xs-12">
     <div class="login-header bg-primary">武汉中科科创工程检测有限公司</div>
     <form id="loginForm" class="login-main" method="post" action="{% url 'login' %}">
         <div class="form-group">
@@ -103,7 +102,7 @@
             <label for="captcha">验证码：</label>
             {{ login_form.captcha }}
         </div>
-        <button type="submit" class="btn btn-primary">登录</button>
+        <button type="submit" class="btn btn-primary btn-block">登录</button>
         {% csrf_token %}
     </form>
 </div>

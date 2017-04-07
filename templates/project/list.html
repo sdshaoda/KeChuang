@@ -3,15 +3,15 @@
 {% block title %}浏览工程{% endblock %}
 
 {% block style %}
-    <style>
-        table {
-            margin-top: 40px;
-        }
-    </style>
+{#    <style>#}
+{#        table {#}
+{#            margin-top: 40px;#}
+{#        }#}
+{#    </style>#}
 {% endblock %}
 
-{#{% block content %}#}
-{##}
+{% block content %}
+
     {#    <div class="handle">#}
     {#        <div class="filter">#}
     {#            筛选：#}
@@ -38,39 +38,38 @@
     {#            <button type="button">确定</button>#}
     {#        </div>#}
     {#    </div>#}
-{##}
-{##}
-{#    <div class="table-responsive">#}
-{#        <table class="table table-hover">#}
-{#            <tr>#}
-{#                <th>#</th>#}
-{#                <th>工程名称</th>#}
-{#                <th>负责人</th>#}
-{#                <th>签订日期</th>#}
-{#                <th>金额</th>#}
-{#                <th>工程类型</th>#}
-{#                <th>委托单位</th>#}
-{#                <th>详细信息</th>#}
-{#                <th>工程合同</th>#}
-{#                <th colspan="2">操作</th>#}
-{#            </tr>#}
-{#            {% for pro in all_pro %}#}
-{#                <tr>#}
-{#                    <td>{{ pro.id }}</td>#}
-{#                    <td>{{ pro.pro_name }}</td>#}
-{#                    <td>{{ pro.pro_person }}</td>#}
-{#                    <td>{{ pro.sign_date }}</td>#}
-{#                    <td>{{ pro.ht_money }}</td>#}
-{#                    <td>{{ pro.get_pro_type_display }}</td>#}
-{#                    <td>{{ pro.wt_dw }}</td>#}
-{#                    <td><a href="{% url 'pro:detail' pro.id %}">查看</a></td>#}
-{#                    <td><a href="">查看</a></td>#}
-{#                    <td><a href="{% url 'pro:detail' pro.id %}">修改</a></td>#}
-{#                    <td><a href="{% url 'pro:detail' pro.id %}">删除</a></td>#}
-{#                </tr>#}
-{#            {% endfor %}#}
-{#        </table>#}
-{#    </div>#}
-{##}
-{#{% endblock %}#}
 
+
+    <div class="table-responsive">
+        <table class="table table-hover">
+            <tr>
+                <th>#</th>
+                <th>工程名称</th>
+                <th>负责人</th>
+                <th>签订日期</th>
+                <th>金额</th>
+                <th>工程类型</th>
+                <th>委托单位</th>
+                <th>详细信息</th>
+                <th>工程合同</th>
+                <th colspan="2">操作</th>
+            </tr>
+            {% for pro in all_pro %}
+                <tr>
+                    <td>{{ pro.id }}</td>
+                    <td>{{ pro.pro_name }}</td>
+                    <td>{{ pro.pro_person }}</td>
+                    <td>{{ pro.sign_date }}</td>
+                    <td>{{ pro.ht_money }}</td>
+                    <td>{{ pro.get_pro_type_display }}</td>
+                    <td>{{ pro.wt_dw }}</td>
+                    <td><a href="{% url 'pro:detail' pro.id %}">查看</a></td>
+                    <td><a href="{{ MEDIA_URL }}{{ pro.ht_scan }}">下载</a></td>
+                    <td><a href="{% url 'pro:detail' pro.id %}">修改</a></td>
+                    <td><a href="{% url 'pro:detail' pro.id %}">删除</a></td>
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
+
+{% endblock %}

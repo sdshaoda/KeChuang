@@ -10,7 +10,9 @@ from users.models import UserProfile
 # 工程浏览 GET
 class ListView(View):
     def get(self, request):
-        all_pro = Project.objects.all().order_by('-sign_date')
+
+        all_pro = Project.objects.all().order_by('-add_time')
+
         return render(request, 'project/list.html', {
             'all_pro': all_pro
         })
@@ -73,6 +75,15 @@ class AddProView(View):
             return render(request, 'project/add.html')
 
 
+# 工程详情 GET
+class DetailView(View):
+    def get(self, request, pro_id):
+        pro = Project.objects.get(id=int(pro_id))
+        return render(request, 'project/detail.html', {
+            'pro': pro
+        })
+
+
 # 编辑工程 GET
 class EditView(View):
     def get(self, request):
@@ -83,15 +94,6 @@ class EditView(View):
 class EditProView(View):
     def post(self, request):
         return render(request, 'project/apply.html')
-
-
-# 工程详情 GET
-class DetailView(View):
-    def get(self, request, pro_id):
-        pro = Project.objects.get(id=int(pro_id))
-        return render(request, 'project/detail.html', {
-            'pro': pro
-        })
 
 
 # 删除工程 Ajax
