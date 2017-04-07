@@ -218,18 +218,22 @@ class AddStaffView(View):
                 return render(request, 'user/add_staff.html', {'register_form': register_form, 'msg': '两次输入的密码不一致！'})
 
             name = request.POST.get('name', '')
+            sex = request.POST.get('sex', '')
             department_name = request.POST.get('department', '')
             department = Department.objects.get(name=department_name)
             job = request.POST.get('job', '')
             induction_time = request.POST.get('induction_time', '')
+            number = request.POST.get('number', '')
             permission = request.POST.get('permission', '')
 
             user_profile = UserProfile()
             user_profile.username = user_name
             user_profile.name = name
+            user_profile.sex = sex
             user_profile.department = department
             user_profile.job = job
             user_profile.induction_time = induction_time
+            user_profile.number = number
             user_profile.permission = permission
             user_profile.is_active = True
             user_profile.password = make_password(pass_word)

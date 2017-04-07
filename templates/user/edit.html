@@ -25,10 +25,29 @@
         </div>
 
         <div class="form-group">
+            <label for="sex" class="col-md-2 col-sm-2 control-label">性别：</label>
+            <div class="col-md-5 col-sm-10">
+                <select class="form-control" id="sex" name="sex" disabled>
+                    <option value="{{ staff.sex }}">
+                        {{ staff.get_sex_display }}
+                    </option>
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group">
             <label for="induction_time" class="col-md-2 col-sm-2 control-label">入职时间：</label>
             <div class="col-md-5 col-sm-10">
-                <input type="text" class="form-control" id="induction_time" name="induction_time" placeholder="入职时间，格式：YYYY-mm-dd"
-                       value="{{ staff.induction_time }}" disabled>
+                <input type="text" class="form-control" id="induction_time" name="induction_time"
+                       placeholder="入职时间，格式：YYYY-mm-dd" value="{{ staff.induction_time }}" disabled>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="number" class="col-md-2 col-sm-2 control-label">人员编号：</label>
+            <div class="col-md-5 col-sm-10">
+                <input type="text" class="form-control" id="number" name="number" placeholder="人员编号"
+                       value="{{ staff.number }}" disabled>
             </div>
         </div>
 
@@ -174,7 +193,7 @@
 {% block js %}
     <script>
         $('#edit_staff').click(function () {
-{#            console.log($('#edit_staff_form').serializeArray())#}
+            {#            console.log($('#edit_staff_form').serializeArray())#}
             $.ajax({
                 cache: false,
                 url: '{% url "user:edit_staff" %}',
