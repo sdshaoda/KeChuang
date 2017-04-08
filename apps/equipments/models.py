@@ -30,19 +30,20 @@ class EquipmentType(models.Model):
 
 # 设备基本信息
 class Equipment(models.Model):
-    equi_type = models.ForeignKey(EquipmentType, verbose_name=u'设备类型', null=True, blank=True)
+    equ_type = models.ForeignKey(EquipmentType, verbose_name=u'设备类型', null=True, blank=True)
 
     # 设备基本信息
-    equi_name = models.CharField(max_length=20, verbose_name=u'设备名称')
+    equ_name = models.CharField(max_length=20, verbose_name=u'设备名称')
+    equ_person_id = models.IntegerField(verbose_name=u'设备负责人id', null=True, blank=True)
     file_num = models.CharField(max_length=20, verbose_name=u'档案编号')
-    equi_num = models.CharField(max_length=20, verbose_name=u'设备型号')
-    equi_status = models.CharField(default='0', max_length=10, choices=(
+    equ_num = models.CharField(max_length=20, verbose_name=u'设备型号')
+    equ_status = models.CharField(default='0', max_length=10, choices=(
         ('0', u'正常'),
         ('1', u'限制使用'),
         ('2', u'停用'),
     ), verbose_name=u'设备状态')
     effect_date = models.DateField(default=date.today, verbose_name=u'计量有效期')
-    equi_money = models.CharField(max_length=10, verbose_name=u'购买价格')
+    equ_money = models.CharField(max_length=10, verbose_name=u'购买价格')
     buy_date = models.DateField(default=date.today, verbose_name=u'购买日期')
 
     # 设备领用信息
@@ -50,6 +51,7 @@ class Equipment(models.Model):
         ('0', u'未领用'),
         ('1', u'已领用'),
     ), verbose_name=u'使用状态')
+    equ_staff_id = models.IntegerField(verbose_name=u'设备保管人id', null=True, blank=True)
     use_date = models.DateField(verbose_name=u'领用时间', null=True, blank=True)
     revert_date = models.DateField(verbose_name=u'归还时间', null=True, blank=True)
 
@@ -59,18 +61,18 @@ class Equipment(models.Model):
 
     # 设备负责人
     def get_person(self):
-        return self.equipmentperson_set.get(id=self.id)
+        return UserProfile.objects.get(id=self.equ_person_id)
 
     # 设备保管人
     def get_staff(self):
-        return self.equipmentstaff_set.get(id=self.id)
+        return UserProfile.objects.get(id=self.equ_staff_id)
 
     class Meta:
         verbose_name = u'设备信息'
         verbose_name_plural = verbose_name
 
     def __unicode__(self):
-        return self.equi_name
+        return self.equ_name
 
 # 设备变更记录
 # class EquipmentChange(models.Model):

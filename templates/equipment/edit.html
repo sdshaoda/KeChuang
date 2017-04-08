@@ -8,22 +8,22 @@
 
     <form id="edit_equ_form" class="form-horizontal" method="post" action="{% url 'equ:add' %}">
 
-        <input type="hidden" id="equi_id" name="equi_id" value="{{ equ.id }}">
+        <input type="hidden" id="equ_id" name="equ_id" value="{{ equ.id }}">
 
         <div class="form-group">
-            <label for="equi_name" class="col-md-2 col-sm-2 control-label required">设备名称：</label>
+            <label for="equ_name" class="col-md-2 col-sm-2 control-label required">设备名称：</label>
             <div class="col-md-5 col-sm-10">
-                <input type="text" class="form-control" id="equi_name" name="equi_name" placeholder="设备名称"
-                       value="{{ equ.equi_name }}" required>
+                <input type="text" class="form-control" id="equ_name" name="equ_name" placeholder="设备名称"
+                       value="{{ equ.equ_name }}" required>
             </div>
         </div>
 
         <div class="form-group">
-            <label for="equi_type" class="col-md-2 col-sm-2 control-label required">设备类型：</label>
+            <label for="equ_type_id" class="col-md-2 col-sm-2 control-label required">设备类型：</label>
             <div class="col-md-5 col-sm-10">
-                <select class="form-control" id="equi_type" name="equi_type" required>
+                <select class="form-control" id="equ_type_id" name="equ_type_id" required>
                     {% for type in equ_types %}
-                        <option value="{{ type.id }}" {% ifequal equ.equi_type type %}selected{% endifequal %}>
+                        <option value="{{ type.id }}" {% ifequal equ.equ_type type %}selected{% endifequal %}>
                             {{ type.name }}
                         </option>
                     {% endfor %}
@@ -32,11 +32,11 @@
         </div>
 
         <div class="form-group">
-            <label for="equi_person" class="col-md-2 col-sm-2 control-label required">设备负责人：</label>
+            <label for="equ_person_id" class="col-md-2 col-sm-2 control-label required">设备负责人：</label>
             <div class="col-md-5 col-sm-10">
-                <select class="form-control" id="equi_person" name="equi_person" required>
+                <select class="form-control" id="equ_person_id" name="equ_person_id" required>
                     {% for staff in staffs %}
-                        <option value="{{ staff.id }}" {% ifequal equ.equi_person staff %}selected{% endifequal %}>
+                        <option value="{{ staff.id }}" {% ifequal equ.equ_person staff %}selected{% endifequal %}>
                             {{ staff.name }}
                         </option>
                     {% endfor %}
@@ -45,17 +45,17 @@
         </div>
 
         <div class="form-group">
-            <label for="equi_num" class="col-md-2 col-sm-2 control-label required">设备型号：</label>
+            <label for="equ_num" class="col-md-2 col-sm-2 control-label required">设备型号：</label>
             <div class="col-md-5 col-sm-10">
-                <input type="text" class="form-control" id="equi_num" name="equi_num" placeholder="设备型号"
-                       value="{{ equ.equi_num }}" required>
+                <input type="text" class="form-control" id="equ_num" name="equ_num" placeholder="设备型号"
+                       value="{{ equ.equ_num }}" required>
             </div>
         </div>
 
         <div class="form-group">
-            <label for="equi_status" class="col-md-2 col-sm-2 control-label required">设备状态：</label>
+            <label for="equ_status" class="col-md-2 col-sm-2 control-label required">设备状态：</label>
             <div class="col-md-5 col-sm-10">
-                <select class="form-control" id="equi_status" name="equi_status" required>
+                <select class="form-control" id="equ_status" name="equ_status" required>
                     <option value="0">正常</option>
                     <option value="1">限制使用</option>
                     <option value="2">停用</option>
@@ -67,14 +67,14 @@
             <label for="effect_date" class="col-md-2 col-sm-2 control-label required">计量有效期：</label>
             <div class="col-md-5 col-sm-10">
                 <input type="date" class="form-control" id="effect_date" name="effect_date"
-                       value="{{ equ.effect_date|date:"Y-m-d" }}" placeholder="格式：YYYY-mm-dd" required>
+                       value="{{ equ.effect_date|date:"Y-m-d" }}" placeholder="格式：2017-04-01" required>
             </div>
         </div>
 
         <div class="form-group">
-            <label for="equi_money" class="col-md-2 col-sm-2 control-label required">购买价格：</label>
+            <label for="equ_money" class="col-md-2 col-sm-2 control-label required">购买价格：</label>
             <div class="col-md-5 col-sm-10">
-                <input type="text" class="form-control" id="equi_money" name="equi_money" placeholder="购买价格"
+                <input type="text" class="form-control" id="equ_money" name="equ_money" placeholder="购买价格"
                        value="{{ equ.equi_money }}" required>
             </div>
         </div>
@@ -83,7 +83,7 @@
             <label for="buy_date" class="col-md-2 col-sm-2 control-label required">购买日期：</label>
             <div class="col-md-5 col-sm-10">
                 <input type="date" class="form-control" id="buy_date" name="buy_date"
-                       value="{{ equ.buy_date|date:"Y-m-d" }}" placeholder="格式：YYYY-mm-dd" required>
+                       value="{{ equ.buy_date|date:"Y-m-d" }}" placeholder="格式：2017-04-01" required>
             </div>
         </div>
 

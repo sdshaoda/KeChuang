@@ -54,11 +54,11 @@ class EquipmentApplyAdmin(object):
     list_filter = ['equipment', 'person', 'type', 'status', 'use_date', 'revert_date', 'remark', 'add_time']
 
 
-xadmin.site.register(ProjectPerson, ProjectPersonAdmin)
+# xadmin.site.register(ProjectPerson, ProjectPersonAdmin)
 xadmin.site.register(ProjectMember, ProjectMemberAdmin)
 xadmin.site.register(ProjectEquipment, ProjectEquipmentAdmin)
 xadmin.site.register(ProjectApply, ProjectApplyAdmin)
 
-xadmin.site.register(EquipmentPerson, EquipmentPersonAdmin)
-xadmin.site.register(EquipmentStaff, EquipmentStaffAdmin)
+# xadmin.site.register(EquipmentPerson, EquipmentPersonAdmin)
+# xadmin.site.register(EquipmentStaff, EquipmentStaffAdmin)
 xadmin.site.register(EquipmentApply, EquipmentApplyAdmin)

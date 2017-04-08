@@ -80,7 +80,13 @@
     <div id="msg">{{ msg }}</div>
 </div>
 
-<p style="text-align:center;">我们推荐您使用最新的<a href="https://www.baidu.com/s?ie=utf-8&f=8&rsv_bp=0&rsv_idx=1&tn=baidu&wd=chrome&rsv_pq=849f379300025f64&rsv_t=b809hd6EdOFyGwiXI0IQOVbVfDf4SXjjlbTa%2BGtdHDNO%2FNvQlCr3M8jSh74&rqlang=cn&rsv_enter=1&rsv_sug3=4&rsv_sug1=4&rsv_sug7=100" target="_blank">Chrome浏览器</a>，以获得最佳的用户体验</p>
+<p id="recommend" style="text-align:center;">我们推荐您使用最新的<a href="https://www.baidu.com/s?ie=utf-8&f=8&rsv_bp=0&rsv_idx=1&tn=baidu&wd=chrome&rsv_pq=849f379300025f64&rsv_t=b809hd6EdOFyGwiXI0IQOVbVfDf4SXjjlbTa%2BGtdHDNO%2FNvQlCr3M8jSh74&rqlang=cn&rsv_enter=1&rsv_sug3=4&rsv_sug1=4&rsv_sug7=100" target="_blank">Chrome浏览器</a>，以获得最佳的用户体验</p>
+
+<script>
+    if(navigator.userAgent.indexOf('Chrome/5') !== -1){
+        recommend.style.display = 'none'
+    }
+</script>
 
 <div class="login col-md-5 col-sm-8 col-xs-12">
     <div class="login-header bg-primary">武汉中科科创工程检测有限公司</div>

@@ -11,20 +11,20 @@ from users.models import UserProfile, Department
 
 
 # 工程负责人
-class ProjectPerson(models.Model):
-    project = models.ForeignKey(Project, verbose_name=u'工程名称')
-    person = models.ForeignKey(UserProfile, verbose_name=u'负责人')
-
-    remark = models.CharField(max_length=200, verbose_name=u'备注', null=True, blank=True)
-
-    add_time = models.DateTimeField(default=datetime.now, verbose_name=u'添加时间')
-
-    class Meta:
-        verbose_name = u'工程负责人信息'
-        verbose_name_plural = verbose_name
-
-    def __unicode__(self):
-        return self.project
+# class ProjectPerson(models.Model):
+#     project = models.ForeignKey(Project, verbose_name=u'工程名称')
+#     person = models.ForeignKey(UserProfile, verbose_name=u'负责人')
+#
+#     remark = models.CharField(max_length=200, verbose_name=u'备注', null=True, blank=True)
+#
+#     add_time = models.DateTimeField(default=datetime.now, verbose_name=u'添加时间')
+#
+#     class Meta:
+#         verbose_name = u'工程负责人信息'
+#         verbose_name_plural = verbose_name
+#
+#     def __unicode__(self):
+#         return self.project
 
 
 # 工程项目成员
@@ -86,37 +86,37 @@ class ProjectApply(models.Model):
 
 
 # 设备负责人
-class EquipmentPerson(models.Model):
-    equipment = models.ForeignKey(Equipment, verbose_name=u'设备名称')
-    person = models.ForeignKey(UserProfile, verbose_name=u'负责人')
-
-    remark = models.CharField(max_length=200, verbose_name=u'备注', null=True, blank=True)
-
-    add_time = models.DateTimeField(default=datetime.now, verbose_name=u'添加时间')
-
-    class Meta:
-        verbose_name = u'设备负责人信息'
-        verbose_name_plural = verbose_name
-
-    def __unicode__(self):
-        return self.equipment
+# class EquipmentPerson(models.Model):
+#     equipment = models.ForeignKey(Equipment, verbose_name=u'设备名称')
+#     person = models.ForeignKey(UserProfile, verbose_name=u'负责人')
+#
+#     remark = models.CharField(max_length=200, verbose_name=u'备注', null=True, blank=True)
+#
+#     add_time = models.DateTimeField(default=datetime.now, verbose_name=u'添加时间')
+#
+#     class Meta:
+#         verbose_name = u'设备负责人信息'
+#         verbose_name_plural = verbose_name
+#
+#     def __unicode__(self):
+#         return self.equipment
 
 
 # 设备保管人
-class EquipmentStaff(models.Model):
-    equipment = models.ForeignKey(Equipment, verbose_name=u'设备名称')
-    person = models.ForeignKey(UserProfile, verbose_name=u'保管人', null=True, blank=True)
-
-    remark = models.CharField(max_length=200, verbose_name=u'备注', null=True, blank=True)
-
-    add_time = models.DateTimeField(default=datetime.now, verbose_name=u'添加时间')
-
-    class Meta:
-        verbose_name = u'设备保管人信息'
-        verbose_name_plural = verbose_name
-
-    def __unicode__(self):
-        return self.equipment
+# class EquipmentStaff(models.Model):
+#     equipment = models.ForeignKey(Equipment, verbose_name=u'设备名称')
+#     person = models.ForeignKey(UserProfile, verbose_name=u'保管人', null=True, blank=True)
+#
+#     remark = models.CharField(max_length=200, verbose_name=u'备注', null=True, blank=True)
+#
+#     add_time = models.DateTimeField(default=datetime.now, verbose_name=u'添加时间')
+#
+#     class Meta:
+#         verbose_name = u'设备保管人信息'
+#         verbose_name_plural = verbose_name
+#
+#     def __unicode__(self):
+#         return self.equipment
 
 
 # 设备申请

@@ -60,12 +60,12 @@
                     <td>{{ pro.id }}</td>
                     <td>{{ pro.pro_name }}</td>
                     <td>
-                        {% if pro.get_person.person.name %}
-                            {{ pro.get_person.person.name }}
+                        {% if pro.get_pro_person %}
+                            {{ pro.get_pro_person.name }}
                         {% else %}
                             未填写
                         {% endif %}
-                        {{ pro.get_person.person.name }}
+{#                        {{ pro.get_person.person.name }}#}
                     </td>
                     <td>
                         {% if pro.pro_type.name %}
@@ -110,7 +110,7 @@
                             未上传
                         {% endif %}
                     </td>
-                    <td><a href="{% url 'pro:detail' pro.id %}">修改</a></td>
+                    <td><a href="{% url 'pro:edit' pro.id %}">修改</a></td>
                     <td><a href="{% url 'pro:detail' pro.id %}">删除</a></td>
                 </tr>
             {% endfor %}

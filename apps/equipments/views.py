@@ -4,7 +4,7 @@ from django.shortcuts import render
 from django.views.generic import View
 
 from equipments.models import Equipment, EquipmentType
-from operation.models import EquipmentApply, EquipmentStaff, EquipmentPerson
+from operation.models import EquipmentApply
 from users.models import UserProfile
 
 
@@ -55,47 +55,49 @@ class AddView(View):
     def post(self, request):
 
         # 获取表单信息
-        equi_name = request.POST.get('equi_name', '')
-        equi_type_id = request.POST.get('equi_type', '')
-        equi_person_id = request.POST.get('equi_person', '')
-        equi_num = request.POST.get('equi_num', '')
-        equi_status = request.POST.get('equi_status', '')
+        equ_name = request.POST.get('equ_name', '')
+        equ_type_id = request.POST.get('equ_type_id', '')
+        equ_person_id = request.POST.get('equ_person_id', '')
+        equ_num = request.POST.get('equ_num', '')
+        equ_status = request.POST.get('equ_status', '')
         effect_date = request.POST.get('effect_date', '')
-        equi_money = request.POST.get('equi_money', '')
+        equ_money = request.POST.get('equ_money', '')
         buy_date = request.POST.get('buy_date', '')
         remark = request.POST.get('remark', '')
 
         # 初始化 设备信息
         equipment = Equipment()
-        equipment.equi_type = EquipmentType.objects.get(id=equi_type_id)
-        equipment.equi_name = equi_name
-        equipment.equi_num = equi_num
-        equipment.equi_status = equi_status
+        equipment.equ_type_id = equ_type_id
+        equipment.equ_person_id = equ_person_id
+        equipment.equ_name = equ_name
+        equipment.equ_num = equ_num
+        equipment.equ_status = equ_status
         equipment.effect_date = effect_date
-        equipment.equi_money = equi_money
+        equipment.equ_money = equ_money
         equipment.buy_date = buy_date
         equipment.remark = remark
 
         equipment.use_status = '0'      # 设置为 未领用
+        equipment.equ_staff_id = None   # 设备保管人
         equipment.use_date = None       # 领用时间
         equipment.revert_date = None    # 归还时间
         equipment.save()
 
         # 初始化 设备保管人
-        equipment_staff = EquipmentStaff()
-        equipment_staff.equipment = equipment
-        equipment_staff.person = None
-        equipment_staff.save()
+        # equipment_staff = EquipmentStaff()
+        # equipment_staff.equipment = equipment
+        # equipment_staff.person = None
+        # equipment_staff.save()
 
         # 初始化 设备负责人
-        equipment_person = EquipmentPerson()
-        equipment_person.equipment = equipment
-        # 若用户 id 存在
-        if UserProfile.objects.filter(id=equi_person_id):
-            equipment_person.person = UserProfile.objects.get(id=equi_person_id)
-        else:
-            equipment_person.person = None
-        equipment_person.save()
+        # equipment_person = EquipmentPerson()
+        # equipment_person.equipment = equipment
+        # # 若用户 id 存在
+        # if UserProfile.objects.filter(id=equi_person_id):
+        #     equipment_person.person = UserProfile.objects.get(id=equi_person_id)
+        # else:
+        #     equipment_person.person = None
+        # equipment_person.save()
 
         # 获取所有设备信息，根据添加时间排序
         equs = Equipment.objects.all().order_by('-add_time')
@@ -136,34 +138,35 @@ class EditEquView(View):
     def post(self, request):
 
         # 获取表单信息
-        equi_id = request.POST.get('equi_id', '')
-        equi_type_id = request.POST.get('equi_type', '')
-        equi_person_id = request.POST.get('equi_person', '')
-        equi_name = request.POST.get('equi_name', '')
-        equi_num = request.POST.get('equi_num', '')
-        equi_status = request.POST.get('equi_status', '')
+        equ_id = request.POST.get('equi_id', '')
+        equ_name = request.POST.get('equ_name', '')
+        equ_type_id = request.POST.get('equ_type_id', '')
+        equ_person_id = request.POST.get('equ_person_id', '')
+        equ_num = request.POST.get('equ_num', '')
+        equ_status = request.POST.get('equ_status', '')
         effect_date = request.POST.get('effect_date', '')
-        equi_money = request.POST.get('equi_money', '')
+        equ_money = request.POST.get('equ_money', '')
         buy_date = request.POST.get('buy_date', '')
         remark = request.POST.get('remark', '')
 
         # 更改 设备信息
-        equipment = Equipment.objects.get(id=equi_id)
-        equipment.equi_type = EquipmentType.objects.get(id=equi_type_id)
-        equipment.equi_name = equi_name
-        equipment.equi_num = equi_num
-        equipment.equi_status = equi_status
+        equipment = Equipment.objects.get(id=equ_id)
+        equipment.equ_type_id = equ_type_id
+        equipment.equ_person_id = equ_person_id
+        equipment.equ_name = equ_name
+        equipment.equ_num = equ_num
+        equipment.equ_status = equ_status
         equipment.effect_date = effect_date
-        equipment.equi_money = equi_money
+        equipment.equ_money = equ_money
         equipment.buy_date = buy_date
         equipment.remark = remark
         equipment.save()
 
         # 更改 设备负责人 信息
-        equipment_person = EquipmentPerson.objects.get(equipment=equipment)
-        if UserProfile.objects.filter(id=equi_person_id):
-            equipment_person.person = UserProfile.objects.get(id=equi_person_id)
-        equipment_person.save()
+        # equipment_person = EquipmentPerson.objects.get(equipment=equipment)
+        # if UserProfile.objects.filter(id=equi_person_id):
+        #     equipment_person.person = UserProfile.objects.get(id=equi_person_id)
+        # equipment_person.save()
 
         return HttpResponse('{"status":"success","msg":"编辑设备资料成功"}', content_type='application/json')
 
@@ -262,14 +265,15 @@ class AgreeEquView(View):
             # 审核通过，修改设备相关信息
             equ = equ_apply.equipment
             equ.use_status = '1'                    # 设备使用状态设为 已领用
+            equ.equ_staff_id = equ_apply.person_id
             equ.use_date = equ_apply.use_date       # 将设备申请中的信息放入设备信息中
             equ.revert_date = equ_apply.revert_date
             equ.save()
 
             # 修改 设备保管人 信息
-            equ_staff = EquipmentStaff.objects.get(equipment=equ)
-            equ_staff.person = equ_apply.person
-            equ_staff.save()
+            # equ_staff = EquipmentStaff.objects.get(equipment=equ)
+            # equ_staff.person = equ_apply.person
+            # equ_staff.save()
 
             return HttpResponse('{"status":"success","msg":"同意设备领用申请操作成功"}', content_type='application/json')
 
@@ -282,14 +286,15 @@ class AgreeEquView(View):
             # 审核通过，修改设备相关信息
             equ = equ_apply.equipment
             equ.use_status = '0'                    # 设备使用状态设为 未领用
+            equ.equ_staff_id = None                 # 删除 设备保管人 中的信息
             equ.use_date = None                     # 删除设备信息中的 领用时间
             equ.revert_date = None                  # 删除设备信息中的 归还时间
             equ.save()
 
             # 修改 设备保管人 信息
-            equ_staff = EquipmentStaff.objects.get(equipment=equ)
-            equ_staff.person = None                 # 删除设备保管人中的信息
-            equ_staff.save()
+            # equ_staff = EquipmentStaff.objects.get(equipment=equ)
+            # equ_staff.person = None                 # 删除设备保管人中的信息
+            # equ_staff.save()
 
             return HttpResponse('{"status":"success","msg":"同意设备归还申请操作成功"}', content_type='application/json')
 
@@ -324,13 +329,13 @@ class RevertView(View):
     def get(self, request):
 
         # 获取设备保管人为当前用户的 设备信息
-        equipment_staffs = EquipmentStaff.objects.filter(person_id=request.user.id).order_by('-add_time')
-        equs = []
-        for equipment_staff in equipment_staffs:
-            equs.append(equipment_staff.equipment)
+        # equipment_staffs = EquipmentStaff.objects.filter(person_id=request.user.id).order_by('-add_time')
+        # equs = []
+        # for equipment_staff in equipment_staffs:
+        #     equs.append(equipment_staff.equipment)
 
         return render(request, 'equipment/revert.html', {
-            'equs': equs
+            # 'equs': equs
         })
 
 

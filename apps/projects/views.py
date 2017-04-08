@@ -37,7 +37,7 @@ class AddProView(View):
         pro_stages = ProjectStage.objects.all()
 
         return render(request, 'project/add.html', {
-            'pro_persons': staffs,
+            'staffs': staffs,
             'pro_types': pro_types,
             'pro_stages': pro_stages
         })
@@ -51,8 +51,8 @@ class AddProView(View):
         pro_person_id = request.POST.get('pro_person_id', '')
         pro_type_id = request.POST.get('pro_type_id', '')
         pro_stage_id = request.POST.get('pro_stage_id', '')
-        wt_person = request.POST.get('wt_person', '')
-        ht_person = request.POST.get('ht_person', '')
+        wt_person_id = request.POST.get('wt_person_id', '')
+        ht_person_id = request.POST.get('ht_person_id', '')
         ht_name = request.POST.get('ht_name', '')
         ht_num = request.POST.get('ht_num', '')
         ht_money = request.POST.get('ht_money', '')
@@ -69,10 +69,18 @@ class AddProView(View):
         # 初始化 工程 信息
         project = Project()
         project.pro_name = pro_name
-        project.pro_type_id = pro_type_id
-        project.pro_stage_id = pro_stage_id
-        project.wt_person = wt_person
-        project.ht_person = ht_person
+        project.pro_type_id = pro_type_id               # 外键不可为空
+        project.pro_stage_id = pro_stage_id             # 外键不可为空
+        project.pro_person_id = pro_person_id
+        # 不写判断会报错
+        if wt_person_id:
+            project.wt_person_id = wt_person_id
+        else:
+            project.wt_person_id = None
+        if ht_person_id:
+            project.ht_person_id = ht_person_id
+        else:
+            project.ht_person_id = None
         project.ht_name = ht_name
         project.ht_num = ht_num
         project.ht_money = ht_money
@@ -80,9 +88,19 @@ class AddProView(View):
         project.wt_dw = wt_dw
         project.mobile = mobile
         project.pro_address = pro_address
-        project.sign_date = sign_date
-        project.start_date = start_date
-        project.finish_date = finish_date
+        # 不写判断会报错
+        if sign_date:
+            project.sign_date = sign_date
+        else:
+            project.sign_date = None
+        if start_date:
+            project.start_date = start_date
+        else:
+            project.start_date = None
+        if finish_date:
+            project.finish_date = finish_date
+        else:
+            project.finish_date = None
         project.ht_scan = ht_scan
         project.remark = remark
         project.save()
@@ -105,21 +123,65 @@ class AddProView(View):
 # 工程详情 GET
 class DetailView(View):
     def get(self, request, pro_id):
+
+        # 根据 URL 中的 pro_id 获取工程详情
         pro = Project.objects.get(id=int(pro_id))
+
+        # 筛除超级用户
+        all_staffs = UserProfile.objects.all().order_by('id')
+        staffs = []
+        for staff in all_staffs:
+            if not staff.is_superuser:
+                staffs.append(staff)
+
+        # 工程类型
+        pro_types = ProjectType.objects.all()
+
+        # 项目阶段
+        pro_stages = ProjectStage.objects.all()
+
         return render(request, 'project/detail.html', {
-            'pro': pro
+            'pro': pro,
+            'staffs': staffs,
+            'pro_types': pro_types,
+            'pro_stages': pro_stages
         })
 
 
 # 编辑工程 GET
 class EditView(View):
-    def get(self, request):
-        return render(request, 'project/edit.html')
+    def get(self, request, pro_id):
+
+        # 根据 URL 中的 pro_id 获取工程详情
+        pro = Project.objects.get(id=int(pro_id))
+
+        # 筛除超级用户
+        all_staffs = UserProfile.objects.all().order_by('id')
+        staffs = []
+        for staff in all_staffs:
+            if not staff.is_superuser:
+                staffs.append(staff)
+
+        # 工程类型
+        pro_types = ProjectType.objects.all()
+
+        # 项目阶段
+        pro_stages = ProjectStage.objects.all()
+
+        return render(request, 'project/edit.html', {
+            'pro': pro,
+            'staffs': staffs,
+            'pro_types': pro_types,
+            'pro_stages': pro_stages
+        })
 
 
 # 编辑工程 POST
 class EditProView(View):
     def post(self, request):
+
+        # 上传文件才修改原有值，否则不修改
+
         return render(request, 'project/apply.html')
 
 
@@ -163,11 +225,11 @@ class RefuseProView(View):
 class AttenView(View):
     def get(self, request):
         # 根据 用户 查看考勤记录
-        return render(request, 'project/local.html')
+        return render(request, 'project/attendance.html')
 
 
 # 变更信息
 class ChangeView(View):
     def get(self, request):
         # 根据 工程 获取工程信息变更的全部记录
-        return render(request, 'project/local.html')
+        return render(request, 'project/change.html')
