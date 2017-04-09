@@ -51,12 +51,12 @@
                 <th>签订日期</th>
                 <th>合同金额</th>
                 <th>委托单位</th>
-                <th>详细信息</th>
                 <th>工程合同</th>
+                <th>详细信息</th>
                 <th colspan="2">操作</th>
             </tr>
             {% for pro in pros %}
-                <tr>
+                <tr id="{{ pro.id }}">
                     <td>{{ pro.id }}</td>
                     <td>{{ pro.pro_name }}</td>
                     <td>
@@ -102,7 +102,6 @@
                             未填写
                         {% endif %}
                     </td>
-                    <td><a href="{% url 'pro:detail' pro.id %}">查看</a></td>
                     <td>
                         {% if pro.ht_scan %}
                             <a href="{{ MEDIA_URL }}{{ pro.ht_scan }}" target="_blank">查看</a>
@@ -110,11 +109,45 @@
                             未上传
                         {% endif %}
                     </td>
+                    <td><a href="{% url 'pro:detail' pro.id %}">查看</a></td>
                     <td><a href="{% url 'pro:edit' pro.id %}">修改</a></td>
-                    <td><a href="{% url 'pro:detail' pro.id %}">删除</a></td>
+                    <td><a data-value="{{ pro.id }}" href="javascript:void(0);" class="delete_pro">删除</a></td>
                 </tr>
             {% endfor %}
         </table>
     </div>
 
+{% endblock %}
+
+
+{% block js %}
+    <script>
+        $('.delete_pro').click(function (e) {
+            var pro_id = $(this).attr('data-value')
+            $.ajax({
+                cache: false,
+                url: '{% url "pro:delete" %}',
+                type: 'POST',
+                async: true,
+                dataType: 'json',
+                beforeSend: function (xhr, settings) {
+                    xhr.setRequestHeader("X-CSRFToken", "{{ csrf_token }}");
+                },
+                data: {'pro_id': pro_id},
+                success: function (data) {
+                    if (data.status === 'success') {
+                        $('#' + pro_id).remove()
+                    }
+                    $('#msg').text(data.msg)
+                    setTimeout(function () {
+                        $('#msg').text('')
+                    }, 10000)
+                },
+                error: function () {
+                    $('#msg').text('出错了')
+                }
+            })
+        })
+
+    </script>
 {% endblock %}

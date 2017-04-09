@@ -4,6 +4,7 @@ from __future__ import unicode_literals
 from datetime import datetime, date
 
 from django.db import models
+from users.models import UserProfile
 
 
 # 工程类型
@@ -71,15 +72,15 @@ class Project(models.Model):
 
     # 工程负责人
     def get_pro_person(self):
-        return self.projectperson_set.get(project_id=self.id)
+        return UserProfile.objects.get(id=self.pro_person_id)
 
     # 法人委托
     def get_wt_person(self):
-        return self.projectperson_set.get(project_id=self.id)
+        return UserProfile.objects.get(id=self.wt_person_id)
 
     # 合同签署人
     def get_ht_person(self):
-        return self.projectperson_set.get(project_id=self.id)
+        return UserProfile.objects.get(id=self.ht_person_id)
 
     # 工程成员
     def get_members(self):

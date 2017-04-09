@@ -44,6 +44,26 @@ class ProjectMember(models.Model):
         return self.project
 
 
+# 工程考勤
+class ProjectAttendance(models.Model):
+    project = models.ForeignKey(Project, verbose_name=u'工程名称')
+    person = models.ForeignKey(UserProfile, verbose_name=u'考勤人员')
+
+    location = models.CharField(max_length=50, verbose_name=u'地点')
+    time = models.DateTimeField(verbose_name=u'时间')
+
+    remark = models.CharField(max_length=200, verbose_name=u'备注', null=True, blank=True)
+
+    add_time = models.DateTimeField(default=datetime.now, verbose_name=u'登记时间')
+
+    class Meta:
+        verbose_name = u'工程考勤信息'
+        verbose_name_plural = verbose_name
+
+    def __unicode__(self):
+        return self.project
+
+
 # 工程设备
 class ProjectEquipment(models.Model):
     project = models.ForeignKey(Project, verbose_name=u'工程名称')
@@ -68,7 +88,7 @@ class ProjectApply(models.Model):
     person = models.ForeignKey(UserProfile, verbose_name=u'申请人')
 
     type = models.CharField(default='0', max_length=2, choices=(
-        ('0', u'新增'), ('1', u'修改'), ('1', u'删除')
+        ('0', u'添加工程'), ('1', u'修改信息'), ('2', u'删除工程')
     ), verbose_name=u'申请类型')
     status = models.CharField(default='0', max_length=2, choices=(
         ('0', u'部门主任审核中'), ('1', u'公司领导审核中'), ('2', u'审核通过'), ('3', u'审核未通过')

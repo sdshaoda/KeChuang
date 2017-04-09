@@ -1,7 +1,7 @@
 # coding:utf-8
 from django.conf.urls import url
 
-from .views import ListView, EditView, AddProView, VerifyView, DetailView, ApplyView, DeleteView, AttenView, EditProView, ChangeView, ApplyDetailView, AgreeProView, RefuseProView
+from .views import ListView, EditView, AddProView, VerifyView, DetailView, ApplyView, DeleteView, AttendanceView, EditProView, ChangeView, ApplyDetailView, AgreeProView, RefuseProView, AddAttendanceView
 
 # namespace='pro'
 urlpatterns = [
@@ -16,7 +16,7 @@ urlpatterns = [
     # 工程详情 GET
     url(r'^detail/(?P<pro_id>\d+)$', DetailView.as_view(), name='detail'),
     # 删除工程 Ajax
-    url(r'^delete/$', DeleteView.as_view(), name='address'),
+    url(r'^delete/$', DeleteView.as_view(), name='delete'),
 
     # 工程申请 GET
     url(r'^apply/$', ApplyView.as_view(), name='apply'),
@@ -29,8 +29,10 @@ urlpatterns = [
     # 拒绝申请 Ajax
     url(r'^refuse/$', RefuseProView.as_view(), name='refuse'),
 
-    # 工程考勤
-    url(r'^attendance/$', AttenView.as_view(), name='attendance'),
-    # 变更信息
+    # 考勤记录 GET
+    url(r'^attendance/$', AttendanceView.as_view(), name='attendance'),
+    # 添加考勤 GET POST
+    url(r'^add/attendance/$', AddAttendanceView.as_view(), name='add_attendance'),
+    # 变更信息 GET
     url(r'^change/$', ChangeView.as_view(), name='change'),
 ]
