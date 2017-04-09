@@ -33,7 +33,10 @@
                         <a href="{% url 'user:edit' staff.id %}">编辑</a>
                     </td>
                     <td>
-                        <a href="javascript:void(0);" id="{{ staff.id }}" class="delete">删除</a>
+                        <form id="{{ staff.id }}" action="">
+                            <input type="hidden" name="staff_id" value="{{ staff.id }}">
+                        </form>
+                        <a href="javascript:void(0);" data-value="{{ staff.id }}" class="delete_staff">删除</a>
                     </td>
                 </tr>
             {% endfor %}
@@ -48,9 +51,8 @@
 
 {% block js %}
     <script>
-        $('.delete').click(function (e) {
-            var staff_id = $(this).attr('id')
-            var $tr_staff = $(this).parent().parent()
+        $('.delete_staff').click(function (e) {
+            var staff_id = $(this).attr('data-value')
             $.ajax({
                 cache: false,
                 url: '{% url "user:delete_staff" %}',
@@ -63,19 +65,18 @@
                 data: {'staff_id': staff_id},
                 success: function (data) {
                     if (data.status === 'success') {
-                        $tr_staff.remove()
+                        $('#' + staff_id).remove()
                     }
                     $('#msg').text(data.msg)
                     setTimeout(function () {
                         $('#msg').text('')
-                    }, 2000)
+                    }, 10000)
                 },
                 error: function () {
                     $('#msg').text('出错了')
                 }
             })
         })
-
     </script>
 {% endblock %}
 

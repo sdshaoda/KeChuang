@@ -31,10 +31,10 @@
                     <td>{{ equ_apply.revert_date }}</td>
                     {% if equ_apply.status == '0' %}
                         <td>
-                            <a value="{{ equ_apply.id }}" href="javascript:void(0);" class="agree">同意</a>
+                            <a data-value="{{ equ_apply.id }}" href="javascript:void(0);" class="agree">同意</a>
                         </td>
                         <td>
-                            <a value="{{ equ_apply.id }}" href="javascript:void(0);" class="refuse">拒绝</a>
+                            <a data-value="{{ equ_apply.id }}" href="javascript:void(0);" class="refuse">拒绝</a>
                         </td>
                     {% elif equ_apply.status == '1' %}
                         <td colspan="2">已同意</td>
@@ -52,7 +52,7 @@
     <script>
         {#同意#}
         $('.agree').click(function () {
-            var equ_apply_id = $(this).attr('value')
+            var equ_apply_id = $(this).attr('data-value')
             $.ajax({
                 cache: false,
                 url: '{% url "equ:agree" %}',
@@ -68,7 +68,7 @@
                     setTimeout(function () {
                         $('#msg').text('')
                         $('a.agree[value=' + equ_apply_id + ']').closest('tr').remove()
-                    }, 2000)
+                    }, 10000)
                 },
                 error: function () {
                     $('#msg').text('出错了')
@@ -78,7 +78,7 @@
 
         {#拒绝#}
         $('.refuse').click(function () {
-            var equ_apply_id = $(this).attr('value')
+            var equ_apply_id = $(this).attr('data-value')
             $.ajax({
                 cache: false,
                 url: '{% url "equ:refuse" %}',

@@ -62,6 +62,11 @@
 
 {% block js %}
     <script>
+        {#避免从登录页跳转到此页面后没有相应的效果#}
+        if(location.pathname === '/'){
+            $('a[href="/announcement/list/"]')[0].click()
+        }
+
         $('.delete_ann').click(function (e) {
             var ann_id = $(this).attr('id')
             $.ajax({
@@ -81,7 +86,7 @@
                     $('#msg').text(data.msg)
                     setTimeout(function () {
                         $('#msg').text('')
-                    }, 2000)
+                    }, 10000)
                 },
                 error: function () {
                     $('#msg').text('出错了')

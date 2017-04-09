@@ -77,7 +77,7 @@ class AddView(View):
         equipment.buy_date = buy_date
         equipment.remark = remark
 
-        equipment.use_status = '0'      # 设置为 未领用
+        equipment.use_status = '0'      # 使用状态为 未领用
         equipment.equ_staff_id = None   # 设备保管人
         equipment.use_date = None       # 领用时间
         equipment.revert_date = None    # 归还时间
@@ -200,8 +200,8 @@ class UseEquView(View):
         equ_apply.equipment = Equipment.objects.get(id=equ_id)
         equ_apply.person = UserProfile.objects.get(id=person_id)
         equ_apply.equipment_person_id = equipment_person_id
-        equ_apply.type = '0'    # 申请类型为 领用
-        equ_apply.status = '0'  # 审核状态为 审核中
+        equ_apply.type = '0'        # 申请类型为 领用
+        equ_apply.status = '0'      # 审核状态为 审核中
         equ_apply.use_date = use_date
         equ_apply.revert_date = revert_date
         equ_apply.remark = remark
@@ -334,8 +334,10 @@ class RevertView(View):
         # for equipment_staff in equipment_staffs:
         #     equs.append(equipment_staff.equipment)
 
+        equs = Equipment.objects.filter(equ_staff_id=request.user.id)
+
         return render(request, 'equipment/revert.html', {
-            # 'equs': equs
+            'equs': equs
         })
 
 

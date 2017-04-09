@@ -28,40 +28,50 @@ class CustomBackend(ModelBackend):
 # 登录 GET POST
 class LoginView(View):
     def get(self, request):
-        # login_form 中包含了验证码相关信息
+
+        # login_form 中包含了 验证码 相关信息
         login_form = LoginForm()
+
         # 如果已登录，跳转到公告浏览页
         if request.user.username:
             all_anns = Announcement.objects.all().order_by('-add_time')
             return render(request, 'announcement/list.html', {
                 'all_anns': all_anns
             })
-        # 跳转到登录页
+
         return render(request, 'login.html', {
             'login_form': login_form
         })
 
     def post(self, request):
+
         # 验证登录表单
         login_form = LoginForm(request.POST)
         login_form.is_valid()
         if login_form.is_valid():
-            user_name = request.POST.get('username', '')
-            pass_word = request.POST.get('password', '')
+            username = request.POST.get('username', '')
+            password = request.POST.get('password', '')
             # 数据库验证
-            user = authenticate(username=user_name, password=pass_word)
+            user = authenticate(username=username, password=password)
             if user is not None:
                 # 登录
                 login(request, user)
+
                 all_anns = Announcement.objects.all().order_by('-add_time')
-                # 公告浏览页
+                # 跳转到公告浏览页
                 return render(request, 'announcement/list.html', {
                     'all_anns': all_anns
                 })
             else:
-                return render(request, 'login.html', {'msg': '用户名或密码错误', 'login_form': login_form})
+                return render(request, 'login.html', {
+                    'msg': '用户名或密码错误',
+                    'login_form': login_form
+                })
         else:
-            return render(request, 'login.html', {'msg': '用户名或密码错误', 'login_form': login_form})
+            return render(request, 'login.html', {
+                'msg': '验证码错误',
+                'login_form': login_form
+            })
 
 
 # 退出登录 GET
@@ -76,6 +86,7 @@ class LogoutView(View):
 # 人员浏览 GET
 class ListView(View):
     def get(self, request):
+
         # 获取所有员工信息，过滤掉超级用户
         all_staffs = UserProfile.objects.all().order_by('id')
         staffs = []
@@ -88,11 +99,112 @@ class ListView(View):
         })
 
 
+# 通讯录 GET
+class AddressView(View):
+    def get(self, request):
+
+        # 筛除超级用户
+        all_staffs = UserProfile.objects.all().order_by('id')
+        staffs = []
+        for staff in all_staffs:
+            if not staff.is_superuser:
+                staffs.append(staff)
+
+        return render(request, 'user/address.html', {
+            'all_staffs': staffs
+        })
+
+
+# 员工信息管理 GET
+class StaffView(View):
+    def get(self, request):
+
+        # 筛除超级用户
+        all_staffs = UserProfile.objects.all().order_by('id')
+        staffs = []
+        for staff in all_staffs:
+            if not staff.is_superuser:
+                staffs.append(staff)
+
+        return render(request, 'user/staff.html', {
+            'all_staffs': staffs
+        })
+
+
+# 添加新员工 GET POST
+class AddStaffView(View):
+    def get(self, request):
+
+        # 用户信息是和 部门 相关的
+        departments = Department.objects.all()
+
+        return render(request, 'user/add_staff.html', {
+            'departments': departments
+        })
+
+    def post(self, request):
+        register_form = AddStaffForm(request.POST)
+        register_form.is_valid()
+        if register_form.is_valid():
+            # 获取表单信息
+            username = request.POST.get('username', '')
+
+            if UserProfile.objects.filter(username=username):
+                return render(request, 'user/add_staff.html', {'register_form': register_form, 'msg': '登录名已经存在！'})
+
+            password = request.POST.get('password', '')
+            password_repeat = request.POST.get('password_repeat', '')
+            if password != password_repeat:
+                return render(request, 'user/add_staff.html', {'register_form': register_form, 'msg': '两次输入的密码不一致！'})
+
+            name = request.POST.get('name', '')
+            sex = request.POST.get('sex', '')
+            department_id = request.POST.get('department_id', '')
+            job = request.POST.get('job', '')
+            induction_time = request.POST.get('induction_time', '')
+            number = request.POST.get('number', '')
+            permission = request.POST.get('permission', '')
+
+            user_profile = UserProfile()
+            user_profile.username = username
+            user_profile.password = make_password(password)
+            user_profile.name = name
+            user_profile.sex = sex
+            user_profile.department_id = department_id
+            user_profile.job = job
+            user_profile.induction_time = induction_time
+            user_profile.number = number
+            user_profile.permission = permission
+            user_profile.is_active = True
+            user_profile.save()
+
+            # 筛除超级用户
+            all_staffs = UserProfile.objects.all().order_by('id')
+            staffs = []
+            for staff in all_staffs:
+                if not staff.is_superuser:
+                    staffs.append(staff)
+
+            # 返回员工信息页
+            return render(request, 'user/staff.html', {
+                'all_staffs': staffs
+            })
+        else:
+            return render(request, 'user/add_staff.html', {
+                'msg': '表单信息填写不合法'
+            })
+
+
 # 编辑档案 GET
 class EditView(View):
     def get(self, request, staff_id):
+
+        # 获取此用户信息
         staff = UserProfile.objects.get(id=int(staff_id))
+
+        # 用户信息是和 部门 相关的
         departments = Department.objects.all()
+
         return render(request, 'user/edit.html', {
             'staff': staff,
             'departments': departments
@@ -102,8 +214,8 @@ class EditView(View):
 # 编辑档案 Ajax
 class EditStaffView(View):
     def post(self, request):
+        # 获取表单信息
         staff_id = request.POST.get('id', '')
-
         mobile = request.POST.get('mobile', '')
         email = request.POST.get('email', '')
         office_phone = request.POST.get('office_phone', '')
@@ -136,27 +248,14 @@ class EditStaffView(View):
         # 修改的是自己的档案
         if staff_id == request.user.id:
             return HttpResponse('{"status":"success","msg":"编辑个人档案成功"}', content_type='application/json')
+
         return HttpResponse('{"status":"success","msg":"修改员工信息成功"}', content_type='application/json')
-
-
-# 通讯录 GET
-class AddressView(View):
-    def get(self, request):
-        # 筛除超级用户
-        all_staffs = UserProfile.objects.all().order_by('id')
-        staffs = []
-        for staff in all_staffs:
-            if not staff.is_superuser:
-                staffs.append(staff)
-
-        return render(request, 'user/address.html', {
-            'all_staffs': staffs
-        })
 
 
 # 人员权限管理 GET Ajax
 class PermView(View):
     def get(self, request):
+
         # 筛除超级用户
         all_staffs = UserProfile.objects.all().order_by('id')
         staffs = []
@@ -169,100 +268,30 @@ class PermView(View):
         })
 
     def post(self, request):
-        # 根据用户名和权限值 重设权限
+
+        # 获取表单信息
         staff_id = request.POST.get('id', '')
         permission = request.POST.get('permission', '')
+
+        # 重设权限
         user = UserProfile.objects.get(id=staff_id)
         user.permission = permission
         user.save()
+
         if user.permission == permission:
             return HttpResponse('{"status":"success","msg":"修改权限成功"}', content_type='application/json')
         return HttpResponse('{"status":"fail","msg":"修改权限失败"}', content_type='application/json')
 
 
-# 员工信息管理 GET
-class StaffView(View):
-    def get(self, request):
-        # 筛除超级用户
-        all_staffs = UserProfile.objects.all().order_by('id')
-        staffs = []
-        for staff in all_staffs:
-            if not staff.is_superuser:
-                staffs.append(staff)
-
-        return render(request, 'user/staff.html', {
-            'all_staffs': staffs
-        })
-
-
-# 添加新员工 GET POST
-class AddStaffView(View):
-    def get(self, request):
-        departments = Department.objects.all()
-        return render(request, 'user/add_staff.html', {
-            'departments': departments
-        })
-
-    def post(self, request):
-        register_form = AddStaffForm(request.POST)
-        register_form.is_valid()
-        if register_form.is_valid():
-            user_name = request.POST.get('username', '')
-
-            if UserProfile.objects.filter(username=user_name):
-                return render(request, 'user/add_staff.html', {'register_form': register_form, 'msg': '登录名已经存在！'})
-
-            pass_word = request.POST.get('password', '')
-            pass_word_repeat = request.POST.get('password_repeat', '')
-            if pass_word != pass_word_repeat:
-                return render(request, 'user/add_staff.html', {'register_form': register_form, 'msg': '两次输入的密码不一致！'})
-
-            name = request.POST.get('name', '')
-            sex = request.POST.get('sex', '')
-            department_name = request.POST.get('department', '')
-            department = Department.objects.get(name=department_name)
-            job = request.POST.get('job', '')
-            induction_time = request.POST.get('induction_time', '')
-            number = request.POST.get('number', '')
-            permission = request.POST.get('permission', '')
-
-            user_profile = UserProfile()
-            user_profile.username = user_name
-            user_profile.name = name
-            user_profile.sex = sex
-            user_profile.department = department
-            user_profile.job = job
-            user_profile.induction_time = induction_time
-            user_profile.number = number
-            user_profile.permission = permission
-            user_profile.is_active = True
-            user_profile.password = make_password(pass_word)
-            user_profile.save()
-
-            # 筛除超级用户
-            all_staffs = UserProfile.objects.all().order_by('id')
-            staffs = []
-            for staff in all_staffs:
-                if not staff.is_superuser:
-                    staffs.append(staff)
-
-            # 返回员工信息页
-            return render(request, 'user/list.html', {
-                'staffs': staffs
-            })
-        else:
-            return render(request, 'user/add_staff.html', {
-                'msg': '表单信息填写不合法'
-            })
-
-
-# 删除员工 Ajax × 405错误
+# 删除员工 Ajax
 class DeleteStaffView(View):
     def post(self, request):
-        # 根据 id 删除员工
+        # 获取表单信息
         staff_id = request.POST.get('staff_id', '')
-        user = UserProfile.objects.get(id=staff_id)
-        user.delete()
+
+        # 删除员工
+        staff = UserProfile.objects.get(id=staff_id)
+        staff.delete()
 
         if UserProfile.objects.filter(id=staff_id):
             return HttpResponse('{"status":"fail","msg":"删除员工信息失败"}', content_type='application/json')
@@ -275,19 +304,26 @@ class ResetView(View):
         return render(request, 'user/reset.html')
 
     def post(self, request):
-        # 根据用户名和新密码 重设密码
+        # 获取表单信息
         user_name = request.POST.get('username', '')
         password = request.POST.get('new_password', '')
-        user = UserProfile.objects.filter(username=user_name)
-        if not len(user):
-            return HttpResponse('{"status":"fail","msg":"用户不存在"}', content_type='application/json')
-        encrypt_password = make_password(password)
-        user[0].password = encrypt_password
-        user[0].save()
+        password_repeat = request.POST.get('new_password_repeat', '')
 
-        if user[0].password == encrypt_password:
-            return HttpResponse('{"status":"success","msg":"修改密码成功"}', content_type='application/json')
-        return HttpResponse('{"status":"fail","msg":"修改密码失败"}', content_type='application/json')
+        # 两次密码一致
+        if password == password_repeat:
+            # 根据用户名和新密码 重设密码
+            user = UserProfile.objects.filter(username=user_name)
+            if not len(user):
+                return HttpResponse('{"status":"fail","msg":"用户不存在"}', content_type='application/json')
+            encrypt_password = make_password(password)
+            user[0].password = encrypt_password
+            user[0].save()
+
+            if user[0].password == encrypt_password:
+                return HttpResponse('{"status":"success","msg":"修改密码成功"}', content_type='application/json')
+            return HttpResponse('{"status":"fail","msg":"修改密码失败"}', content_type='application/json')
+        else:
+            return HttpResponse('{"status":"fail","msg":"两次密码填写不一致"}', content_type='application/json')
 
 
 # 更改密码 GET Ajax
@@ -299,13 +335,19 @@ class ChangeView(View):
         # 根据用户名和新密码 重设密码
         user_name = request.POST.get('username', '')
         password = request.POST.get('new_password', '')
-        user = UserProfile.objects.get(username=user_name)
-        # if user is None:
-        #     return HttpResponse('{"status":"fail","msg":"用户不存在"}', content_type='application/json')
-        encrypt_password = make_password(password)
-        user.password = encrypt_password
-        user.save()
+        password_repeat = request.POST.get('new_password_repeat', '')
 
-        if user.password == encrypt_password:
-            return HttpResponse('{"status":"success","msg":"修改密码成功"}', content_type='application/json')
-        return HttpResponse('{"status":"fail","msg":"修改密码失败"}', content_type='application/json')
+        # 两次密码一致
+        if password == password_repeat:
+            user = UserProfile.objects.get(username=user_name)
+            # if user is None:
+            #     return HttpResponse('{"status":"fail","msg":"用户不存在"}', content_type='application/json')
+            encrypt_password = make_password(password)
+            user.password = encrypt_password
+            user.save()
+
+            if user.password == encrypt_password:
+                return HttpResponse('{"status":"success","msg":"修改密码成功"}', content_type='application/json')
+            return HttpResponse('{"status":"fail","msg":"修改密码失败"}', content_type='application/json')
+        else:
+            return HttpResponse('{"status":"fail","msg":"两次密码填写不一致"}', content_type='application/json')

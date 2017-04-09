@@ -13,9 +13,9 @@ class BaseSetting(object):
 
 # 修改 xadmin 的默认显示
 class GlobalSettings(object):
-    site_title = '武汉中科科创工程检测有限公司后台管理系统'
+    site_title = '武汉中科科创工程检测有限公司-后台管理系统'
     site_footer = '武汉中科科创工程检测有限公司'
-    menu_style = 'accordion'
+    # menu_style = 'accordion'
 
 
 # 部门信息Admin
