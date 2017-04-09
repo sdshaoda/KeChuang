@@ -19,6 +19,14 @@
         </div>
 
         <div class="form-group">
+            <label for="file_num" class="col-md-2 col-sm-2 control-label required">档案编号：</label>
+            <div class="col-md-5 col-sm-10">
+                <input type="text" class="form-control" id="file_num" name="file_num" placeholder="档案编号"
+                       value="{{ equ.file_num }}" required>
+            </div>
+        </div>
+
+        <div class="form-group">
             <label for="equ_type_id" class="col-md-2 col-sm-2 control-label required">设备类型：</label>
             <div class="col-md-5 col-sm-10">
                 <select class="form-control" id="equ_type_id" name="equ_type_id" required>
@@ -99,13 +107,13 @@
 
         {#添加设备#}
         <button type="submit" class="btn btn-primary col-md-7"
-                style="display: {% ifequal type 'add' %}block{% else %}none{% endifequal %}">确定
+                style="margin-bottom: 100px; display: {% ifequal type 'add' %}block{% else %}none{% endifequal %}">确定
         </button>
     </form>
 
     {#编辑设备#}
     <a href="javascript:void(0);" role="button" id="edit_equ" class="btn btn-primary col-md-7"
-       style="display: {% ifequal type 'edit' %}block{% else %}none{% endifequal %}">确定</a>
+       style="margin-bottom: 100px; display: {% ifequal type 'edit' %}block{% else %}none{% endifequal %}">确定</a>
 {% endblock %}
 
 {% block js %}

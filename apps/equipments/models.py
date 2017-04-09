@@ -6,7 +6,6 @@ from datetime import datetime,date
 from django.db import models
 
 from projects.models import Project
-from users.models import UserProfile
 
 
 # 设备类型
@@ -61,11 +60,15 @@ class Equipment(models.Model):
 
     # 设备负责人
     def get_person(self):
-        return UserProfile.objects.get(id=self.equ_person_id)
+        return self.equipmentperson_set.get(equipment_id=self.id)
 
     # 设备保管人
     def get_staff(self):
-        return UserProfile.objects.get(id=self.equ_staff_id)
+        return self.equipmentstaff_set.get(equipment_id=self.id)
+
+    # 正在审核中的 设备申请
+    def get_applys(self):
+        return self.equipmentapply_set.filter(equipment_id=self.id, status='0')
 
     class Meta:
         verbose_name = u'设备信息'

@@ -23,8 +23,8 @@
             {% for equ in equ_applys %}
                 <tr>
                     <td>{{ equ.id }}</td>
-                    <td>{{ equ.equipment.equi_name }}</td>
-                    <td>{{ equ.equipment.get_equi_status_display }}</td>
+                    <td>{{ equ.equipment.equ_name }}</td>
+                    <td>{{ equ.equipment.get_equ_status_display }}</td>
                     <td>{{ equ.person.name }}</td>
                     <td>{{ equ.get_type_display }}</td>
                     <td>{{ equ.use_date }}</td>

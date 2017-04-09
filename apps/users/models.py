@@ -70,6 +70,14 @@ class UserProfile(AbstractUser):
     def get_equipment_staff(self):
         return self.equipmentstaff_set.filter(id=self.id)
 
+    # 设备申请
+    def get_apply(self):
+        return self.equipmentapply_set.filter(person_id=self.id)
+
+    # 设备审核
+    # def get_verify(self):
+    #     return EquipmentApply.objects.filter(equipment_person_id=self.id)
+
     class Meta:
         verbose_name = u'职工信息'
         verbose_name_plural = verbose_name

@@ -5,8 +5,6 @@ from datetime import datetime, date
 
 from django.db import models
 
-from users.models import UserProfile
-
 
 # 工程类型
 class ProjectType(models.Model):
@@ -73,28 +71,27 @@ class Project(models.Model):
 
     # 工程负责人
     def get_pro_person(self):
-        # return self.projectperson_set.get(id=self.id)
-        return UserProfile.objects.get(id=self.pro_person_id)
+        return self.projectperson_set.get(project_id=self.id)
 
     # 法人委托
     def get_wt_person(self):
-        return UserProfile.objects.get(id=self.wt_person_id)
+        return self.projectperson_set.get(project_id=self.id)
 
     # 合同签署人
     def get_ht_person(self):
-        return UserProfile.objects.get(id=self.ht_person_id)
+        return self.projectperson_set.get(project_id=self.id)
 
     # 工程成员
     def get_members(self):
-        return self.projectmember_set.filter(id=self.id)
+        return self.projectmember_set.filter(project_id=self.id)
 
     # 工程设备
     def get_equipments(self):
-        return self.projectequipment_set.filter(id=self.id)
+        return self.projectequipment_set.filter(project_id=self.id)
 
     # 工程变更记录
     def get_change(self):
-        return self.projectchange_set.filter(id=self.id).order_by('-add-time')
+        return self.projectchange_set.filter(project_id=self.id).order_by('-add-time')
 
     class Meta:
         verbose_name = u'工程信息'

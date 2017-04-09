@@ -88,7 +88,7 @@ class ProjectApply(models.Model):
 # 设备负责人
 class EquipmentPerson(models.Model):
     equipment = models.ForeignKey(Equipment, verbose_name=u'设备名称')
-    person = models.ForeignKey(UserProfile, verbose_name=u'负责人')
+    person = models.ForeignKey(UserProfile, verbose_name=u'负责人', null=True, blank=True)
 
     remark = models.CharField(max_length=200, verbose_name=u'备注', null=True, blank=True)
 

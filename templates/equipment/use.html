@@ -10,17 +10,17 @@
     <form class="form-horizontal" method="post" action="{% url 'equ:equ_use' %}">
 
         <!-- 设备信息 -->
-        <input type="hidden" id="equi_id" name="equi_id" value="{{ equ.id }}">
+        <input type="hidden" id="equ_id" name="equ_id" value="{{ equ.id }}">
         <!-- 当前用户 -->
         <input type="hidden" id="person_id" name="person_id" value="{{ request.user.id }}">
         <!-- 设备负责人 -->
         <input type="hidden" id="equipment_person_id" name="equipment_person_id" value="{{ equ.get_person.person.id }}">
 
         <div class="form-group">
-            <label for="equi_name" class="col-md-2 col-sm-2 control-label required">设备名称：</label>
+            <label for="equ_name" class="col-md-2 col-sm-2 control-label required">设备名称：</label>
             <div class="col-md-5 col-sm-10">
-                <input type="text" class="form-control" id="equi_name" name="equi_name" placeholder="设备名称"
-                       value="{{ equ.equi_name }}" required disabled>
+                <input type="text" class="form-control" id="equ_name" name="equ_name" placeholder="设备名称"
+                       value="{{ equ.equ_name }}" required disabled>
             </div>
         </div>
 

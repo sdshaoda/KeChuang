@@ -4,7 +4,7 @@ from django.shortcuts import render
 from django.views.generic import View
 
 from equipments.models import Equipment, EquipmentType
-from operation.models import EquipmentApply
+from operation.models import EquipmentApply, EquipmentStaff, EquipmentPerson
 from users.models import UserProfile
 
 
@@ -12,8 +12,7 @@ from users.models import UserProfile
 class ListView(View):
     def get(self, request):
 
-        # 获取所有设备信息，根据添加时间排序
-        equs = Equipment.objects.all().order_by('-add_time')
+        equs = Equipment.objects.all()
 
         return render(request, 'equipment/list.html', {
             'equs': equs
@@ -24,8 +23,7 @@ class ListView(View):
 class InfoView(View):
     def get(self, request):
 
-        # 获取所有设备信息，根据添加时间排序
-        equs = Equipment.objects.all().order_by('-add_time')
+        equs = Equipment.objects.all()
 
         return render(request, 'equipment/info.html', {
             'equs': equs
@@ -56,6 +54,7 @@ class AddView(View):
 
         # 获取表单信息
         equ_name = request.POST.get('equ_name', '')
+        file_num = request.POST.get('file_num', '')
         equ_type_id = request.POST.get('equ_type_id', '')
         equ_person_id = request.POST.get('equ_person_id', '')
         equ_num = request.POST.get('equ_num', '')
@@ -70,6 +69,7 @@ class AddView(View):
         equipment.equ_type_id = equ_type_id
         equipment.equ_person_id = equ_person_id
         equipment.equ_name = equ_name
+        equipment.file_num = file_num
         equipment.equ_num = equ_num
         equipment.equ_status = equ_status
         equipment.effect_date = effect_date
@@ -83,21 +83,21 @@ class AddView(View):
         equipment.revert_date = None    # 归还时间
         equipment.save()
 
-        # 初始化 设备保管人
-        # equipment_staff = EquipmentStaff()
-        # equipment_staff.equipment = equipment
-        # equipment_staff.person = None
-        # equipment_staff.save()
-
         # 初始化 设备负责人
-        # equipment_person = EquipmentPerson()
-        # equipment_person.equipment = equipment
-        # # 若用户 id 存在
-        # if UserProfile.objects.filter(id=equi_person_id):
-        #     equipment_person.person = UserProfile.objects.get(id=equi_person_id)
-        # else:
-        #     equipment_person.person = None
-        # equipment_person.save()
+        equipment_person = EquipmentPerson()
+        equipment_person.equipment = equipment
+        # 若用户存在
+        if UserProfile.objects.filter(id=equ_person_id):
+            equipment_person.person_id = equ_person_id
+        else:
+            equipment_person.person_id = None
+        equipment_person.save()
+
+        # 初始化 设备保管人
+        equipment_staff = EquipmentStaff()
+        equipment_staff.equipment = equipment
+        equipment_staff.person = None
+        equipment_staff.save()
 
         # 获取所有设备信息，根据添加时间排序
         equs = Equipment.objects.all().order_by('-add_time')
@@ -138,8 +138,9 @@ class EditEquView(View):
     def post(self, request):
 
         # 获取表单信息
-        equ_id = request.POST.get('equi_id', '')
+        equ_id = request.POST.get('equ_id', '')
         equ_name = request.POST.get('equ_name', '')
+        file_num = request.POST.get('file_num', '')
         equ_type_id = request.POST.get('equ_type_id', '')
         equ_person_id = request.POST.get('equ_person_id', '')
         equ_num = request.POST.get('equ_num', '')
@@ -155,6 +156,7 @@ class EditEquView(View):
         equipment.equ_person_id = equ_person_id
         equipment.equ_name = equ_name
         equipment.equ_num = equ_num
+        equipment.file_num = file_num
         equipment.equ_status = equ_status
         equipment.effect_date = effect_date
         equipment.equ_money = equ_money
@@ -163,10 +165,10 @@ class EditEquView(View):
         equipment.save()
 
         # 更改 设备负责人 信息
-        # equipment_person = EquipmentPerson.objects.get(equipment=equipment)
-        # if UserProfile.objects.filter(id=equi_person_id):
-        #     equipment_person.person = UserProfile.objects.get(id=equi_person_id)
-        # equipment_person.save()
+        equipment_person = EquipmentPerson.objects.get(equipment_id=equ_id)
+        if UserProfile.objects.filter(id=equ_person_id):
+            equipment_person.person_id = equ_person_id
+        equipment_person.save()
 
         return HttpResponse('{"status":"success","msg":"编辑设备资料成功"}', content_type='application/json')
 
@@ -188,7 +190,7 @@ class UseEquView(View):
     def post(self, request):
 
         # 获取表单信息
-        equ_id = request.POST.get('equi_id', '')
+        equ_id = request.POST.get('equ_id', '')
         person_id = request.POST.get('person_id', '')
         equipment_person_id = request.POST.get('equipment_person_id', '')
         use_date = request.POST.get('use_date', '')
@@ -197,8 +199,8 @@ class UseEquView(View):
 
         # 初始化 设备申请 信息
         equ_apply = EquipmentApply()
-        equ_apply.equipment = Equipment.objects.get(id=equ_id)
-        equ_apply.person = UserProfile.objects.get(id=person_id)
+        equ_apply.equipment_id = equ_id
+        equ_apply.person_id = person_id
         equ_apply.equipment_person_id = equipment_person_id
         equ_apply.type = '0'        # 申请类型为 领用
         equ_apply.status = '0'      # 审核状态为 审核中
@@ -222,15 +224,11 @@ class UseEquView(View):
 class ApplyView(View):
     def get(self, request):
 
-        # 获取当前用户
-        staff = UserProfile.objects.get(id=request.user.id)
-
         # 获取当前用户的 设备申请 信息
-        equ_applys = EquipmentApply.objects.filter(person=staff).order_by('-add_time')
+        equ_applys = EquipmentApply.objects.filter(person_id=request.user.id).order_by('-add_time')
 
         return render(request, 'equipment/apply.html', {
-            'equ_applys': equ_applys,
-            'staff': staff
+            'equ_applys': equ_applys
         })
 
 
@@ -265,15 +263,15 @@ class AgreeEquView(View):
             # 审核通过，修改设备相关信息
             equ = equ_apply.equipment
             equ.use_status = '1'                    # 设备使用状态设为 已领用
-            equ.equ_staff_id = equ_apply.person_id
+            equ.equ_staff_id = equ_apply.person_id  # 设备保管人
             equ.use_date = equ_apply.use_date       # 将设备申请中的信息放入设备信息中
             equ.revert_date = equ_apply.revert_date
             equ.save()
 
             # 修改 设备保管人 信息
-            # equ_staff = EquipmentStaff.objects.get(equipment=equ)
-            # equ_staff.person = equ_apply.person
-            # equ_staff.save()
+            equ_staff = EquipmentStaff.objects.get(equipment=equ)
+            equ_staff.person = equ_apply.person
+            equ_staff.save()
 
             return HttpResponse('{"status":"success","msg":"同意设备领用申请操作成功"}', content_type='application/json')
 
@@ -292,9 +290,9 @@ class AgreeEquView(View):
             equ.save()
 
             # 修改 设备保管人 信息
-            # equ_staff = EquipmentStaff.objects.get(equipment=equ)
-            # equ_staff.person = None                 # 删除设备保管人中的信息
-            # equ_staff.save()
+            equ_staff = EquipmentStaff.objects.get(equipment=equ)
+            equ_staff.person = None                 # 删除设备保管人中的信息
+            equ_staff.save()
 
             return HttpResponse('{"status":"success","msg":"同意设备归还申请操作成功"}', content_type='application/json')
 
@@ -329,11 +327,6 @@ class RevertView(View):
     def get(self, request):
 
         # 获取设备保管人为当前用户的 设备信息
-        # equipment_staffs = EquipmentStaff.objects.filter(person_id=request.user.id).order_by('-add_time')
-        # equs = []
-        # for equipment_staff in equipment_staffs:
-        #     equs.append(equipment_staff.equipment)
-
         equs = Equipment.objects.filter(equ_staff_id=request.user.id)
 
         return render(request, 'equipment/revert.html', {
@@ -346,7 +339,7 @@ class RevertEquView(View):
     def post(self, request):
 
         # 获取表单信息
-        equ_id = request.POST.get('equi_id', '')
+        equ_id = request.POST.get('equ_id', '')
         person_id = request.POST.get('person_id', '')
         equipment_person_id = request.POST.get('equipment_person_id', '')
         use_date = request.POST.get('use_date', '')
@@ -354,8 +347,8 @@ class RevertEquView(View):
 
         # 初始化 设备申请 信息
         equ_apply = EquipmentApply()
-        equ_apply.equipment = Equipment.objects.get(id=equ_id)
-        equ_apply.person = UserProfile.objects.get(id=person_id)
+        equ_apply.equipment_id = equ_id
+        equ_apply.person_id = person_id
         equ_apply.equipment_person_id = equipment_person_id     # 设备负责人id
         equ_apply.type = '1'                                    # 申请类型为 归还
         equ_apply.status = '0'                                  # 审核状态为 审核中

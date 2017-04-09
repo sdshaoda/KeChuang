@@ -13,6 +13,8 @@
             <tr>
                 <th>#</th>
                 <th>设备名称</th>
+                <th>档案编号</th>
+                <th>设备负责人</th>
                 <th>领用时间</th>
                 <th>应还时间</th>
                 <th>操作</th>
@@ -20,12 +22,14 @@
             {% for equ in equs %}
                 <tr>
                     <td>{{ equ.id }}</td>
-                    <td>{{ equ.equi_name }}</td>
+                    <td>{{ equ.equ_name }}</td>
+                    <td>{{ equ.file_num }}</td>
+                    <td>{{ equ.get_person.person.name }}</td>
                     <td>{{ equ.use_date }}</td>
                     <td>{{ equ.revert_date }}</td>
                     <td>
                         <form action="">
-                            <input type="hidden" name="equi_id" value="{{ equ.id }}">
+                            <input type="hidden" name="equ_id" value="{{ equ.id }}">
                             <input type="hidden" name="person_id" value="{{ request.user.id }}">
                             <input type="hidden" name="equipment_person_id" value="{{ equ.get_person.person.id }}">
                             <input type="hidden" name="use_date" value="{{ equ.use_date|date:"Y-m-d" }}">

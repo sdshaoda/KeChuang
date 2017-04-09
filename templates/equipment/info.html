@@ -51,14 +51,15 @@
             {% for equ in equs %}
                 <tr>
                     <td>{{ equ.id }}</td>
-                    <td>{{ equ.equi_name }}</td>
+                    <td>{{ equ.equ_name }}</td>
                     <td>{{ equ.file_num }}</td>
-                    <td>{{ equ.equi_num }}</td>
+                    <td>{{ equ.equ_num }}</td>
                     <td>
                         {% if equ.get_person.person %}
                             {{ equ.get_person.person.name }}
                         {% else %}
                             未设置
+                            {{ equ.get_person }}
                         {% endif %}
                     </td>
                     <td>
@@ -75,9 +76,9 @@
                             仓库
                         {% endif %}
                     </td>
-                    <td>{{ equ.get_equi_status_display }}</td>
+                    <td>{{ equ.get_equ_status_display }}</td>
                     <td>{{ equ.effect_date }}</td>
-                    <td>{{ equ.equi_type }}</td>
+                    <td>{{ equ.equ_type }}</td>
                     <td><a href="{% url 'equ:edit' equ.id %}">编辑</a></td>
                 </tr>
             {% endfor %}

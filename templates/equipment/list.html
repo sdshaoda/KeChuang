@@ -37,6 +37,7 @@
             <tr>
                 <th>#</th>
                 <th>设备名称</th>
+                <th>档案编号</th>
                 <th>设备负责人</th>
                 <th>设备状态</th>
                 <th>保管人</th>
@@ -47,7 +48,8 @@
             {% for equ in equs %}
                 <tr>
                     <td>{{ equ.id }}</td>
-                    <td>{{ equ.equi_name }}</td>
+                    <td>{{ equ.equ_name }}</td>
+                    <td>{{ equ.file_num }}</td>
                     <td>
                         {% if equ.get_person.person %}
                             {{ equ.get_person.person.name }}
@@ -55,7 +57,7 @@
                             未设置
                         {% endif %}
                     </td>
-                    <td>{{ equ.get_equi_status_display }}</td>
+                    <td>{{ equ.get_equ_status_display }}</td>
                     <td>
                         {% if equ.get_staff.person %}
                             {{ equ.get_staff.person.name }}
@@ -78,7 +80,7 @@
                         {% endif %}
                     </td>
                     <td>
-                        {% if equ.get_staff.person %}
+                        {% if equ.use_status == '1' %}
                             设备已被领用
                         {% elif equ.get_person.person %}
                             <a href="{% url 'equ:use' equ.id %}">申请领用</a>
