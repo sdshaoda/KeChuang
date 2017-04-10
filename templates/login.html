@@ -5,9 +5,7 @@
     <title>登录 - 武汉中科科创工程检测有限公司</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
-    {#<link rel='stylesheet' href='/static/css/login.css'/>#}
     <script src="{% static 'js/jquery.min.js' %}"></script>
-    {#<script src="{% static 'js/bootstrap.js' %}"></script>#}
     <style>
         {#登录框#}
         .login {
@@ -80,11 +78,13 @@
     <div id="msg">{{ msg }}</div>
 </div>
 
-<p id="recommend" style="text-align:center;">我们推荐您使用最新的<a href="https://www.baidu.com/s?ie=utf-8&f=8&rsv_bp=0&rsv_idx=1&tn=baidu&wd=chrome&rsv_pq=849f379300025f64&rsv_t=b809hd6EdOFyGwiXI0IQOVbVfDf4SXjjlbTa%2BGtdHDNO%2FNvQlCr3M8jSh74&rqlang=cn&rsv_enter=1&rsv_sug3=4&rsv_sug1=4&rsv_sug7=100" target="_blank">Chrome浏览器</a>，以获得最佳的用户体验</p>
+<p id="recommend" style="text-align:center;">我们推荐您使用最新的<a
+        href="https://www.baidu.com/s?ie=utf-8&f=8&rsv_bp=0&rsv_idx=1&tn=baidu&wd=chrome&rsv_pq=849f379300025f64&rsv_t=b809hd6EdOFyGwiXI0IQOVbVfDf4SXjjlbTa%2BGtdHDNO%2FNvQlCr3M8jSh74&rqlang=cn&rsv_enter=1&rsv_sug3=4&rsv_sug1=4&rsv_sug7=100"
+        target="_blank">Chrome浏览器</a>，以获得最佳的用户体验</p>
 
 <script>
-    if(navigator.userAgent.indexOf('Chrome/5') !== -1){
-        recommend.style.display = 'none'
+    if (navigator.userAgent.indexOf('Chrome/5') !== -1) {
+        $('#recommend').remove()
     }
 </script>
 
@@ -116,7 +116,7 @@
 <script>
     $(document).ready(function () {
 
-{#        模态框#}
+        {#模态框#}
         setInterval(function () {
             if ($('#msg').text() === '') {
                 $('#dialog').slideUp()
@@ -125,14 +125,14 @@
             }
         }, 2000)
 
-{#        点击隐藏模态框#}
+        {#点击隐藏模态框#}
         $('html').click(function () {
             $('#dialog').slideUp()
             $('#msg').text('')
         })
 
 
-        //刷新验证码
+        {#刷新验证码#}
         function refresh_captcha(event) {
             $.get("/captcha/refresh/?" + Math.random(), function (result) {
                 $('#' + event.data.form_id + ' .captcha').attr("src", result.image_url);

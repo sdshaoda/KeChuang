@@ -14,34 +14,40 @@
 {% endblock %}
 
 {% block content %}
-    {#    <h2>系统使用权限设置</h2>#}
-    {##}
-    {#    <div class="handle">#}
-    {#        <div class="filter">#}
-    {#            筛选：#}
-    {#            <select>#}
-    {#                <option value="">姓名</option>#}
-    {#                <option value="">部门</option>#}
-    {#                <option value="">职务</option>#}
-    {#            </select>#}
-    {#            <input type="text" name="" value="">#}
-    {#            <button type="button">确定</button>#}
-    {#        </div>#}
-    {#        <div class="sort">#}
-    {#            排序：#}
-    {#            <select>#}
-    {#                <option value="">姓名</option>#}
-    {#                <option value="">部门</option>#}
-    {#                <option value="">职务</option>#}
-    {#            </select>#}
-    {#            <select name="" id="">#}
-    {#                <option value="">从高到底</option>#}
-    {#                <option value="">从底到高</option>#}
-    {#            </select>#}
-    {#            <button type="button">确定</button>#}
-    {#        </div>#}
-    {#    </div>#}
 
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+
+            <form id="search" method="get" class="navbar-form navbar-left col-md-6 col-sm-6 col-xs-12"
+                  style="border: none;">
+                <div class="input-group">
+                    <input type="text" id="keywords" name="keywords" class="form-control" placeholder="搜索职工信息">
+                    <span class="input-group-btn">
+                        <button class="btn btn-default" type="submit">搜索</button>
+                    </span>
+                </div>
+            </form>
+
+            <form method="get" class="navbar-form navbar-left col-md-6 col-sm-6 col-xs-12" style="border: none;">
+                <div class="input-group">
+                    <select class="form-control" name="category" id="category">
+                        <option value="staff_id">职工ID</option>
+                        <option value="department_name">部门</option>
+                        <option value="job">职务</option>
+                        <option value="permission">系统权限</option>
+                        <option value="add_time">添加时间</option>
+                    </select>
+                    <span class="input-group-btn">
+                        <button name="mode" value="positive" class="btn btn-default" type="submit">正序</button>
+                    </span>
+                    <span class="input-group-btn">
+                        <button name="mode" value="negative" class="btn btn-default" type="submit">倒序</button>
+                    </span>
+                </div>
+            </form>
+
+        </div>
+    </nav>
 
     <div class="table-responsive">
         <table class="table table-hover">
@@ -51,13 +57,13 @@
                 <th>部门</th>
                 <th>职务</th>
                 <th>登录名</th>
-                <th>普通员工</th>
-                <th>部门主任</th>
-                <th>公司领导</th>
+                <th>检测员</th>
+                <th>部门负责</th>
+                <th>公司负责</th>
                 <th>系统管理员</th>
                 <th>操作</th>
             </tr>
-            {% for staff in all_staffs %}
+            {% for staff in staffs %}
                 <form action="">
                     <tr class="perm_tr">
                         <td>{{ staff.id }}</td>
@@ -92,6 +98,7 @@
 {% block js %}
     <script>
         $('.change_permission').click(function () {
+
             var data = {}
             data.id = $(this).val()
             var permission = ''
@@ -115,7 +122,7 @@
                 data: data,
                 success: function (data) {
                     if (data.status === 'success') {
-                        // 修改 class ，只让让当前权限为 'current-perm'
+{#修改 class ，只让让当前权限为 'current-perm'#}
                         for (var i = 0, l = inputRadio.length; i < l; i++) {
                             if (inputRadio[i].value === permission) {
                                 inputRadio[i].className = 'current-perm'

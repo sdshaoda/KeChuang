@@ -182,6 +182,14 @@ class AddressView(View):
             staffs = staffs.order_by('sex')
         elif category == 'sex' and mode == 'negative':
             staffs = staffs.order_by('-sex')
+        elif category == 'mobile' and mode == 'positive':
+            staffs = staffs.order_by('mobile')
+        elif category == 'mobile' and mode == 'negative':
+            staffs = staffs.order_by('-mobile')
+        elif category == 'email' and mode == 'positive':
+            staffs = staffs.order_by('email')
+        elif category == 'email' and mode == 'negative':
+            staffs = staffs.order_by('-email')
         elif category == 'induction_time' and mode == 'positive':
             staffs = staffs.order_by('induction_time')
         elif category == 'induction_time' and mode == 'negative':
@@ -382,15 +390,56 @@ class EditStaffView(View):
 class PermView(View):
     def get(self, request):
 
-        # 筛除超级用户
-        all_staffs = UserProfile.objects.all().order_by('id')
-        staffs = []
-        for staff in all_staffs:
-            if not staff.is_superuser:
-                staffs.append(staff)
+        # 获取所有员工信息，过滤掉超级用户
+        staffs = UserProfile.objects.filter(is_superuser=0)
+
+        search_keywords = request.GET.get('keywords', '')
+        category = request.GET.get('category', '')
+        mode = request.GET.get('mode', '')
+
+        # 搜索
+        if search_keywords:
+            staffs = staffs.filter(Q(name__icontains=search_keywords) |
+                                   Q(username__icontains=search_keywords) |
+                                   Q(id__icontains=search_keywords) |
+                                   Q(department_name__icontains=search_keywords) |
+                                   Q(sex__icontains=search_keywords) |
+                                   Q(job__icontains=search_keywords) |
+                                   Q(permission__icontains=search_keywords) |
+                                   Q(number__icontains=search_keywords) |
+                                   Q(mobile__icontains=search_keywords) |
+                                   Q(email__icontains=search_keywords) |
+                                   Q(office_phone__icontains=search_keywords) |
+                                   Q(home_phone__icontains=search_keywords) |
+                                   Q(home_address__icontains=search_keywords) |
+                                   Q(xueli__icontains=search_keywords) |
+                                   Q(zhicheng__icontains=search_keywords) |
+                                   Q(zige__icontains=search_keywords))
+
+        # 排序
+        if category == 'staff_id' and mode == 'positive':
+            staffs = staffs.order_by('id')
+        elif category == 'staff_id' and mode == 'negative':
+            staffs = staffs.order_by('-id')
+        elif category == 'department_name' and mode == 'positive':
+            staffs = staffs.order_by('department_name')
+        elif category == 'department_name' and mode == 'negative':
+            staffs = staffs.order_by('-department_name')
+        elif category == 'job' and mode == 'positive':
+            staffs = staffs.order_by('job')
+        elif category == 'job' and mode == 'negative':
+            staffs = staffs.order_by('-job')
+        elif category == 'permission' and mode == 'positive':
+            staffs = staffs.order_by('permission')
+        elif category == 'permission' and mode == 'negative':
+            staffs = staffs.order_by('-permission')
+        elif category == 'add_time' and mode == 'positive':
+            staffs = staffs.order_by('add_time')
+        elif category == 'add_time' and mode == 'negative':
+            staffs = staffs.order_by('-add_time')
 
         return render(request, 'user/permission.html', {
-            'all_staffs': staffs
+            'staffs': staffs
         })
 
     def post(self, request):

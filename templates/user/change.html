@@ -7,34 +7,38 @@
 
 {% block content %}
 
-{#    <h2>修改个人密码</h2>#}
-
     <form class="form-horizontal" id="change_form" action="">
+
         <input type="hidden" name="username" value="{{ request.user.username }}">
 
         <div class="form-group">
             <label for="old_password" class="col-md-2 col-sm-2 control-label required">原始密码：</label>
             <div class="col-md-5 col-sm-10">
-                <input type="text" class="form-control" id="old_password" name="old_password" placeholder="原始密码" required>
+                <input type="text" class="form-control" id="old_password" name="old_password" placeholder="原始密码"
+                       required>
             </div>
         </div>
 
         <div class="form-group">
             <label for="new_password" class="col-md-2 col-sm-2 control-label required">新密码：</label>
             <div class="col-md-5 col-sm-10">
-                <input type="text" class="form-control" id="new_password" name="new_password" placeholder="新密码" required>
+                <input type="text" class="form-control" id="new_password" name="new_password" placeholder="新密码"
+                       required>
             </div>
         </div>
 
         <div class="form-group">
             <label for="new_password_repeat" class="col-md-2 col-sm-2 control-label required">重复密码：</label>
             <div class="col-md-5 col-sm-10">
-                <input type="text" class="form-control" id="new_password_repeat" name="new_password_repeat" placeholder="重复密码" required>
+                <input type="text" class="form-control" id="new_password_repeat" name="new_password_repeat"
+                       placeholder="重复密码" required>
             </div>
         </div>
     </form>
 
-        <button style="margin-bottom: 100px;" type="button" value="{{ request.user.username }}" id="change" class="btn btn-primary col-md-7 col-sm-12 col-xs-12">确定</button>
+    <button style="margin-bottom: 100px;" type="button" value="{{ request.user.username }}" id="change"
+            class="btn btn-primary col-md-7 col-sm-12 col-xs-12">确定
+    </button>
 {% endblock %}
 
 
@@ -63,7 +67,6 @@
                 }
             })
         })
-
     </script>
 {% endblock %}
 

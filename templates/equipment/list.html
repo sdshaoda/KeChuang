@@ -9,7 +9,7 @@
 
     <nav class="navbar navbar-default">
         <div class="container-fluid">
-            <form id="search" method="get" class="navbar-form navbar-left col-md-4 col-sm-5 col-xs-5"
+            <form id="search" method="get" class="navbar-form navbar-left col-md-6 col-sm-6 col-xs-12"
                   style="border: none;">
                 <div class="input-group">
                     <input type="text" id="keywords" name="keywords" class="form-control" placeholder="搜索设备信息">
@@ -19,7 +19,7 @@
                 </div>
             </form>
 
-            <form method="get" class="navbar-form navbar-left col-md-6 col-sm-6 col-xs-7" style="border: none;">
+            <form method="get" class="navbar-form navbar-left col-md-6 col-sm-6 col-xs-12" style="border: none;">
                 <div class="input-group">
                     <select class="form-control" name="category" id="category">
                         <option value="equ_id">设备ID</option>
@@ -92,8 +92,10 @@
                         {% endif %}
                     </td>
                     <td>
-                        {% if equ.use_status == '1' %}
+                        {% if equ.use_status == '已领用' %}
                             设备已被领用
+                        {% elif equ.equ_status == '停用' %}
+                            设备停用
                         {% elif equ.get_person.person %}
                             <a href="{% url 'equ:use' equ.id %}">申请领用</a>
                         {% else %}

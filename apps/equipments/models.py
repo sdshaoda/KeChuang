@@ -48,9 +48,9 @@ class Equipment(models.Model):
     buy_date = models.DateField(default=date.today, verbose_name=u'购买日期')
 
     # 设备领用信息
-    use_status = models.CharField(default='0', max_length=10, choices=(
-        ('0', u'未领用'),
-        ('1', u'已领用'),
+    use_status = models.CharField(default='未领用', max_length=10, choices=(
+        ('未领用', u'未领用'),
+        ('已领用', u'已领用'),
     ), verbose_name=u'使用状态')
     equ_staff_id = models.IntegerField(verbose_name=u'设备保管人id', null=True, blank=True)
     equ_staff = models.CharField(max_length=20, verbose_name=u'设备保管人', null=True, blank=True)

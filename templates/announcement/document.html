@@ -9,7 +9,7 @@
 
     <nav class="navbar navbar-default">
         <div class="container-fluid">
-            <form id="search" method="get" class="navbar-form navbar-left col-md-4 col-sm-5 col-xs-5"
+            <form id="search" method="get" class="navbar-form navbar-left col-md-6 col-sm-6 col-xs-12"
                   style="border: none;">
                 <div class="input-group">
                     <input type="text" id="keywords" name="keywords" class="form-control" placeholder="搜索公文信息">
@@ -19,7 +19,7 @@
                 </div>
             </form>
 
-            <form method="get" class="navbar-form navbar-left col-md-6 col-sm-6 col-xs-7" style="border: none;">
+            <form method="get" class="navbar-form navbar-left col-md-6 col-sm-6 col-xs-12" style="border: none;">
                 <div class="input-group">
                     <select class="form-control" name="category" id="category">
                         <option value="doc_id">公文ID</option>
@@ -57,7 +57,12 @@
                     <td>{{ doc.department.name }}</td>
                     <td>{{ doc.person }}</td>
                     <td><a href="{{ MEDIA_URL }}{{ doc.document }}" target="_blank">查看</a></td>
-                    <td><a class="delete_doc" data-value="{{ doc.id }}" href="javascript:void(0);">删除</a></td>
+                    {#公司负责 或 系统管理员 删除#}
+                    {% if request.user.permission == '公司负责' or request.user.permission == '系统管理员' %}
+                        <td>
+                            <a class="delete_doc" data-value="{{ doc.id }}" href="javascript:void(0);">删除</a>
+                        </td>
+                    {% endif %}
                 </tr>
             {% endfor %}
         </table>
@@ -81,7 +86,7 @@
                 },
                 success: function (data) {
                     if (data.status === 'success') {
-{#                        删除这一行#}
+                        {#                        删除这一行#}
                         $('#' + doc_id).remove()
                     }
                     $('#msg').text(data.msg)

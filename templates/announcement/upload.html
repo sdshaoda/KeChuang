@@ -7,7 +7,8 @@
 
 {% block content %}
 
-    <form class="form-horizontal" id="upload_form" method="post" enctype="multipart/form-data" action="{% url 'ann:doc_upload' %}">
+    <form class="form-horizontal" id="upload_form" method="post" enctype="multipart/form-data"
+          action="{% url 'ann:doc_upload' %}">
         <input type="hidden" name="person_id" value="{{ request.user.id }}">
 
         <div class="form-group">
@@ -28,6 +29,7 @@
             <label for="department_id" class="col-md-2 col-sm-2 control-label required">相关部门：</label>
             <div class="col-md-5 col-sm-10">
                 <select class="form-control" id="department_id" name="department_id" required>
+                    {#部门负责 只能上传至 本部门 或 全公司#}
                     {% for department in departments %}
                         <option value="{{ department.id }}"
                                 {% ifequal request.user.department department %}selected{% endifequal %}>
@@ -45,7 +47,9 @@
             </div>
         </div>
 
-        <button style="margin-bottom: 100px" type="button" id="upload" class="btn btn-primary col-md-7 col-sm-12 col-xs-12">上传公文</button>
+        <button style="margin-bottom: 100px" type="button" id="upload"
+                class="btn btn-primary col-md-7 col-sm-12 col-xs-12">上传公文
+        </button>
         {% csrf_token %}
     </form>
 {% endblock %}

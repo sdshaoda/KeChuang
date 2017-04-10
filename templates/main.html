@@ -5,11 +5,8 @@
     <title>{% block title %}首页{% endblock %} - 武汉中科科创工程检测有限公司</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
-    {#<link rel='stylesheet' href='/static/css/main.css'/>#}
     <script src="{% static 'js/jquery.min.js' %}"></script>
     <script src="{% static 'js/bootstrap.min.js' %}"></script>
-    {#<script src="/static/js/vue.js"></script>#}
-    {% block style %}{% endblock %}
     <style>
         a {
             display: block;
@@ -61,8 +58,12 @@
             background: #f00;
         }
     </style>
+
+    {% block style %}{% endblock %}
 </head>
+
 <body>
+
 <div id="dialog" class="col-md-7 col-sm-10 col-xs-11">
     <span id="close"></span>
     <div id="msg">{{ msg }}</div>
@@ -203,14 +204,16 @@
                 </div>
                 <div id="collapseFour" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingFour">
                     <div class="panel-body list-group">
+
                         <a href="{% url 'ann:list' %}" class="list-group-item">浏览公告</a>
                         {% if request.user.permission == '公司负责' or request.user.permission == '系统管理员' %}
                             <a href="{% url 'ann:publish' %}" class="list-group-item">发布公告</a>
                         {% endif %}
                         <a href="{% url 'ann:doc_list' %}" class="list-group-item">下载公文</a>
-                        {% if request.user.permission == '公司负责' or request.user.permission == '系统管理员' %}
+                        {% if request.user.permission == '部门负责' or request.user.permission == '公司负责' or request.user.permission == '系统管理员' %}
                             <a href="{% url 'ann:doc_upload' %}" class="list-group-item">上传公文</a>
                         {% endif %}
+
                     </div>
                 </div>
             </div>
@@ -226,12 +229,14 @@
                 </div>
                 <div id="collapseFive" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingFive">
                     <div class="panel-body list-group">
+
                         {% if request.user.permission == '公司负责' or request.user.permission == '系统管理员' %}
                             <a href="{% url 'user:permission' %}" class="list-group-item">人员权限管理</a>
                             <a href="{% url 'user:staff' %}" class="list-group-item">员工信息管理</a>
                             <a href="{% url 'user:reset' %}" class="list-group-item">员工密码修改</a>
                         {% endif %}
                         <a href="{% url 'user:change' %}" class="list-group-item">个人密码修改</a>
+
                     </div>
                 </div>
             </div>
@@ -246,8 +251,8 @@
                         </h4>
                     </div>
                 </div>
-                </div>
             {% endif %}
+        </div>
 
     </div>
     {#左侧导航栏结束#}
@@ -294,11 +299,7 @@
     {#面包屑#}
     $('ol.breadcrumb').html('<li>' + navHead + '</li><li class="active">' + navItem + '</li>')
 
-    {#初始化 sessionStorage#}
-    {#    sessionStorage.setItem('left-nav-head', '公告公文管理')#}
-    {#    sessionStorage.setItem('left-nav-item', '浏览公告')#}
-
-    // 左侧导航点击，保存到 sessionStorage
+    {#左侧导航点击，保存到 sessionStorage#}
     $('a.list-group-item').click(function () {
         {#获取导航头部文本内容#}
         var navHead = $(this).closest('.panel-collapse').prev().children().children().text().trim()
@@ -308,7 +309,7 @@
         sessionStorage.setItem('left-nav-item', navItem)
     })
 
-    // 显示时间
+    {#显示时间#}
     function showTime() {
         var time = new Date()
         var year = time.getFullYear()

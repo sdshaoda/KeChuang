@@ -9,7 +9,7 @@
 
     <nav class="navbar navbar-default">
         <div class="container-fluid">
-            <form id="search" method="get" class="navbar-form navbar-left col-md-4 col-sm-5 col-xs-5"
+            <form id="search" method="get" class="navbar-form navbar-left col-md-6 col-sm-6 col-xs-12"
                   style="border: none;">
                 <div class="input-group">
                     <input type="text" id="keywords" name="keywords" class="form-control" placeholder="搜索公告信息">
@@ -19,7 +19,7 @@
                 </div>
             </form>
 
-            <form method="get" class="navbar-form navbar-left col-md-6 col-sm-6 col-xs-7" style="border: none;">
+            <form method="get" class="navbar-form navbar-left col-md-6 col-sm-6 col-xs-12" style="border: none;">
                 <div class="input-group">
                     <select class="form-control" name="category" id="category">
                         <option value="ann_id">公告ID</option>
@@ -49,7 +49,10 @@
                 <th>发布时间</th>
                 <th>相关部门</th>
                 <th>发布人</th>
-                <th>操作</th>
+                {#公司负责 或 系统管理员 删除#}
+                {% if request.user.permission == '公司负责' or request.user.permission == '系统管理员' %}
+                    <th>操作</th>
+                {% endif %}
             </tr>
             {% for ann in anns %}
                 <tr id="{{ ann.id }}">
@@ -58,9 +61,12 @@
                     <td>{{ ann.add_time }}</td>
                     <td>{{ ann.department.name }}</td>
                     <td>{{ ann.person }}</td>
-                    <td>
-                        <a href="javascript:void(0);" data-value="{{ ann.id }}" class="delete_ann">删除</a>
-                    </td>
+                    {#公司负责 或 系统管理员 删除#}
+                    {% if request.user.permission == '公司负责' or request.user.permission == '系统管理员' %}
+                        <td>
+                            <a href="javascript:void(0);" data-value="{{ ann.id }}" class="delete_ann">删除</a>
+                        </td>
+                    {% endif %}
                 </tr>
             {% endfor %}
         </table>
@@ -72,7 +78,7 @@
 {% block js %}
     <script>
         {#避免从登录页跳转到此页面后没有相应的效果#}
-        if(location.pathname === '/'){
+        if (location.pathname === '/') {
             $('a[href="/announcement/list/"]')[0].click()
         }
 

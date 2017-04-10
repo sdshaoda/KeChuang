@@ -10,6 +10,8 @@ from django.db import models
 # 部门信息
 class Department(models.Model):
     name = models.CharField(unique=True, max_length=20, verbose_name=u'部门名称')
+    # 用于区分 全公司 和 公司下的部门
+    is_department = models.BooleanField(verbose_name=u'部门状态')
     remark = models.CharField(max_length=200, verbose_name=u'备注', null=True, blank=True)
     add_time = models.DateTimeField(default=datetime.now, verbose_name=u'添加时间')
 

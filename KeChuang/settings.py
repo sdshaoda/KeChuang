@@ -127,10 +127,10 @@ USE_TZ = False
 
 # 静态文件相关配置
 STATIC_URL = '/static/'
-# STATICFILES_DIRS = (
-#     os.path.join(BASE_DIR, 'static'),
-# )
-STATIC_ROOT = os.path.join(BASE_DIR, "static")
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, 'static'),
+)
+# STATIC_ROOT = os.path.join(BASE_DIR, "static")
 
 # 邮箱配置，在发送验证码时会用到
 EMAIL_HOST = 'smtp.126.com'

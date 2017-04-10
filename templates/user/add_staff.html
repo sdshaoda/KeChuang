@@ -45,7 +45,8 @@
         <div class="form-group">
             <label for="induction_time" class="col-md-2 col-sm-2 control-label required">入职时间：</label>
             <div class="col-md-5 col-sm-10">
-                <input type="date" class="form-control" id="induction_time" name="induction_time" placeholder="入职时间，格式：2017-04-01"
+                <input type="date" class="form-control" id="induction_time" name="induction_time"
+                       placeholder="入职时间，格式：2017-04-01"
                        required>
             </div>
         </div>
@@ -92,6 +93,8 @@
         </div>
 
         <button style="margin-bottom: 100px" type="submit" class="btn btn-primary col-md-7">添加</button>
+
         {% csrf_token %}
+
     </form>
 {% endblock %}

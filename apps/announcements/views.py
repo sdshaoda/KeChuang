@@ -75,7 +75,9 @@ class DeleteAnnView(View):
 # 发布公告 GET POST
 class PublishView(View):
     def get(self, request):
+
         departments = Department.objects.all()
+
         return render(request, 'announcement/publish.html', {
             'departments': departments
         })
@@ -117,6 +119,10 @@ class DetailView(View):
 class DocListView(View):
     def get(self, request):
         docs = Document.objects.all().order_by('-add_time')
+
+        # 检测员 只能浏览本部门的公文
+        if request.user.permission == '检测员':
+            docs = docs.filter(department=request.user.department)
 
         search_keywords = request.GET.get('keywords', '')
         category = request.GET.get('category', '')
@@ -169,7 +175,13 @@ class DocListView(View):
 # 公文上传
 class DocUploadView(View):
     def get(self, request):
+
         departments = Department.objects.all()
+
+        # 部门负责 只能上传公文至 本部门 或全公司
+        if request.user.permission == '部门负责':
+            departments = departments.filter(Q(id=request.user.department_id) | Q(is_department=0))
+
         return render(request, 'announcement/upload.html', {
             'departments': departments
         })

@@ -2,13 +2,7 @@
 
 {% block title %}编辑档案{% endblock %}
 
-{% block style %}
-    <style>
-        #edit_staff {
-            margin-bottom: 50px;
-        }
-    </style>
-{% endblock %}
+{% block style %}{% endblock %}
 
 {% block content %}
     <form class="form-horizontal" method="post" enctype="multipart/form-data" id="edit_staff_form"
@@ -144,7 +138,7 @@
                 <p class="help-block">
                     {% if staff.image %}
                         已有照片，选择可重新上传
-                    <img style="max-height: 100px; width: initial;" src="{{ MEDIA_URL }}{{ staff.image }}" alt="">
+                        <img style="max-height: 100px; width: initial;" src="{{ MEDIA_URL }}{{ staff.image }}" alt="照片">
                     {% endif %}
                 </p>
             </div>
@@ -156,7 +150,9 @@
                 <input type="file" id="xuelizs" name="xuelizs">
                 <p class="help-block">
                     {% if staff.xuelizs %}
-                        已有学历证书，<a style="display: inline;" target="_blank" href="{{ MEDIA_URL }}{{ staff.xuelizs }}">点击查看</a>，选择可重新上传
+                        已有学历证书，
+                        <a style="display: inline;" target="_blank" href="{{ MEDIA_URL }}{{ staff.xuelizs }}">点击查看</a>
+                        ，选择可重新上传
                     {% endif %}
                 </p>
             </div>
@@ -168,7 +164,9 @@
                 <input type="file" id="zhichengzs" name="zhichengzs">
                 <p class="help-block">
                     {% if staff.zhichengzs %}
-                        已有职称证书，<a style="display: inline;" target="_blank" href="{{ MEDIA_URL }}{{ staff.zhichengzs }}">点击查看</a>，选择可重新上传
+                        已有职称证书，
+                        <a style="display: inline;" target="_blank" href="{{ MEDIA_URL }}{{ staff.zhichengzs }}">点击查看</a>
+                        ，选择可重新上传
                     {% endif %}
                 </p>
             </div>
@@ -180,13 +178,17 @@
                 <input type="file" id="zigezs" name="zigezs">
                 <p class="help-block">
                     {% if staff.zigezs %}
-                        已有资格证书，<a style="display: inline;" target="_blank" href="{{ MEDIA_URL }}{{ staff.zigezs }}">点击查看</a>，选择可重新上传
+                        已有资格证书，
+                        <a style="display: inline;" target="_blank" href="{{ MEDIA_URL }}{{ staff.zigezs }}">点击查看</a>
+                        ，选择可重新上传
                     {% endif %}
                 </p>
             </div>
         </div>
 
-        <button id="edit_staff" type="button" class="btn btn-primary col-md-7 col-sm-12 col-xs-12">完成</button>
+        <button style="margin-bottom: 50px;" id="edit_staff" type="button"
+                class="btn btn-primary col-md-7 col-sm-12 col-xs-12">完成
+        </button>
 
     </form>
 {% endblock %}
@@ -194,12 +196,10 @@
 {% block js %}
     <script>
         $('#edit_staff').click(function () {
-            {#            console.log($('#edit_staff_form').serializeArray())#}
             $.ajax({
                 cache: false,
                 url: '{% url "user:edit_staff" %}',
                 type: 'POST',
-                {#data: $('#edit_staff_form').serializeArray(),#}
                 data: new FormData($('#edit_staff_form')[0]),
                 processData: false,
                 contentType: false,
@@ -209,10 +209,6 @@
                     xhr.setRequestHeader("X-CSRFToken", "{{ csrf_token }}");
                 },
                 success: function (data) {
-                    if (data.status === 'success') {
-                        console.log(data)
-                        $('#msg').text(data.msg)
-                    }
                     $('#msg').text(data.msg)
                     setTimeout(function () {
                         $('#msg').text('')

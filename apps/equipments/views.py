@@ -27,9 +27,8 @@ class ListView(View):
                                Q(equ_staff__icontains=search_keywords) |
                                Q(equ_num__icontains=search_keywords) |
                                Q(equ_status__icontains=search_keywords) |
-                               # 不可同时搜索日期
+                               # 不可搜索日期
                                # Q(effect_date__icontains=search_keywords) |
-                               # Q(buy_date__icontains=search_keywords) |
                                Q(equ_money__icontains=search_keywords) |
                                Q(equ_person__icontains=search_keywords))
 
@@ -108,11 +107,7 @@ class AddView(View):
         equ_types = EquipmentType.objects.all().order_by('-add_time')
 
         # 筛除超级用户
-        all_staffs = UserProfile.objects.all().order_by('id')
-        staffs = []
-        for staff in all_staffs:
-            if not staff.is_superuser:
-                staffs.append(staff)
+        staffs = UserProfile.objects.filter(is_superuser=0)
 
         return render(request, 'equipment/edit.html', {
             'equ_types': equ_types,
@@ -149,7 +144,7 @@ class AddView(View):
         equipment.buy_date = buy_date
         equipment.remark = remark
 
-        equipment.use_status = '0'  # 使用状态为 未领用
+        equipment.use_status = '未领用'  # 使用状态为 未领用
         equipment.equ_staff_id = None  # 设备保管人信息
         equipment.equ_staff = None
         equipment.use_date = None  # 领用时间
@@ -267,6 +262,7 @@ class UseEquView(View):
         equ_id = request.POST.get('equ_id', '')
         person_id = request.POST.get('person_id', '')
         equipment_person_id = request.POST.get('equipment_person_id', '')
+        equ_status = request.POST.get('equ_status', '')
         use_date = request.POST.get('use_date', '')
         revert_date = request.POST.get('revert_date', '')
         remark = request.POST.get('remark', '')
@@ -275,7 +271,11 @@ class UseEquView(View):
         equ_apply = EquipmentApply()
         equ_apply.equipment_id = equ_id
         equ_apply.person_id = person_id
-        equ_apply.equipment_person_id = equipment_person_id
+        # 设备状态为 正常 时，才将它送往 设备负责人 处审核；否则送往 系统管理员
+        if equ_status == '正常':
+            equ_apply.equipment_person_id = equipment_person_id
+        else:
+            equ_apply.equipment_person_id = None
         equ_apply.type = '0'  # 申请类型为 领用
         equ_apply.status = '0'  # 审核状态为 审核中
         equ_apply.use_date = use_date
@@ -308,8 +308,12 @@ class ApplyView(View):
 # 设备审核 GET
 class VerifyView(View):
     def get(self, request):
-        # 设备申请信息
-        equ_applys = EquipmentApply.objects.filter(equipment_person_id=request.user.id)
+
+        if request.user.permission == '系统管理员':
+            equ_applys = EquipmentApply.objects.filter(
+                Q(equipment_person_id=request.user.id) | Q(equipment_person_id=None))
+        else:
+            equ_applys = EquipmentApply.objects.filter(equipment_person_id=request.user.id)
 
         return render(request, 'equipment/verify.html', {
             'equ_applys': equ_applys
@@ -334,7 +338,7 @@ class AgreeEquView(View):
 
             # 审核通过，修改设备相关信息
             equ = equ_apply.equipment
-            equ.use_status = '1'  # 设备使用状态设为 已领用
+            equ.use_status = '已领用'  # 设备使用状态设为 已领用
             equ.equ_staff_id = equ_apply.person_id  # 设备保管人
             equ.equ_staff = UserProfile.objects.get(id=equ_apply.person_id).name
             equ.use_date = equ_apply.use_date  # 将设备申请中的信息放入设备信息中
@@ -356,7 +360,7 @@ class AgreeEquView(View):
 
             # 审核通过，修改设备相关信息
             equ = equ_apply.equipment
-            equ.use_status = '0'  # 设备使用状态设为 未领用
+            equ.use_status = '未领用'  # 设备使用状态设为 未领用
             equ.equ_staff_id = None  # 删除 设备保管人 中的信息
             equ.equ_staff = None
             equ.use_date = None  # 删除设备信息中的 领用时间
