@@ -4,7 +4,7 @@ from django.contrib import admin
 from django.views.static import serve
 from django.views.generic import TemplateView
 
-from KeChuang.settings import MEDIA_ROOT
+from KeChuang.settings import MEDIA_ROOT, STATIC_ROOT
 
 import xadmin
 from users.views import LoginView, LogoutView
@@ -20,6 +20,8 @@ urlpatterns = [
     url(r'^admin/', xadmin.site.urls),
     # 文件上传
     url(r'^media/(?P<path>.*)$', serve, {'document_root': MEDIA_ROOT}),
+    # 静态文件
+    url(r'^static/(?P<path>.*)$', serve, {'document_root': STATIC_ROOT}),
 
     # 用户管理
     url(r'^user/', include('users.urls', namespace='user')),
@@ -30,3 +32,8 @@ urlpatterns = [
     # 公告管理
     url(r'^announcement/', include('announcements.urls', namespace='ann')),
 ]
+
+# 全局 404 页面
+handler404 = 'users.views.page_not_found'
+# 全局 500 页面
+handler500 = 'users.views.page_error'

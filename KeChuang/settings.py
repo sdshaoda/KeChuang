@@ -13,12 +13,12 @@ sys.path.insert(0, os.path.join(BASE_DIR, 'extra_apps'))
 SECRET_KEY = '&op0-flpkhx@7iar$qc%8$a+lju4j(o2u@+y^*21gh-a2))973'
 
 # 开发模式
-DEBUG = True
+DEBUG = False
 
 # ALLOWED_HOSTS = [u'shaoda.natapp1.cc', u'127.0.0.1']
 
 # 主机名
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 # APP注册
 INSTALLED_APPS = [
@@ -127,10 +127,10 @@ USE_TZ = False
 
 # 静态文件相关配置
 STATIC_URL = '/static/'
-STATICFILES_DIRS = (
-    os.path.join(BASE_DIR, 'static'),
-)
-# STATIC_ROOT = os.path.join(BASE_DIR, "static")
+# STATICFILES_DIRS = (
+#     os.path.join(BASE_DIR, 'static'),
+# )
+STATIC_ROOT = os.path.join(BASE_DIR, "static")
 
 # 邮箱配置，在发送验证码时会用到
 EMAIL_HOST = 'smtp.126.com'

@@ -28,7 +28,6 @@ class CustomBackend(ModelBackend):
 # 登录 GET POST
 class LoginView(View):
     def get(self, request):
-
         # login_form 中包含了 验证码 相关信息
         login_form = LoginForm()
 
@@ -215,7 +214,7 @@ class EditView(View):
 class EditStaffView(View):
     def post(self, request):
         # 获取表单信息
-        staff_id = request.POST.get('id', '')
+        staff_id = request.POST.get('staff_id', '')
         mobile = request.POST.get('mobile', '')
         email = request.POST.get('email', '')
         office_phone = request.POST.get('office_phone', '')
@@ -239,14 +238,18 @@ class EditStaffView(View):
         user.xueli = xueli
         user.zhicheng = zhicheng
         user.zige = zige
-        user.image = image
-        user.zigezs = zigezs
-        user.xuelizs = xuelizs
-        user.zhichengzs = zhichengzs
+        if image:
+            user.image = image
+        if zigezs:
+            user.zigezs = zigezs
+        if xuelizs:
+            user.xuelizs = xuelizs
+        if zhichengzs:
+            user.zhichengzs = zhichengzs
         user.save()
 
         # 修改的是自己的档案
-        if staff_id == request.user.id:
+        if int(staff_id) == request.user.id:
             return HttpResponse('{"status":"success","msg":"编辑个人档案成功"}', content_type='application/json')
 
         return HttpResponse('{"status":"success","msg":"修改员工信息成功"}', content_type='application/json')
@@ -351,3 +354,19 @@ class ChangeView(View):
             return HttpResponse('{"status":"fail","msg":"修改密码失败"}', content_type='application/json')
         else:
             return HttpResponse('{"status":"fail","msg":"两次密码填写不一致"}', content_type='application/json')
+
+
+# 全局 404 处理函数
+def page_not_found(request):
+    from django.shortcuts import render_to_response
+    response = render_to_response('404.html', {})
+    response.status_code = 404
+    return response
+
+
+# 全局 404 处理函数
+def page_error(request):
+    from django.shortcuts import render_to_response
+    response = render_to_response('500.html', {})
+    response.status_code = 500
+    return response

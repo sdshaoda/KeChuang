@@ -14,7 +14,7 @@
     <form class="form-horizontal" method="post" enctype="multipart/form-data" id="edit_staff_form"
           action="{% url "user:edit_staff" %}">
 
-        <input type="hidden" name="id" value="{{ staff.id }}">
+        <input type="hidden" name="staff_id" value="{{ staff.id }}">
 
         <div class="form-group">
             <label for="name" class="col-md-2 col-sm-2 control-label">职工姓名：</label>
@@ -144,6 +144,7 @@
                 <p class="help-block">
                     {% if staff.image %}
                         已有照片，选择可重新上传
+                    <img style="max-height: 100px; width: initial;" src="{{ MEDIA_URL }}{{ staff.image }}" alt="">
                     {% endif %}
                 </p>
             </div>
@@ -155,7 +156,7 @@
                 <input type="file" id="xuelizs" name="xuelizs">
                 <p class="help-block">
                     {% if staff.xuelizs %}
-                        已有学历证书，选择可重新上传
+                        已有学历证书，<a style="display: inline;" target="_blank" href="{{ MEDIA_URL }}{{ staff.xuelizs }}">点击查看</a>，选择可重新上传
                     {% endif %}
                 </p>
             </div>
@@ -167,7 +168,7 @@
                 <input type="file" id="zhichengzs" name="zhichengzs">
                 <p class="help-block">
                     {% if staff.zhichengzs %}
-                        已有职称证书，选择可重新上传
+                        已有职称证书，<a style="display: inline;" target="_blank" href="{{ MEDIA_URL }}{{ staff.zhichengzs }}">点击查看</a>，选择可重新上传
                     {% endif %}
                 </p>
             </div>
@@ -179,7 +180,7 @@
                 <input type="file" id="zigezs" name="zigezs">
                 <p class="help-block">
                     {% if staff.zigezs %}
-                        已有资格证书，选择可重新上传
+                        已有资格证书，<a style="display: inline;" target="_blank" href="{{ MEDIA_URL }}{{ staff.zigezs }}">点击查看</a>，选择可重新上传
                     {% endif %}
                 </p>
             </div>
