@@ -7,31 +7,37 @@
 
 {% block content %}
 
-    {#    <div class="handle">#}
-    {#        <div class="filter">#}
-    {#            筛选：#}
-    {#            <select>#}
-    {#                <option value="">部门</option>#}
-    {#                <option value="">姓名</option>#}
-    {#                <option value="">职工编号</option>#}
-    {#            </select>#}
-    {#            <input type="text" name="" value="">#}
-    {#            <button type="button">确定</button>#}
-    {#        </div>#}
-    {#        <div class="sort">#}
-    {#            排序：#}
-    {#            <select>#}
-    {#                <option value="">部门</option>#}
-    {#                <option value="">职工编号</option>#}
-    {#            </select>#}
-    {#            <select name="" id="">#}
-    {#                <option value="">从高到底</option>#}
-    {#                <option value="">从底到高</option>#}
-    {#            </select>#}
-    {#            <button type="button">确定</button>#}
-    {#        </div>#}
-    {#    </div>#}
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+            <form id="search" method="get" class="navbar-form navbar-left col-md-4 col-sm-5 col-xs-5"
+                  style="border: none;">
+                <div class="input-group">
+                    <input type="text" id="keywords" name="keywords" class="form-control" placeholder="搜索职工信息">
+                    <span class="input-group-btn">
+                        <button class="btn btn-default" type="submit">搜索</button>
+                    </span>
+                </div>
+            </form>
 
+            <form method="get" class="navbar-form navbar-left col-md-6 col-sm-6 col-xs-7" style="border: none;">
+                <div class="input-group">
+                    <select class="form-control" name="category" id="category">
+                        <option value="staff_id">职工ID</option>
+                        <option value="number">人员编号</option>
+                        <option value="sex">性别</option>
+                        <option value="induction_time">入职时间</option>
+                        <option value="add_time">添加时间</option>
+                    </select>
+                    <span class="input-group-btn">
+                        <button name="mode" value="positive" class="btn btn-default" type="submit">正序</button>
+                    </span>
+                    <span class="input-group-btn">
+                        <button name="mode" value="negative" class="btn btn-default" type="submit">倒序</button>
+                    </span>
+                </div>
+            </form>
+        </div>
+    </nav>
 
     <div class="table-responsive">
         <table class="table table-hover">
@@ -42,7 +48,7 @@
                 <th>联系电话</th>
                 <th>电子邮箱</th>
             </tr>
-            {% for staff in all_staffs %}
+            {% for staff in staffs %}
                 <tr>
                     <td>{{ staff.id }}</td>
                     <td>{{ staff.name }}</td>

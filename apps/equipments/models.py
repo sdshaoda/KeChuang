@@ -33,13 +33,15 @@ class Equipment(models.Model):
 
     # 设备基本信息
     equ_name = models.CharField(max_length=20, verbose_name=u'设备名称')
+    equ_type_name = models.CharField(max_length=20, verbose_name=u'设备名称', null=True, blank=True)
     equ_person_id = models.IntegerField(verbose_name=u'设备负责人id', null=True, blank=True)
+    equ_person = models.CharField(max_length=20, verbose_name=u'设备负责人', null=True, blank=True)
     file_num = models.CharField(max_length=20, verbose_name=u'档案编号')
     equ_num = models.CharField(max_length=20, verbose_name=u'设备型号')
-    equ_status = models.CharField(default='0', max_length=10, choices=(
-        ('0', u'正常'),
-        ('1', u'限制使用'),
-        ('2', u'停用'),
+    equ_status = models.CharField(default=u'正常', max_length=10, choices=(
+        (u'正常', u'正常'),
+        (u'限制使用', u'限制使用'),
+        (u'停用', u'停用'),
     ), verbose_name=u'设备状态')
     effect_date = models.DateField(default=date.today, verbose_name=u'计量有效期')
     equ_money = models.CharField(max_length=10, verbose_name=u'购买价格')
@@ -51,6 +53,7 @@ class Equipment(models.Model):
         ('1', u'已领用'),
     ), verbose_name=u'使用状态')
     equ_staff_id = models.IntegerField(verbose_name=u'设备保管人id', null=True, blank=True)
+    equ_staff = models.CharField(max_length=20, verbose_name=u'设备保管人', null=True, blank=True)
     use_date = models.DateField(verbose_name=u'领用时间', null=True, blank=True)
     revert_date = models.DateField(verbose_name=u'归还时间', null=True, blank=True)
 

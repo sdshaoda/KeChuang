@@ -32,17 +32,18 @@ class UserProfile(AbstractUser):
     name = models.CharField(max_length=10, verbose_name=u'姓名')
     username = models.CharField(unique=True, max_length=20, verbose_name=u'登录名')
 
+    department_name = models.CharField(max_length=20, verbose_name=u'部门名称', null=True, blank=True)
     sex = models.CharField(max_length=2, choices=(
-        ('1', u'男'),
-        ('2', u'女'),
+        ('男', u'男'),
+        ('女', u'女'),
     ), verbose_name=u'性别')
     job = models.CharField(max_length=20, verbose_name=u'职务')
     induction_time = models.DateField(max_length=20, default=date.today, verbose_name=u'入职时间')
-    permission = models.CharField(default='3', max_length=2, choices=(
-        ('0', u'检测员'),
-        ('1', u'部门负责'),
-        ('2', u'公司负责'),
-        ('3', u'系统管理员'),
+    permission = models.CharField(default='系统管理员', max_length=5, choices=(
+        ('检测员', u'检测员'),
+        ('部门负责', u'部门负责'),
+        ('公司负责', u'公司负责'),
+        ('系统管理员', u'系统管理员'),
     ), verbose_name=u'系统权限')
     number = models.CharField(max_length=20, verbose_name=u'人员编号')
 

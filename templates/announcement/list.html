@@ -7,29 +7,39 @@
 
 {% block content %}
 
-    {#    <h2>武汉中科科创工程检测公司 - 公告</h2>#}
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+            <form id="search" method="get" class="navbar-form navbar-left col-md-4 col-sm-5 col-xs-5"
+                  style="border: none;">
+                <div class="input-group">
+                    <input type="text" id="keywords" name="keywords" class="form-control" placeholder="搜索公告信息">
+                    <span class="input-group-btn">
+                        <button class="btn btn-default" type="submit">搜索</button>
+                    </span>
+                </div>
+            </form>
 
-    {#    <div class="handle">#}
-    {#        <div class="filter">#}
-    {#            筛选：#}
-    {#            <select>#}
-    {#                <option value="">部门</option>#}
-    {#                <option value="">标题关键词</option>#}
-    {#            </select>#}
-    {#            <input type="text" name="" value="">#}
-    {#            <button type="button" class="btn btn-primary">确定</button>#}
-    {#        </div>#}
-    {#        <div class="sort">#}
-    {#            排序：#}
-    {#            <select name="" id="">#}
-    {#                <option value="">时间由远到近</option>#}
-    {#                <option value="">时间由近到远</option>#}
-    {#            </select>#}
-    {#            <button type="button">确定</button>#}
-    {#        </div>#}
-    {#    </div>#}
-
-
+            <form method="get" class="navbar-form navbar-left col-md-6 col-sm-6 col-xs-7" style="border: none;">
+                <div class="input-group">
+                    <select class="form-control" name="category" id="category">
+                        <option value="ann_id">公告ID</option>
+                        <option value="person_name">发布人</option>
+                        <option value="department_name">相关部门</option>
+                        <option value="title">公告标题</option>
+                        <option value="content">公告正文</option>
+                        <option value="remark">备注</option>
+                        <option value="add_time">添加时间</option>
+                    </select>
+                    <span class="input-group-btn">
+                        <button name="mode" value="positive" class="btn btn-default" type="submit">正序</button>
+                    </span>
+                    <span class="input-group-btn">
+                        <button name="mode" value="negative" class="btn btn-default" type="submit">倒序</button>
+                    </span>
+                </div>
+            </form>
+        </div>
+    </nav>
 
     <div class="table-responsive">
         <table class="table table-hover">
@@ -41,7 +51,7 @@
                 <th>发布人</th>
                 <th>操作</th>
             </tr>
-            {% for ann in all_anns %}
+            {% for ann in anns %}
                 <tr id="{{ ann.id }}">
                     <td>{{ ann.id }}</td>
                     <td><a href="{% url 'ann:detail' ann.id %}">{{ ann.title }}</a></td>
@@ -49,7 +59,7 @@
                     <td>{{ ann.department.name }}</td>
                     <td>{{ ann.person }}</td>
                     <td>
-                        <a href="javascript:void(0);" id="{{ ann.id }}" class="delete_ann">删除</a>
+                        <a href="javascript:void(0);" data-value="{{ ann.id }}" class="delete_ann">删除</a>
                     </td>
                 </tr>
             {% endfor %}
@@ -67,7 +77,7 @@
         }
 
         $('.delete_ann').click(function (e) {
-            var ann_id = $(this).attr('id')
+            var ann_id = $(this).attr('data-value')
             $.ajax({
                 cache: false,
                 url: '{% url "ann:delete_ann" %}',

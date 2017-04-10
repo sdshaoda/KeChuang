@@ -82,7 +82,7 @@
 </p>
 
 <script>
-    if(navigator.userAgent.indexOf('Chrome/5') !== -1){
+    if (navigator.userAgent.indexOf('Chrome/5') !== -1) {
         recommend.style.display = 'none'
     }
 </script>
@@ -144,9 +144,9 @@
                         <a href="{% url 'pro:list' %}" class="list-group-item">浏览工程</a>
                         <a href="{% url 'pro:attendance' %}" class="list-group-item">考勤登记</a>
                         <a href="{% url 'pro:apply' %}" class="list-group-item">工程申请</a>
-{#                        {% if request.user.permission == '1' or request.user.permission == '2' %}#}
+                        {% if request.user.permission == '公司负责' or request.user.permission == '公司负责' %}
                             <a href="{% url 'pro:verify' %}" class="list-group-item">工程审核</a>
-{#                        {% endif %}#}
+                        {% endif %}
                         <a href="{% url 'pro:change' %}" class="list-group-item">变更记录</a>
                     </div>
                 </div>
@@ -165,7 +165,7 @@
                     <div class="panel-body list-group">
                         <a href="{% url 'equ:list' %}" class="list-group-item">设备浏览</a>
                         <a href="{% url 'equ:revert' %}" class="list-group-item">设备归还</a>
-                        {% if request.user.permission == '2' or request.user.permission == '3' %}
+                        {% if request.user.permission == '公司负责' or request.user.permission == '系统管理员' %}
                             <a href="{% url 'equ:info' %}" class="list-group-item">设备资料</a>
                         {% endif %}
                         <a href="{% url 'equ:apply' %}" class="list-group-item">设备申请</a>
@@ -204,11 +204,11 @@
                 <div id="collapseFour" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingFour">
                     <div class="panel-body list-group">
                         <a href="{% url 'ann:list' %}" class="list-group-item">浏览公告</a>
-                        {% if request.user.permission == '2' or request.user.permission == '3' %}
+                        {% if request.user.permission == '公司负责' or request.user.permission == '系统管理员' %}
                             <a href="{% url 'ann:publish' %}" class="list-group-item">发布公告</a>
                         {% endif %}
                         <a href="{% url 'ann:doc_list' %}" class="list-group-item">下载公文</a>
-                        {% if request.user.permission == '2' or request.user.permission == '3' %}
+                        {% if request.user.permission == '公司负责' or request.user.permission == '系统管理员' %}
                             <a href="{% url 'ann:doc_upload' %}" class="list-group-item">上传公文</a>
                         {% endif %}
                     </div>
@@ -226,18 +226,17 @@
                 </div>
                 <div id="collapseFive" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingFive">
                     <div class="panel-body list-group">
-                        {% if request.user.permission == '2' or request.user.permission == '3' %}
+                        {% if request.user.permission == '公司负责' or request.user.permission == '系统管理员' %}
                             <a href="{% url 'user:permission' %}" class="list-group-item">人员权限管理</a>
                             <a href="{% url 'user:staff' %}" class="list-group-item">员工信息管理</a>
                             <a href="{% url 'user:reset' %}" class="list-group-item">员工密码修改</a>
-                        {% else %}
                         {% endif %}
                         <a href="{% url 'user:change' %}" class="list-group-item">个人密码修改</a>
                     </div>
                 </div>
             </div>
 
-            {% if request.user.permission == '2' or request.user.permission == '3' %}
+            {% if request.user.permission == '公司负责' or request.user.permission == '系统管理员' %}
                 <div class="panel panel-default">
                     <div class="panel-heading" role="tab" id="headingOne">
                         <h4 class="panel-title">
@@ -256,37 +255,9 @@
     {#右侧信息展示区#}
     <div class="col-md-10 right">
         {% if request.user.is_authenticated %}
-
             {#路径导航（面包屑）#}
             <ol class="breadcrumb"></ol>
 
-            {#顶部信息导航#}
-            {#            <nav class="navbar navbar-default navbar-static-top">#}
-            {#                <div class="container-fluid">#}
-            {#                    <div class="navbar-header">#}
-            {#                        <a class="navbar-brand" href="#">{{ nav_head }}公告信息</a>#}
-            {#                    </div>#}
-            {##}
-            {#                    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">#}
-            {#                        <ul class="nav navbar-nav navbar-left">#}
-            {#                            <li></li>#}
-            {#                        </ul>#}
-            {##}
-            {#                        <form class="navbar-form navbar-left" action="" method="get">#}
-            {#                            <div class="input-group search-group">#}
-            {#                                <label for="searchbar"></label>#}
-            {#                                <input id="searchbar" class="form-control" name="_q_" value="" placeholder="搜索 公告信息"#}
-            {#                                       type="text">#}
-            {#                                <span class="input-group-btn"><button class="btn btn-primary" type="button">搜索</button></span>#}
-            {#                            </div>#}
-            {#                        </form>#}
-            {##}
-            {#                        <div class="navbar-btn pull-right hide-xs">#}
-            {#                            <a href="{% url 'ann:publish' %}" class="btn btn-primary">发布新公告</a>#}
-            {#                        </div>#}
-            {#                    </div>#}
-            {#                </div>#}
-            {#            </nav>#}
             {% block content %}
             {% endblock %}
         {% else %}

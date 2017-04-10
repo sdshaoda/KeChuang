@@ -7,31 +7,35 @@
 
 {% block content %}
 
-    {#<div class="handle">#}
-    {#    <div class="filter">#}
-    {#        筛选：#}
-    {#        <select>#}
-    {#            <option value="">设备名称</option>#}
-    {#            <option value="">状态</option>#}
-    {#            <option value="">保管人</option>#}
-    {#        </select>#}
-    {#        <input type="text" name="" value="">#}
-    {#        <button type="button">确定</button>#}
-    {#    </div>#}
-    {#    <div class="sort">#}
-    {#        排序：#}
-    {#        <select>#}
-    {#            <option value="">状态</option>#}
-    {#            <option value="">领取时间</option>#}
-    {#        </select>#}
-    {#        <select name="" id="">#}
-    {#            <option value="">从高到底</option>#}
-    {#            <option value="">从底到高</option>#}
-    {#        </select>#}
-    {#        <button type="button">确定</button>#}
-    {#    </div>#}
-    {#</div>#}
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+            <form id="search" method="get" class="navbar-form navbar-left col-md-4 col-sm-5 col-xs-5"
+                  style="border: none;">
+                <div class="input-group">
+                    <input type="text" id="keywords" name="keywords" class="form-control" placeholder="搜索设备信息">
+                    <span class="input-group-btn">
+                        <button class="btn btn-default" type="submit">搜索</button>
+                    </span>
+                </div>
+            </form>
 
+            <form method="get" class="navbar-form navbar-left col-md-6 col-sm-6 col-xs-7" style="border: none;">
+                <div class="input-group">
+                    <select class="form-control" name="category" id="category">
+                        <option value="equ_id">设备ID</option>
+                        <option value="use_date">领取时间</option>
+                        <option value="revert_date">归还时间</option>
+                    </select>
+                    <span class="input-group-btn">
+                        <button name="mode" value="positive" class="btn btn-default" type="submit">正序</button>
+                    </span>
+                    <span class="input-group-btn">
+                        <button name="mode" value="negative" class="btn btn-default" type="submit">倒序</button>
+                    </span>
+                </div>
+            </form>
+        </div>
+    </nav>
 
     <div class="table-responsive">
         <table class="table table-hover">
@@ -52,8 +56,20 @@
                 <tr>
                     <td>{{ equ.id }}</td>
                     <td>{{ equ.equ_name }}</td>
-                    <td>{{ equ.file_num }}</td>
-                    <td>{{ equ.equ_num }}</td>
+                    <td>
+                        {% if equ.file_num %}
+                            {{ equ.file_num }}
+                        {% else %}
+                            未填写
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if equ.equ_num %}
+                            {{ equ.equ_num }}
+                        {% else %}
+                            未填写
+                        {% endif %}
+                    </td>
                     <td>
                         {% if equ.get_person.person %}
                             {{ equ.get_person.person.name }}

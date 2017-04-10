@@ -87,11 +87,52 @@ class ListView(View):
     def get(self, request):
 
         # 获取所有员工信息，过滤掉超级用户
-        all_staffs = UserProfile.objects.all().order_by('id')
-        staffs = []
-        for staff in all_staffs:
-            if not staff.is_superuser:
-                staffs.append(staff)
+        staffs = UserProfile.objects.filter(is_superuser=0)
+
+        search_keywords = request.GET.get('keywords', '')
+        category = request.GET.get('category', '')
+        mode = request.GET.get('mode', '')
+
+        # 搜索
+        if search_keywords:
+            staffs = staffs.filter(Q(name__icontains=search_keywords) |
+                                   Q(id__icontains=search_keywords) |
+                                   Q(username__icontains=search_keywords) |
+                                   Q(department_name__icontains=search_keywords) |
+                                   Q(sex__icontains=search_keywords) |
+                                   Q(job__icontains=search_keywords) |
+                                   Q(permission__icontains=search_keywords) |
+                                   Q(number__icontains=search_keywords) |
+                                   Q(mobile__icontains=search_keywords) |
+                                   Q(email__icontains=search_keywords) |
+                                   Q(office_phone__icontains=search_keywords) |
+                                   Q(home_phone__icontains=search_keywords) |
+                                   Q(home_address__icontains=search_keywords) |
+                                   Q(xueli__icontains=search_keywords) |
+                                   Q(zhicheng__icontains=search_keywords) |
+                                   Q(zige__icontains=search_keywords))
+
+        # 排序
+        if category == 'staff_id' and mode == 'positive':
+            staffs = staffs.order_by('id')
+        elif category == 'staff_id' and mode == 'negative':
+            staffs = staffs.order_by('-id')
+        elif category == 'number' and mode == 'positive':
+            staffs = staffs.order_by('number')
+        elif category == 'number' and mode == 'negative':
+            staffs = staffs.order_by('-number')
+        elif category == 'sex' and mode == 'positive':
+            staffs = staffs.order_by('sex')
+        elif category == 'sex' and mode == 'negative':
+            staffs = staffs.order_by('-sex')
+        elif category == 'induction_time' and mode == 'positive':
+            staffs = staffs.order_by('induction_time')
+        elif category == 'induction_time' and mode == 'negative':
+            staffs = staffs.order_by('-induction_time')
+        elif category == 'add_time' and mode == 'positive':
+            staffs = staffs.order_by('add_time')
+        elif category == 'add_time' and mode == 'negative':
+            staffs = staffs.order_by('-add_time')
 
         return render(request, 'user/list.html', {
             'staffs': staffs
@@ -102,15 +143,56 @@ class ListView(View):
 class AddressView(View):
     def get(self, request):
 
-        # 筛除超级用户
-        all_staffs = UserProfile.objects.all().order_by('id')
-        staffs = []
-        for staff in all_staffs:
-            if not staff.is_superuser:
-                staffs.append(staff)
+        # 获取所有员工信息，过滤掉超级用户
+        staffs = UserProfile.objects.filter(is_superuser=0)
+
+        search_keywords = request.GET.get('keywords', '')
+        category = request.GET.get('category', '')
+        mode = request.GET.get('mode', '')
+
+        # 搜索
+        if search_keywords:
+            staffs = staffs.filter(Q(name__icontains=search_keywords) |
+                                   Q(username__icontains=search_keywords) |
+                                   Q(id__icontains=search_keywords) |
+                                   Q(department_name__icontains=search_keywords) |
+                                   Q(sex__icontains=search_keywords) |
+                                   Q(job__icontains=search_keywords) |
+                                   Q(permission__icontains=search_keywords) |
+                                   Q(number__icontains=search_keywords) |
+                                   Q(mobile__icontains=search_keywords) |
+                                   Q(email__icontains=search_keywords) |
+                                   Q(office_phone__icontains=search_keywords) |
+                                   Q(home_phone__icontains=search_keywords) |
+                                   Q(home_address__icontains=search_keywords) |
+                                   Q(xueli__icontains=search_keywords) |
+                                   Q(zhicheng__icontains=search_keywords) |
+                                   Q(zige__icontains=search_keywords))
+
+        # 排序
+        if category == 'staff_id' and mode == 'positive':
+            staffs = staffs.order_by('id')
+        elif category == 'staff_id' and mode == 'negative':
+            staffs = staffs.order_by('-id')
+        elif category == 'number' and mode == 'positive':
+            staffs = staffs.order_by('number')
+        elif category == 'number' and mode == 'negative':
+            staffs = staffs.order_by('-number')
+        elif category == 'sex' and mode == 'positive':
+            staffs = staffs.order_by('sex')
+        elif category == 'sex' and mode == 'negative':
+            staffs = staffs.order_by('-sex')
+        elif category == 'induction_time' and mode == 'positive':
+            staffs = staffs.order_by('induction_time')
+        elif category == 'induction_time' and mode == 'negative':
+            staffs = staffs.order_by('-induction_time')
+        elif category == 'add_time' and mode == 'positive':
+            staffs = staffs.order_by('add_time')
+        elif category == 'add_time' and mode == 'negative':
+            staffs = staffs.order_by('-add_time')
 
         return render(request, 'user/address.html', {
-            'all_staffs': staffs
+            'staffs': staffs
         })
 
 
@@ -118,15 +200,56 @@ class AddressView(View):
 class StaffView(View):
     def get(self, request):
 
-        # 筛除超级用户
-        all_staffs = UserProfile.objects.all().order_by('id')
-        staffs = []
-        for staff in all_staffs:
-            if not staff.is_superuser:
-                staffs.append(staff)
+        # 获取所有员工信息，过滤掉超级用户
+        staffs = UserProfile.objects.filter(is_superuser=0)
+
+        search_keywords = request.GET.get('keywords', '')
+        category = request.GET.get('category', '')
+        mode = request.GET.get('mode', '')
+
+        # 搜索
+        if search_keywords:
+            staffs = staffs.filter(Q(name__icontains=search_keywords) |
+                                   Q(username__icontains=search_keywords) |
+                                   Q(id__icontains=search_keywords) |
+                                   Q(department_name__icontains=search_keywords) |
+                                   Q(sex__icontains=search_keywords) |
+                                   Q(job__icontains=search_keywords) |
+                                   Q(permission__icontains=search_keywords) |
+                                   Q(number__icontains=search_keywords) |
+                                   Q(mobile__icontains=search_keywords) |
+                                   Q(email__icontains=search_keywords) |
+                                   Q(office_phone__icontains=search_keywords) |
+                                   Q(home_phone__icontains=search_keywords) |
+                                   Q(home_address__icontains=search_keywords) |
+                                   Q(xueli__icontains=search_keywords) |
+                                   Q(zhicheng__icontains=search_keywords) |
+                                   Q(zige__icontains=search_keywords))
+
+        # 排序
+        if category == 'staff_id' and mode == 'positive':
+            staffs = staffs.order_by('id')
+        elif category == 'staff_id' and mode == 'negative':
+            staffs = staffs.order_by('-id')
+        elif category == 'number' and mode == 'positive':
+            staffs = staffs.order_by('number')
+        elif category == 'number' and mode == 'negative':
+            staffs = staffs.order_by('-number')
+        elif category == 'sex' and mode == 'positive':
+            staffs = staffs.order_by('sex')
+        elif category == 'sex' and mode == 'negative':
+            staffs = staffs.order_by('-sex')
+        elif category == 'induction_time' and mode == 'positive':
+            staffs = staffs.order_by('induction_time')
+        elif category == 'induction_time' and mode == 'negative':
+            staffs = staffs.order_by('-induction_time')
+        elif category == 'add_time' and mode == 'positive':
+            staffs = staffs.order_by('add_time')
+        elif category == 'add_time' and mode == 'negative':
+            staffs = staffs.order_by('-add_time')
 
         return render(request, 'user/staff.html', {
-            'all_staffs': staffs
+            'staffs': staffs
         })
 
 
@@ -170,6 +293,7 @@ class AddStaffView(View):
             user_profile.name = name
             user_profile.sex = sex
             user_profile.department_id = department_id
+            user_profile.department_name = Department.objects.get(id=department_id).name
             user_profile.job = job
             user_profile.induction_time = induction_time
             user_profile.number = number
@@ -197,7 +321,6 @@ class AddStaffView(View):
 # 编辑档案 GET
 class EditView(View):
     def get(self, request, staff_id):
-
         # 获取此用户信息
         staff = UserProfile.objects.get(id=int(staff_id))
 

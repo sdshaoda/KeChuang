@@ -65,16 +65,21 @@
                         <td>{{ staff.department.name }}</td>
                         <td>{{ staff.job }}</td>
                         <td>{{ staff.username }}</td>
-                        <td><input type="radio" name="permission" value="0" {% ifequal staff.permission '0' %}checked
+                        <td><input type="radio" name="permission" value="检测员"
+                                   {% ifequal staff.permission '检测员' %}checked
                                    class="current-perm"{% endifequal %}></td>
-                        <td><input type="radio" name="permission" value="1" {% ifequal staff.permission '1' %}checked
+                        <td><input type="radio" name="permission" value="部门负责"
+                                   {% ifequal staff.permission '部门负责' %}checked
                                    class="current-perm"{% endifequal %}></td>
-                        <td><input type="radio" name="permission" value="2" {% ifequal staff.permission '2' %}checked
+                        <td><input type="radio" name="permission" value="公司负责"
+                                   {% ifequal staff.permission '公司负责' %}checked
                                    class="current-perm"{% endifequal %}></td>
-                        <td><input type="radio" name="permission" value="3" {% ifequal staff.permission '3' %}checked
+                        <td><input type="radio" name="permission" value="系统管理员"
+                                   {% ifequal staff.permission '系统管理员' %}checked
                                    class="current-perm"{% endifequal %}></td>
                         <td>
-                            <button value="{{ staff.id }}" class="change_permission btn btn-default" type="button">应用</button>
+                            <button value="{{ staff.id }}" class="change_permission btn btn-default" type="button">应用
+                            </button>
                         </td>
                     </tr>
                 </form>

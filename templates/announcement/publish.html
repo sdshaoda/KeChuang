@@ -7,7 +7,7 @@
 
 {% block content %}
     <form class="form-horizontal" method="post" action="{% url 'ann:publish' %}">
-        <input type="hidden" name="person" value="{{ request.user.username }}">
+        <input type="hidden" name="person_id" value="{{ request.user.id }}">
 
         <div class="form-group">
             <label for="title" class="col-md-2 col-sm-2 control-label required">公告标题：</label>
@@ -18,19 +18,19 @@
         </div>
 
         <div class="form-group">
-            <label for="title" class="col-md-2 col-sm-2 control-label required">发布者：</label>
+            <label for="person_name" class="col-md-2 col-sm-2 control-label required">发布者：</label>
             <div class="col-md-10 col-sm-10">
-                <input type="text" class="form-control" id="title" name="title" placeholder="发布者"
+                <input type="text" class="form-control" id="person_name" name="person_name" placeholder="发布者"
                        value="{{ request.user.name }}" disabled required>
             </div>
         </div>
 
         <div class="form-group">
-            <label for="department" class="col-md-2 col-sm-2 control-label required">相关部门：</label>
+            <label for="department_id" class="col-md-2 col-sm-2 control-label required">相关部门：</label>
             <div class="col-md-10 col-sm-10">
-                <select class="form-control" id="department" name="department" required>
+                <select class="form-control" id="department_id" name="department_id" required>
                     {% for department in departments %}
-                        <option value="{{ department.name }}"
+                        <option value="{{ department.id }}"
                                 {% ifequal request.user.department department %}selected{% endifequal %}>
                             {{ department.name }}
                         </option>
@@ -54,7 +54,7 @@
             </div>
         </div>
 
-        <button class="btn btn-primary btn-block" type="submit">发布</button>
+        <button style="margin-bottom: 100px;" class="btn btn-primary btn-block" type="submit">发布</button>
 
         {% csrf_token %}
     </form>

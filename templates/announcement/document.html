@@ -6,6 +6,41 @@
 {% endblock %}
 
 {% block content %}
+
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+            <form id="search" method="get" class="navbar-form navbar-left col-md-4 col-sm-5 col-xs-5"
+                  style="border: none;">
+                <div class="input-group">
+                    <input type="text" id="keywords" name="keywords" class="form-control" placeholder="搜索公文信息">
+                    <span class="input-group-btn">
+                        <button class="btn btn-default" type="submit">搜索</button>
+                    </span>
+                </div>
+            </form>
+
+            <form method="get" class="navbar-form navbar-left col-md-6 col-sm-6 col-xs-7" style="border: none;">
+                <div class="input-group">
+                    <select class="form-control" name="category" id="category">
+                        <option value="doc_id">公文ID</option>
+                        <option value="person_name">上传人</option>
+                        <option value="department_name">相关部门</option>
+                        <option value="name">公文名称</option>
+                        <option value="document">公文</option>
+                        <option value="remark">备注</option>
+                        <option value="add_time">添加时间</option>
+                    </select>
+                    <span class="input-group-btn">
+                        <button name="mode" value="positive" class="btn btn-default" type="submit">正序</button>
+                    </span>
+                    <span class="input-group-btn">
+                        <button name="mode" value="negative" class="btn btn-default" type="submit">倒序</button>
+                    </span>
+                </div>
+            </form>
+        </div>
+    </nav>
+
     <div class="table-responsive">
         <table class="table table-hover">
             <tr>
@@ -16,13 +51,13 @@
                 <th colspan="2">操作</th>
             </tr>
             {% for doc in docs %}
-                <tr>
+                <tr id="{{ doc.id }}">
                     <td>{{ doc.id }}</td>
                     <td>{{ doc.name }}</td>
                     <td>{{ doc.department.name }}</td>
                     <td>{{ doc.person }}</td>
-                    <td><a href="{{ MEDIA_URL }}{{ doc.document }}">下载</a></td>
-                    <td><a class="delete_doc" id="{{ doc.id }}" href="">删除</a></td>
+                    <td><a href="{{ MEDIA_URL }}{{ doc.document }}" target="_blank">查看</a></td>
+                    <td><a class="delete_doc" data-value="{{ doc.id }}" href="javascript:void(0);">删除</a></td>
                 </tr>
             {% endfor %}
         </table>
@@ -33,7 +68,7 @@
 {% block js %}
     <script>
         $('.delete_doc').click(function () {
-            var doc_id = $(this).attr('id')
+            var doc_id = $(this).attr('data-value')
             $.ajax({
                 cache: false,
                 url: '{% url 'ann:delete_doc' %}',
@@ -46,7 +81,8 @@
                 },
                 success: function (data) {
                     if (data.status === 'success') {
-                        $('#msg').text(data.msg)
+{#                        删除这一行#}
+                        $('#' + doc_id).remove()
                     }
                     $('#msg').text(data.msg)
                     setTimeout(function () {
