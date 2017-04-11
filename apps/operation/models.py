@@ -83,16 +83,35 @@ class ProjectEquipment(models.Model):
 
 # 工程申请
 class ProjectApply(models.Model):
-    # 工程申请与 变更记录 相关
-    project = models.ForeignKey(ProjectChange, verbose_name=u'工程名称')
+    project = models.ForeignKey(Project, verbose_name=u'工程名称')
     person = models.ForeignKey(UserProfile, verbose_name=u'申请人')
 
-    type = models.CharField(default='0', max_length=2, choices=(
-        ('0', u'添加工程'), ('1', u'修改信息'), ('2', u'删除工程')
+    # 申请相关
+    department = models.CharField(max_length=20, verbose_name=u'相关部门')
+    type = models.CharField(max_length=4, choices=(
+        ('添加工程', u'添加工程'), ('修改信息', u'修改信息'), ('删除工程', u'删除工程')
     ), verbose_name=u'申请类型')
-    status = models.CharField(default='0', max_length=2, choices=(
-        ('0', u'部门主任审核中'), ('1', u'公司领导审核中'), ('2', u'审核通过'), ('3', u'审核未通过')
+    status = models.CharField(default='0', max_length=10, choices=(
+        ('部门主任审核中', u'部门主任审核中'), ('公司领导审核中', u'公司领导审核中'), ('审核通过', u'审核通过'), ('审核未通过', u'审核未通过')
     ), verbose_name=u'审核状态')
+
+    # 信息相关
+    pro_type = models.CharField(max_length=20, verbose_name=u'工程类型', null=True, blank=True)
+    pro_stage = models.CharField(max_length=20, verbose_name=u'项目阶段', null=True, blank=True)
+    pro_person = models.CharField(max_length=20, verbose_name=u'工程负责人', null=True, blank=True)
+    wt_person = models.CharField(max_length=20, verbose_name=u'法人委托', null=True, blank=True)
+    ht_person = models.CharField(max_length=20, verbose_name=u'合同签署人', null=True, blank=True)
+    ht_name = models.CharField(max_length=50, verbose_name=u'合同名称', null=True, blank=True)
+    ht_num = models.CharField(max_length=50, verbose_name=u'合同编号', null=True, blank=True)
+    ht_money = models.CharField(max_length=20, verbose_name=u'合同金额', null=True, blank=True)
+    js_money = models.CharField(max_length=20, verbose_name=u'结算金额', null=True, blank=True)
+    wt_dw = models.CharField(max_length=50, verbose_name=u'委托单位', null=True, blank=True)
+    mobile = models.CharField(max_length=20, verbose_name=u'联系电话', null=True, blank=True)
+    pro_address = models.CharField(max_length=50, verbose_name=u'项目地址', null=True, blank=True)
+    sign_date = models.DateField(max_length=20, verbose_name=u'签订日期', null=True, blank=True)
+    start_date = models.DateField(max_length=20, verbose_name=u'开工日期', null=True, blank=True)
+    finish_date = models.DateField(max_length=20, verbose_name=u'完工日期', null=True, blank=True)
+    ht_scan = models.FileField(max_length=100, upload_to='hetong/%Y/%m', verbose_name=u'合同扫描件', null=True, blank=True)
     remark = models.CharField(max_length=200, verbose_name=u'备注', null=True, blank=True)
 
     add_time = models.DateTimeField(default=datetime.now, verbose_name=u'申请时间')

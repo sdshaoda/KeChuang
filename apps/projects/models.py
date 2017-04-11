@@ -50,6 +50,8 @@ class Project(models.Model):
     pro_type = models.ForeignKey(ProjectType, verbose_name=u'工程类型', null=True, blank=True)
     pro_stage = models.ForeignKey(ProjectStage, verbose_name=u'项目阶段', null=True, blank=True)
 
+    is_active = models.BooleanField(default=0, verbose_name=u'工程状态')
+
     pro_name = models.CharField(max_length=50, verbose_name=u'工程名称')
     pro_person_id = models.IntegerField(verbose_name=u'工程负责人id')
     wt_person_id = models.IntegerField(verbose_name=u'法人委托id', null=True, blank=True)
@@ -105,8 +107,11 @@ class Project(models.Model):
 # 工程变更记录
 class ProjectChange(models.Model):
     project = models.ForeignKey(Project, verbose_name=u'工程名称')
+    type = models.CharField(max_length=4, choices=(
+        ('添加工程', u'添加工程'), ('修改信息', u'修改信息'), ('删除工程', u'删除工程')
+    ), verbose_name=u'申请类型')
 
-    pro_type = models.CharField(max_length=20, verbose_name=u'工程类型')
+    pro_type = models.CharField(max_length=20, verbose_name=u'工程类型', null=True, blank=True)
     pro_stage = models.CharField(max_length=20, verbose_name=u'项目阶段', null=True, blank=True)
 
     pro_person = models.CharField(max_length=20, verbose_name=u'工程负责人')
