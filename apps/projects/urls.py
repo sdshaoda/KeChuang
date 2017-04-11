@@ -21,7 +21,7 @@ urlpatterns = [
     # 工程申请 GET
     url(r'^apply/$', ApplyView.as_view(), name='apply'),
     # 申请详情 GET
-    url(r'^apply/detail/$', ApplyDetailView.as_view(), name='pro_apply'),
+    url(r'^apply/detail/(?P<pro_apply_id>\d+)$', ApplyDetailView.as_view(), name='pro_apply'),
     # 工程审核 GET
     url(r'^verify/$', VerifyView.as_view(), name='verify'),
     # 同意申请 Ajax

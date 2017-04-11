@@ -18,16 +18,18 @@
                 <th>修改日期</th>
                 <th>操作</th>
             </tr>
-            <tr>
-                <td>06</td>
-                <td>项目名称</td>
-                <td>负责人</td>
-                <td>所在部门</td>
-                <td>工程类型</td>
-                <td>项目阶段</td>
-                <td>修改日期</td>
-                <td><a href="javascript:void(0);">查看详情</a></td>
-            </tr>
+            {% for pro_apply in pro_applys %}
+                <tr>
+                    <td>{{ pro_apply.id }}</td>
+                    <td>项目名称</td>
+                    <td>负责人</td>
+                    <td>所在部门</td>
+                    <td>工程类型</td>
+                    <td>项目阶段</td>
+                    <td>修改日期</td>
+                    <td><a href="">查看详情</a></td>
+                </tr>
+            {% endfor %}
         </table>
     </div>
 

@@ -17,11 +17,11 @@ class EquipmentAdmin(object):
                     'equ_money',
                     'buy_date', 'use_status', 'equ_staff', 'use_date', 'revert_date', 'remark', 'add_time']
     search_fields = ['equ_type', 'equ_name', 'equ_person', 'file_num', 'equ_num', 'equ_status', 'effect_date',
-                    'equ_money',
-                    'buy_date', 'use_status', 'equ_staff', 'use_date', 'revert_date', 'remark', 'add_time']
+                     'equ_money',
+                     'buy_date', 'use_status', 'equ_staff', 'use_date', 'revert_date', 'remark', 'add_time']
     list_filter = ['equ_type', 'equ_name', 'equ_person', 'file_num', 'equ_num', 'equ_status', 'effect_date',
-                    'equ_money',
-                    'buy_date', 'use_status', 'equ_staff', 'use_date', 'revert_date', 'remark', 'add_time']
+                   'equ_money',
+                   'buy_date', 'use_status', 'equ_staff', 'use_date', 'revert_date', 'remark', 'add_time']
 
 
 # 设备变更记录Admin

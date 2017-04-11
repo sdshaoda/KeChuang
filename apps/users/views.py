@@ -267,7 +267,7 @@ class AddStaffView(View):
     def get(self, request):
 
         # 用户信息是和 部门 相关的
-        departments = Department.objects.all()
+        departments = Department.objects.filter(is_department=1)
 
         return render(request, 'user/add_staff.html', {
             'departments': departments
@@ -281,12 +281,18 @@ class AddStaffView(View):
             username = request.POST.get('username', '')
 
             if UserProfile.objects.filter(username=username):
-                return render(request, 'user/add_staff.html', {'register_form': register_form, 'msg': '登录名已经存在！'})
+                return render(request, 'user/add_staff.html', {
+                    'register_form': register_form,
+                    'msg': '登录名已经存在！'
+                })
 
             password = request.POST.get('password', '')
             password_repeat = request.POST.get('password_repeat', '')
             if password != password_repeat:
-                return render(request, 'user/add_staff.html', {'register_form': register_form, 'msg': '两次输入的密码不一致！'})
+                return render(request, 'user/add_staff.html', {
+                    'register_form': register_form,
+                    'msg': '两次输入的密码不一致！'
+                })
 
             name = request.POST.get('name', '')
             sex = request.POST.get('sex', '')
@@ -330,7 +336,7 @@ class EditView(View):
         staff = UserProfile.objects.get(id=int(staff_id))
 
         # 用户信息是和 部门 相关的
-        departments = Department.objects.all()
+        departments = Department.objects.filter(is_department=1)
 
         return render(request, 'user/edit.html', {
             'staff': staff,

@@ -1,19 +1,8 @@
 {% extends 'main.html' %}
 
-{% block title %}修改工程{% endblock %}
+{% block title %}修改工程信息{% endblock %}
 
-{% block style %}
-    <style>
-        {#        .add-file {#}
-        {#            margin: 20px 0;#}
-        {#            float: left;#}
-        {#        }#}
-        {##}
-        {#        button {#}
-        {#            clear: both;#}
-        {#        }#}
-    </style>
-{% endblock %}
+{% block style %}{% endblock %}
 
 {% block content %}
 
@@ -36,6 +25,19 @@
                     {% for staff in staffs %}
                         <option value="{{ staff.id }}" {% ifequal pro.pro_person_id staff.id %}selected{% endifequal %}>
                             {{ staff.name }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="department_id" class="col-md-2 col-sm-2 control-label">所属部门：</label>
+            <div class="col-md-5 col-sm-10">
+                <select class="form-control" id="department_id" name="department_id">
+                    {% for department in departments %}
+                        <option value="{{ department.id }}" {% ifequal pro.department_id department.id %}selected{% endifequal %}>
+                            {{ department.name }}
                         </option>
                     {% endfor %}
                 </select>

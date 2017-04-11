@@ -12,10 +12,8 @@ sys.path.insert(0, os.path.join(BASE_DIR, 'extra_apps'))
 
 SECRET_KEY = '&op0-flpkhx@7iar$qc%8$a+lju4j(o2u@+y^*21gh-a2))973'
 
-# 开发模式
+# 开发模式，部署时修改
 DEBUG = True
-
-# ALLOWED_HOSTS = [u'shaoda.natapp1.cc', u'127.0.0.1']
 
 # 主机名
 ALLOWED_HOSTS = ['*']
@@ -84,7 +82,7 @@ TEMPLATES = [
     },
 ]
 
-# WSGI配置
+# WSGI 配置
 WSGI_APPLICATION = 'KeChuang.wsgi.application'
 
 # 数据库配置
@@ -125,7 +123,7 @@ USE_L10N = True
 
 USE_TZ = False
 
-# 静态文件相关配置
+# 静态文件相关配置，部署时修改
 STATIC_URL = '/static/'
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'static'),

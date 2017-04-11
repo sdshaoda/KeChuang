@@ -5,7 +5,7 @@ from django.shortcuts import render
 from django.views.generic import View
 
 from equipments.models import Equipment, EquipmentType
-from operation.models import EquipmentApply, EquipmentStaff, EquipmentPerson
+from operation.models import EquipmentApply
 from users.models import UserProfile
 
 
@@ -151,22 +151,6 @@ class AddView(View):
         equipment.revert_date = None  # 归还时间
         equipment.save()
 
-        # 初始化 设备负责人
-        equipment_person = EquipmentPerson()
-        equipment_person.equipment = equipment
-        # 若用户存在
-        if UserProfile.objects.filter(id=equ_person_id):
-            equipment_person.person_id = equ_person_id
-        else:
-            equipment_person.person_id = None
-        equipment_person.save()
-
-        # 初始化 设备保管人
-        equipment_staff = EquipmentStaff()
-        equipment_staff.equipment = equipment
-        equipment_staff.person = None
-        equipment_staff.save()
-
         # 获取所有设备信息，根据添加时间排序
         equs = Equipment.objects.all().order_by('-add_time')
 
@@ -181,7 +165,7 @@ class EditView(View):
     def get(self, request, equ_id):
 
         # 通过 equ_id 获取当前设备信息
-        equ = Equipment.objects.get(id=equ_id)
+        equ = Equipment.objects.get(id=int(equ_id))
 
         # 获取所有 设备类型
         equ_types = EquipmentType.objects.all().order_by('-add_time')
@@ -231,12 +215,6 @@ class EditEquView(View):
         equipment.remark = remark
         equipment.save()
 
-        # 更改 设备负责人 信息
-        equipment_person = EquipmentPerson.objects.get(equipment_id=equ_id)
-        if UserProfile.objects.filter(id=equ_person_id):
-            equipment_person.person_id = equ_person_id
-        equipment_person.save()
-
         return HttpResponse('{"status":"success","msg":"编辑设备资料成功"}', content_type='application/json')
 
 
@@ -244,7 +222,7 @@ class EditEquView(View):
 class UseView(View):
     def get(self, request, equ_id):
         # 通过 equ_id 获取当前设备信息
-        equ = Equipment.objects.get(id=equ_id)
+        equ = Equipment.objects.get(id=int(equ_id))
 
         return render(request, 'equipment/use.html', {
             'equ': equ
@@ -341,11 +319,6 @@ class AgreeEquView(View):
             equ.revert_date = equ_apply.revert_date
             equ.save()
 
-            # 修改 设备保管人 信息
-            equ_staff = EquipmentStaff.objects.get(equipment=equ)
-            equ_staff.person = equ_apply.person
-            equ_staff.save()
-
             return HttpResponse('{"status":"success","msg":"同意设备领用申请操作成功"}', content_type='application/json')
 
         # 申请类型为 归还
@@ -362,11 +335,6 @@ class AgreeEquView(View):
             equ.use_date = None  # 删除设备信息中的 领用时间
             equ.revert_date = None  # 删除设备信息中的 归还时间
             equ.save()
-
-            # 修改 设备保管人 信息
-            equ_staff = EquipmentStaff.objects.get(equipment=equ)
-            equ_staff.person = None  # 删除设备保管人中的信息
-            equ_staff.save()
 
             return HttpResponse('{"status":"success","msg":"同意设备归还申请操作成功"}', content_type='application/json')
 

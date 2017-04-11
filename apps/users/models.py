@@ -16,8 +16,8 @@ class Department(models.Model):
     add_time = models.DateTimeField(default=datetime.now, verbose_name=u'添加时间')
 
     # 部门下的所有职工
-    def get_staff(self):
-        return self.userprofile_set.filter(id=self.id)
+    # def get_staff(self):
+    #     return self.userprofile_set.filter(id=self.id)
 
     class Meta:
         verbose_name = u'部门信息'
@@ -30,11 +30,11 @@ class Department(models.Model):
 # 用户信息
 class UserProfile(AbstractUser):
     department = models.ForeignKey(Department, verbose_name=u'所在部门', null=True, blank=True)
+    department_name = models.CharField(max_length=20, verbose_name=u'部门名称', null=True, blank=True)
 
     name = models.CharField(max_length=10, verbose_name=u'姓名')
     username = models.CharField(unique=True, max_length=20, verbose_name=u'登录名')
 
-    department_name = models.CharField(max_length=20, verbose_name=u'部门名称', null=True, blank=True)
     sex = models.CharField(max_length=2, choices=(
         ('男', u'男'),
         ('女', u'女'),
@@ -65,17 +65,17 @@ class UserProfile(AbstractUser):
 
     add_time = models.DateTimeField(default=datetime.now, verbose_name=u'添加时间')
 
-    # 设备负责人
-    def get_equipment_person(self):
-        return self.equipmentperson_set.filter(id=self.id)
-
-    # 设备保管人
-    def get_equipment_staff(self):
-        return self.equipmentstaff_set.filter(id=self.id)
-
-    # 设备申请
-    def get_apply(self):
-        return self.equipmentapply_set.filter(person_id=self.id)
+    # # 设备负责人
+    # def get_equipment_person(self):
+    #     return self.equipmentperson_set.filter(id=self.id)
+    #
+    # # 设备保管人
+    # def get_equipment_staff(self):
+    #     return self.equipmentstaff_set.filter(id=self.id)
+    #
+    # # 设备申请
+    # def get_apply(self):
+    #     return self.equipmentapply_set.filter(person_id=self.id)
 
     # 设备审核
     # def get_verify(self):

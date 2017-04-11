@@ -13,6 +13,7 @@
             <tr>
                 <th>#</th>
                 <th>工程名称</th>
+                <th>申请人</th>
                 <th>负责人</th>
                 <th>所在部门</th>
                 <th>工程类型</th>
@@ -21,19 +22,48 @@
                 <th>详情</th>
                 <th>审核状态</th>
             </tr>
-            <tr>
-                <td>06</td>
-                <td>项目名称</td>
-                <td>负责人</td>
-                <td>所在部门</td>
-                <td>工程类型</td>
-                <td>项目阶段</td>
-                <td>申请类型</td>
-                <td><a href="javascript:void(0);">查看</a></td>
-                <td>审核状态</td>
-            </tr>
+            {% for pro_apply in pro_applys %}
+                <tr>
+                    <td>{{ pro_apply.id }}</td>
+                    <td>{{ pro_apply.project.name }}</td>
+                    <td>{{ pro_apply.person.name }}</td>
+                    <td>{{ pro_apply.department }}</td>
+                    <td>{{ pro_apply.pro_type }}</td>
+                    <td>{{ pro_apply.pro_stage }}</td>
+                    <td>{{ pro_apply.type }}</td>
+                    <td><a class="pro_apply_detail" href="{% url 'pro:pro_apply' pro_apply.id %}">查看</a></td>
+                    <td>{{ pro_apply.status }}</td>
+                </tr>
+            {% endfor %}
         </table>
     </div>
-
 {% endblock %}
 
+{#{% block js %}#}
+{#    <script>#}
+{#        $('.pro_apply_detail').click(function () {#}
+{#            var pro_apply_id = $(this).attr('data-value')#}
+{#            #}
+{#            $.ajax({#}
+{#                cache: false,#}
+{#                url: '{% url "pro:pro_apply" pro_apply_id %}',#}
+{#                type: 'POST',#}
+{#                async: true,#}
+{#                dataType: 'json',#}
+{#                beforeSend: function (xhr, settings) {#}
+{#                    xhr.setRequestHeader("X-CSRFToken", "{{ csrf_token }}");#}
+{#                },#}
+{#                data: $('#reset_form').serializeArray(),#}
+{#                success: function (data) {#}
+{#                    $('#msg').text(data.msg)#}
+{#                    setTimeout(function () {#}
+{#                        $('#msg').text('')#}
+{#                    }, 10000)#}
+{#                },#}
+{#                error: function () {#}
+{#                    $('#msg').text('出错了')#}
+{#                }#}
+{#            })#}
+{#        })#}
+{#    </script>#}
+{#{% endblock %}#}

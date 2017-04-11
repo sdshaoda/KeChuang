@@ -1,11 +1,12 @@
 # coding:utf-8
 from __future__ import unicode_literals
 
-from datetime import datetime,date
+from datetime import datetime, date
 
 from django.db import models
 
-from projects.models import Project
+
+# from projects.models import Project
 
 
 # 设备类型
@@ -16,8 +17,8 @@ class EquipmentType(models.Model):
     add_time = models.DateTimeField(default=datetime.now, verbose_name=u'添加时间')
 
     # 类型下的所有设备
-    def get_equipments(self):
-        return self.equipment_set.filter(id=self.id)
+    # def get_equipments(self):
+    #     return self.equipment_set.filter(id=self.id)
 
     class Meta:
         verbose_name = u'设备类型信息'
@@ -30,10 +31,10 @@ class EquipmentType(models.Model):
 # 设备基本信息
 class Equipment(models.Model):
     equ_type = models.ForeignKey(EquipmentType, verbose_name=u'设备类型', null=True, blank=True)
+    equ_type_name = models.CharField(max_length=20, verbose_name=u'设备类型名称', null=True, blank=True)
 
     # 设备基本信息
     equ_name = models.CharField(max_length=20, verbose_name=u'设备名称')
-    equ_type_name = models.CharField(max_length=20, verbose_name=u'设备名称', null=True, blank=True)
     equ_person_id = models.IntegerField(verbose_name=u'设备负责人id', null=True, blank=True)
     equ_person = models.CharField(max_length=20, verbose_name=u'设备负责人', null=True, blank=True)
     file_num = models.CharField(max_length=20, verbose_name=u'档案编号')
@@ -61,17 +62,17 @@ class Equipment(models.Model):
 
     add_time = models.DateTimeField(default=datetime.now, verbose_name=u'添加时间')
 
-    # 设备负责人
-    def get_person(self):
-        return self.equipmentperson_set.get(equipment_id=self.id)
-
-    # 设备保管人
-    def get_staff(self):
-        return self.equipmentstaff_set.get(equipment_id=self.id)
-
-    # 正在审核中的 设备申请
-    def get_applys(self):
-        return self.equipmentapply_set.filter(equipment_id=self.id, status='0')
+    # # 设备负责人
+    # def get_person(self):
+    #     return self.equipmentperson_set.get(equipment_id=self.id)
+    #
+    # # 设备保管人
+    # def get_staff(self):
+    #     return self.equipmentstaff_set.get(equipment_id=self.id)
+    #
+    # # 正在审核中的 设备申请
+    # def get_applys(self):
+    #     return self.equipmentapply_set.filter(equipment_id=self.id, status='0')
 
     class Meta:
         verbose_name = u'设备信息'

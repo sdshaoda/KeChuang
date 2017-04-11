@@ -4,18 +4,26 @@ from django.http import HttpResponse
 from django.shortcuts import render
 from django.views.generic import View
 
-from operation.models import ProjectPerson, ProjectApply, ProjectAttendance
-from users.models import UserProfile
+from operation.models import ProjectApply, ProjectAttendance
+from users.models import UserProfile, Department
 from .models import Project, ProjectType, ProjectStage
 
 
 # 工程浏览 GET
 class ListView(View):
     def get(self, request):
-        # 浏览权限下的工程
-        pros = Project.objects.all().order_by('-add_time')
-        # 检测员 浏览自己为项目成员的工程
+
+        # 检测员 浏览自己为项目成员的工程（暂时只做负责人）
+        if request.user.permission == '检测员':
+            pros = Project.objects.filter(pro_person_id=request.user.id)
         # 部门负责 浏览负责人为本部门员工的工程
+        elif request.user.permission == '部门负责':
+            pros = Project.objects.filter(department_id=request.user.department_id)
+        # 公司负责 浏览所有工程
+        elif request.user.permission == '公司负责':
+            pros = Project.objects.all().order_by('-add_time')
+        else:
+            pros = []
 
         # 搜索 排序
 
@@ -28,7 +36,7 @@ class ListView(View):
 class AddProView(View):
     def get(self, request):
 
-        # 筛除超级用户
+        # 用户 列表，筛除超级用户
         staffs = UserProfile.objects.filter(is_superuser=0)
 
         # 工程类型
@@ -37,15 +45,23 @@ class AddProView(View):
         # 项目阶段
         pro_stages = ProjectStage.objects.all()
 
+        # 除 公司负责 外，其余人只能添加或编辑本部门工程
+        if request.user.permission == '公司负责':
+            departments = Department.objects.filter(is_department=1)
+        else:
+            departments = Department.objects.filter(id=request.user.department.id)
+
         return render(request, 'project/add.html', {
             'staffs': staffs,
             'pro_types': pro_types,
-            'pro_stages': pro_stages
+            'pro_stages': pro_stages,
+            'departments': departments
         })
 
     def post(self, request):
         # 获取表单信息
         pro_name = request.POST.get('pro_name', '')
+        department_id = request.POST.get('department_id', '')
         pro_person_id = request.POST.get('pro_person_id', '')
         pro_type_id = request.POST.get('pro_type_id', '')
         pro_stage_id = request.POST.get('pro_stage_id', '')
@@ -68,15 +84,23 @@ class AddProView(View):
         if request.user.permission == '公司负责':
             # 直接新建 工程
             project = Project()
+            project.pro_name = pro_name
+            project.is_active = 1  # 工程状态为 有效
             project.pro_type_id = pro_type_id
             project.pro_stage_id = pro_stage_id
-            project.is_active = 1  # 工程状态为 1
-            project.pro_name = pro_name
-            project.pro_person_id = pro_person_id
+            if pro_person_id:
+                project.pro_person_id = pro_person_id
+                project.pro_person = UserProfile.objects.get(id=pro_person_id).name
+            if department_id:
+                project.department_id = department_id
+                project.department = Department.objects.get(id=department_id).name
             if wt_person_id:
                 project.wt_person_id = wt_person_id
+                project.wt_person = UserProfile.objects.get(id=wt_person_id).name
             if ht_person_id:
                 project.ht_person_id = ht_person_id
+                project.ht_person = UserProfile.objects.get(id=ht_person_id).name
+
             project.ht_name = ht_name
             project.ht_num = ht_num
             project.ht_money = ht_money
@@ -94,18 +118,20 @@ class AddProView(View):
             project.remark = remark
             project.save()
         else:
-            # 初始化 空 工程
+            # 非 公司负责 用户，初始化 空 工程，等待审核通过后填入相应信息
             project = Project()
+            project.is_active = 0  # 工程状态为 无效
             project.pro_name = pro_name  # 保存必要的信息
-            project.pro_person_id = pro_person_id
-            project.is_active = 0  # 工程状态为 0
+            if pro_person_id:
+                project.pro_person_id = pro_person_id
+                project.pro_person = UserProfile.objects.get(id=pro_person_id).name
             project.save()
 
         # 初始化 工程申请
         pro_apply = ProjectApply()
         pro_apply.project = project
         pro_apply.person_id = request.user.id
-        pro_apply.department = request.user.department.name
+
         pro_apply.type = '添加工程'
         if request.user.permission == '检测员':
             pro_apply.status = '部门主任审核中'
@@ -115,15 +141,24 @@ class AddProView(View):
             pro_apply.status = '审核通过'  # 变更记录的筛选条件
 
         if pro_type_id:
-            pro_apply.pro_type = ProjectType.objects.get(id=pro_type_id).name
+            project.pro_type_id = pro_type_id
+            project.pro_type = ProjectType.objects.get(id=pro_type_id).name
         if pro_stage_id:
-            pro_apply.pro_stage = ProjectStage.objects.get(id=pro_stage_id).name
+            project.pro_stage_id = pro_stage_id
+            project.pro_stage = ProjectStage.objects.get(id=pro_stage_id).name
         if pro_person_id:
-            pro_apply.pro_person = UserProfile.objects.get(id=pro_person_id).name
+            project.pro_person_id = pro_person_id
+            project.pro_person = UserProfile.objects.get(id=pro_person_id).name
+        if department_id:
+            project.department_id = department_id
+            project.department = Department.objects.get(id=department_id).name
         if wt_person_id:
-            pro_apply.wt_person = UserProfile.objects.get(id=wt_person_id).name
+            project.wt_person_id = wt_person_id
+            project.wt_person = UserProfile.objects.get(id=wt_person_id).name
         if ht_person_id:
-            pro_apply.ht_person = UserProfile.objects.get(id=ht_person_id).name
+            project.ht_person_id = ht_person_id
+            project.ht_person = UserProfile.objects.get(id=ht_person_id).name
+
         pro_apply.ht_name = ht_name
         pro_apply.ht_num = ht_num
         pro_apply.ht_money = ht_money
@@ -141,16 +176,171 @@ class AddProView(View):
         pro_apply.remark = remark
         pro_apply.save()
 
-        # 初始化 工程负责人 信息
-        project_person = ProjectPerson()
-        project_person.project = project
-        project_person.person_id = pro_person_id
-        project_person.save()
+        # 申请人 为当前用户的申请
+        pro_applys = ProjectApply.objects.filter(person_id=request.user.id)
+        # 转到 工程申请
+        return render(request, 'project/apply.html', {
+            'pro_applys': pro_applys
+        })
 
-        pros = Project.objects.all().order_by('-add_time')
 
-        return render(request, 'project/list.html', {
-            'pros': pros
+# 编辑工程 GET
+class EditView(View):
+    def get(self, request, pro_id):
+        # 根据 URL 中的 pro_id 获取工程详情
+        pro = Project.objects.get(id=int(pro_id))
+
+        # 筛除超级用户
+        staffs = UserProfile.objects.filter(is_superuser=0)
+
+        # 工程类型
+        pro_types = ProjectType.objects.all()
+
+        # 项目阶段
+        pro_stages = ProjectStage.objects.all()
+
+        # 除 公司负责 外，其余人只能添加或编辑本部门工程
+        if request.user.permission == '公司负责':
+            departments = Department.objects.filter(is_department=1)
+        else:
+            departments = Department.objects.filter(id=request.user.department.id)
+
+        return render(request, 'project/edit.html', {
+            'pro': pro,
+            'staffs': staffs,
+            'pro_types': pro_types,
+            'pro_stages': pro_stages,
+            'departments': departments
+        })
+
+
+# 编辑工程 POST
+class EditProView(View):
+    def post(self, request):
+
+        # 获取表单信息
+        pro_id = request.POST.get('pro_id', '')
+        pro_name = request.POST.get('pro_name', '')
+        department_id = request.POST.get('department_id', '')
+        pro_person_id = request.POST.get('pro_person_id', '')
+        pro_type_id = request.POST.get('pro_type_id', '')
+        pro_stage_id = request.POST.get('pro_stage_id', '')
+        wt_person_id = request.POST.get('wt_person_id', '')
+        ht_person_id = request.POST.get('ht_person_id', '')
+
+        ht_name = request.POST.get('ht_name', '')
+        ht_num = request.POST.get('ht_num', '')
+        ht_money = request.POST.get('ht_money', '')
+        js_money = request.POST.get('js_money', '')
+        wt_dw = request.POST.get('wt_dw', '')
+        mobile = request.POST.get('mobile', '')
+        pro_address = request.POST.get('pro_address', '')
+        sign_date = request.POST.get('sign_date', '')
+        start_date = request.POST.get('start_date', '')
+        finish_date = request.POST.get('finish_date', '')
+        ht_scan = request.FILES.get('ht_scan', '')
+        remark = request.POST.get('remark', '')
+
+        project = Project.objects.get(id=pro_id)
+
+        # 直接修改 工程 信息，并生成 审核通过 的 工程申请
+        if request.user.permission == '公司负责':
+            project.pro_name = pro_name
+            project.pro_type_id = pro_type_id
+            project.pro_stage_id = pro_stage_id
+            if pro_person_id:
+                project.pro_person_id = pro_person_id
+                project.pro_person = UserProfile.objects.get(id=pro_person_id).name
+            if department_id:
+                project.department_id = department_id
+                project.department = Department.objects.get(id=department_id).name
+            if wt_person_id:
+                project.wt_person_id = wt_person_id
+                project.wt_person = UserProfile.objects.get(id=wt_person_id).name
+            if ht_person_id:
+                project.ht_person_id = ht_person_id
+                project.ht_person = UserProfile.objects.get(id=ht_person_id).name
+
+            project.ht_name = ht_name
+            project.ht_num = ht_num
+            project.ht_money = ht_money
+            project.js_money = js_money
+            project.wt_dw = wt_dw
+            project.mobile = mobile
+            project.pro_address = pro_address
+            # 不写判断会报错
+            if sign_date:
+                project.sign_date = sign_date
+            else:
+                project.sign_date = None
+            if start_date:
+                project.start_date = start_date
+            else:
+                project.start_date = None
+            if finish_date:
+                project.finish_date = finish_date
+            else:
+                project.finish_date = None
+            # 上传文件才修改原有值，否则不修改
+            if ht_scan:
+                project.ht_scan = ht_scan
+            project.remark = remark
+            project.save()
+
+        # 初始化 工程申请
+        pro_apply = ProjectApply()
+        pro_apply.project = project
+        pro_apply.person_id = request.user.id
+
+        pro_apply.type = '修改信息'
+        if request.user.permission == '检测员':
+            pro_apply.status = '部门主任审核中'
+        if request.user.permission == '部门负责':
+            pro_apply.status = '公司领导审核中'
+        if request.user.permission == '公司负责':
+            pro_apply.status = '审核通过'  # 变更记录的筛选条件
+
+        if pro_type_id:
+            project.pro_type_id = pro_type_id
+            project.pro_type = ProjectType.objects.get(id=pro_type_id).name
+        if pro_stage_id:
+            project.pro_stage_id = pro_stage_id
+            project.pro_stage = ProjectStage.objects.get(id=pro_stage_id).name
+        if pro_person_id:
+            project.pro_person_id = pro_person_id
+            project.pro_person = UserProfile.objects.get(id=pro_person_id).name
+        if department_id:
+            project.department_id = department_id
+            project.department = Department.objects.get(id=department_id).name
+        if wt_person_id:
+            project.wt_person_id = wt_person_id
+            project.wt_person = UserProfile.objects.get(id=wt_person_id).name
+        if ht_person_id:
+            project.ht_person_id = ht_person_id
+            project.ht_person = UserProfile.objects.get(id=ht_person_id).name
+
+        pro_apply.ht_name = ht_name
+        pro_apply.ht_num = ht_num
+        pro_apply.ht_money = ht_money
+        pro_apply.js_money = js_money
+        pro_apply.wt_dw = wt_dw
+        pro_apply.mobile = mobile
+        pro_apply.pro_address = pro_address
+        if sign_date:
+            pro_apply.sign_date = sign_date
+        if start_date:
+            pro_apply.start_date = start_date
+        if finish_date:
+            pro_apply.finish_date = finish_date
+        pro_apply.ht_scan = ht_scan
+        pro_apply.remark = remark
+        pro_apply.save()
+
+        # 申请人 为当前用户的申请
+        pro_applys = ProjectApply.objects.filter(person_id=request.user.id)
+        # 转到 工程申请
+        return render(request, 'project/apply.html', {
+            'pro_applys': pro_applys
         })
 
 
@@ -177,113 +367,12 @@ class DetailView(View):
         })
 
 
-# 编辑工程 GET
-class EditView(View):
-    def get(self, request, pro_id):
-        # 根据 URL 中的 pro_id 获取工程详情
-        pro = Project.objects.get(id=int(pro_id))
-
-        # 筛除超级用户
-        staffs = UserProfile.objects.filter(is_superuser=0)
-
-        # 工程类型
-        pro_types = ProjectType.objects.all()
-
-        # 项目阶段
-        pro_stages = ProjectStage.objects.all()
-
-        return render(request, 'project/edit.html', {
-            'pro': pro,
-            'staffs': staffs,
-            'pro_types': pro_types,
-            'pro_stages': pro_stages
-        })
-
-
-# 编辑工程 POST
-class EditProView(View):
-    def post(self, request):
-
-        # 获取表单信息
-        pro_id = request.POST.get('pro_id', '')
-        pro_name = request.POST.get('pro_name', '')
-        pro_person_id = request.POST.get('pro_person_id', '')
-        pro_type_id = request.POST.get('pro_type_id', '')
-        pro_stage_id = request.POST.get('pro_stage_id', '')
-        wt_person_id = request.POST.get('wt_person_id', '')
-        ht_person_id = request.POST.get('ht_person_id', '')
-
-        ht_name = request.POST.get('ht_name', '')
-        ht_num = request.POST.get('ht_num', '')
-        ht_money = request.POST.get('ht_money', '')
-        js_money = request.POST.get('js_money', '')
-        wt_dw = request.POST.get('wt_dw', '')
-        mobile = request.POST.get('mobile', '')
-        pro_address = request.POST.get('pro_address', '')
-        sign_date = request.POST.get('sign_date', '')
-        start_date = request.POST.get('start_date', '')
-        finish_date = request.POST.get('finish_date', '')
-        ht_scan = request.FILES.get('ht_scan', '')
-        remark = request.POST.get('remark', '')
-
-        # 修改 工程 信息
-        project = Project.objects.get(id=pro_id)
-        project.pro_name = pro_name
-        project.pro_type_id = pro_type_id
-        project.pro_stage_id = pro_stage_id
-        project.pro_person_id = pro_person_id
-        # 不写判断会报错
-        if wt_person_id:
-            project.wt_person_id = wt_person_id
-        else:
-            project.wt_person_id = None
-        if ht_person_id:
-            project.ht_person_id = ht_person_id
-        else:
-            project.ht_person_id = None
-        project.ht_name = ht_name
-        project.ht_num = ht_num
-        project.ht_money = ht_money
-        project.js_money = js_money
-        project.wt_dw = wt_dw
-        project.mobile = mobile
-        project.pro_address = pro_address
-        # 不写判断会报错
-        if sign_date:
-            project.sign_date = sign_date
-        else:
-            project.sign_date = None
-        if start_date:
-            project.start_date = start_date
-        else:
-            project.start_date = None
-        if finish_date:
-            project.finish_date = finish_date
-        else:
-            project.finish_date = None
-        # 上传文件才修改原有值，否则不修改
-        if ht_scan:
-            project.ht_scan = ht_scan
-        project.remark = remark
-        project.save()
-
-        # 修改 工程负责人 信息
-        project_person = ProjectPerson.objects.get(project_id=pro_id)
-        project_person.person_id = pro_person_id
-        project_person.save()
-
-        pros = Project.objects.all().order_by('-add_time')
-
-        return render(request, 'project/list.html', {
-            'pros': pros
-        })
-
-
 # 删除工程 Ajax
 class DeleteView(View):
     def post(self, request):
         pro_id = request.POST.get('pro_id', '')
 
+        # 初始化 工程申请
         pro = Project.objects.get(id=pro_id)
         pro.delete()
 
@@ -295,13 +384,22 @@ class DeleteView(View):
 # 工程申请 GET
 class ApplyView(View):
     def get(self, request):
-        return render(request, 'project/apply.html')
+        # 申请人 为当前用户的申请
+        pro_applys = ProjectApply.objects.filter(person_id=request.user.id)
+
+        return render(request, 'project/apply.html', {
+            'pro_applys': pro_applys
+        })
 
 
 # 申请详情 GET
 class ApplyDetailView(View):
-    def get(self, request):
-        return render(request, 'project/apply.html')
+    def get(self, request, pro_apply_id):
+        pro_apply = ProjectApply.objects.get(id=int(pro_apply_id))
+
+        return render(request, 'project/apply_detail.html', {
+            'pro_apply': pro_apply
+        })
 
 
 # 工程审核 GET
@@ -325,13 +423,40 @@ class VerifyView(View):
 # 同意申请 Ajax
 class AgreeProView(View):
     def get(self, request):
-        is_active = 1
+
+        pro_apply = ProjectApply.objects.get()
+
+        # 判断 工程申请 的类型
+        if pro_apply.type == '添加工程':
+            is_active = 1
+            # 将 申请 中的内容写进 工程 信息
+        elif pro_apply.type == '修改信息':
+            pass
+            # 将 申请 中的内容写进 工程 信息
+        elif pro_apply.type == '删除工程':
+            pass
+
         return HttpResponse('{"status":"success","msg":"同意工程申请操作成功"}', content_type='application/json')
 
 
 # 拒绝申请 Ajax
 class RefuseProView(View):
     def get(self, request):
+
+        pro_apply = ProjectApply.objects.get()
+
+        # 判断 工程申请 的类型
+        if pro_apply.type == '添加工程':
+            is_active = 1
+            # 添加的 工程 不通过审核，直接删除
+            pro_apply.delete()
+        elif pro_apply.type == '修改信息':
+            pass
+            # 将 申请 中的内容写进 工程 信息
+        elif pro_apply.type == '删除工程':
+            # 工程 在数据库中依然存在，能查看其 变更记录
+            is_active = 0
+
         return HttpResponse('{"status":"success","msg":"拒绝工程申请操作成功"}', content_type='application/json')
 
 
@@ -381,5 +506,17 @@ class AddAttendanceView(View):
 # 变更信息 GET
 class ChangeView(View):
     def get(self, request):
-        # 选取 工程申请 中状态为 审核通过 的信息
-        return render(request, 'project/change.html')
+        # 根据权限查看 变更记录信息，同 工程浏览
+        if request.user.permission == '检测员':
+            # 工程负责人 为 自己 ， 工程申请 中状态为 审核通过 的信息
+            pro_applys = ProjectApply.objects.filter(Q(pro_person_id=request.user.id) | Q(status='审核通过'))
+        elif request.user.permission == '部门负责':
+            pro_applys = ProjectApply.objects.filter(Q(department_id=request.user.department_id) | Q(status='审核通过'))
+        elif request.user.permission == '公司负责':
+            pro_applys = ProjectApply.objects.filter(status='审核通过')
+        else:
+            pro_applys = []
+
+        return render(request, 'project/change.html', {
+            'pro_applys': pro_applys
+        })

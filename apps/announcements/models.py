@@ -12,9 +12,9 @@ from users.models import UserProfile, Department
 class Announcement(models.Model):
     person = models.ForeignKey(UserProfile, verbose_name=u'发布人')
     department = models.ForeignKey(Department, verbose_name=u'相关部门')
-
     person_name = models.CharField(max_length=20, verbose_name=u'发布人姓名')
     department_name = models.CharField(max_length=20, verbose_name=u'部门名称')
+
     title = models.CharField(max_length=50, verbose_name=u'公告标题')
     content = models.TextField(verbose_name=u'公告正文')
     remark = models.CharField(max_length=200, verbose_name=u'备注', null=True, blank=True)
@@ -33,9 +33,9 @@ class Announcement(models.Model):
 class Document(models.Model):
     person = models.ForeignKey(UserProfile, verbose_name=u'上传人')
     department = models.ForeignKey(Department, verbose_name=u'相关部门')
-
     person_name = models.CharField(max_length=20, verbose_name=u'上传人姓名')
     department_name = models.CharField(max_length=20, verbose_name=u'部门名称')
+
     name = models.CharField(max_length=20, verbose_name=u'公文名称')
     document = models.FileField(upload_to='document/%Y/%m', verbose_name=u'公文')
     remark = models.CharField(max_length=200, verbose_name=u'备注', null=True, blank=True)

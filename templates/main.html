@@ -158,7 +158,7 @@
                             <a href="{% url 'pro:add' %}" class="list-group-item">添加工程</a>
                             <a href="{% url 'pro:list' %}" class="list-group-item">浏览工程</a>
                             <a href="{% url 'pro:attendance' %}" class="list-group-item">考勤登记</a>
-                            <a href="{% url 'pro:apply' %}" class="list-group-item">申请记录</a>
+                            <a href="{% url 'pro:apply' %}" class="list-group-item">工程申请</a>
                             {% if request.user.permission == '部门负责' or request.user.permission == '公司负责' %}
                                 <a href="{% url 'pro:verify' %}" class="list-group-item">工程审核</a>
                             {% endif %}
@@ -184,7 +184,7 @@
                             {% if request.user.permission == '公司负责' or request.user.permission == '系统管理员' %}
                                 <a href="{% url 'equ:info' %}" class="list-group-item">设备资料</a>
                             {% endif %}
-                            <a href="{% url 'equ:apply' %}" class="list-group-item">申请记录</a>
+                            <a href="{% url 'equ:apply' %}" class="list-group-item">设备申请</a>
                             <a href="{% url 'equ:verify' %}" class="list-group-item">设备审核</a>
                         </div>
                     </div>

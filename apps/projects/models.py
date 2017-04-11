@@ -1,10 +1,12 @@
 # coding:utf-8
 from __future__ import unicode_literals
 
-from datetime import datetime, date
+from datetime import datetime
 
 from django.db import models
-from users.models import UserProfile
+
+
+# from users.models import UserProfile
 
 
 # 工程类型
@@ -15,8 +17,8 @@ class ProjectType(models.Model):
     add_time = models.DateTimeField(default=datetime.now, verbose_name=u'添加时间')
 
     # 类型下所有工程
-    def get_projects(self):
-        return self.project_set.filter(id=self.id)
+    # def get_projects(self):
+    #     return self.project_set.filter(id=self.id)
 
     class Meta:
         verbose_name = u'工程类型信息'
@@ -34,8 +36,8 @@ class ProjectStage(models.Model):
     add_time = models.DateTimeField(default=datetime.now, verbose_name=u'添加时间')
 
     # 阶段下所有工程
-    def get_projects(self):
-        return self.project_set.filter(id=self.id)
+    # def get_projects(self):
+    #     return self.project_set.filter(id=self.id)
 
     class Meta:
         verbose_name = u'项目阶段信息'
@@ -49,13 +51,20 @@ class ProjectStage(models.Model):
 class Project(models.Model):
     pro_type = models.ForeignKey(ProjectType, verbose_name=u'工程类型', null=True, blank=True)
     pro_stage = models.ForeignKey(ProjectStage, verbose_name=u'项目阶段', null=True, blank=True)
-
-    is_active = models.BooleanField(default=0, verbose_name=u'工程状态')
+    pro_type_name = models.CharField(max_length=20, verbose_name=u'工程类型名称', null=True, blank=True)
+    pro_stage_name = models.CharField(max_length=20, verbose_name=u'项目阶段名称', null=True, blank=True)
 
     pro_name = models.CharField(max_length=50, verbose_name=u'工程名称')
-    pro_person_id = models.IntegerField(verbose_name=u'工程负责人id')
+    is_active = models.BooleanField(default=0, verbose_name=u'工程状态')
+
+    department_id = models.IntegerField(verbose_name=u'所属部门id', null=True, blank=True)
+    pro_person_id = models.IntegerField(verbose_name=u'工程负责人id', null=True, blank=True)
     wt_person_id = models.IntegerField(verbose_name=u'法人委托id', null=True, blank=True)
     ht_person_id = models.IntegerField(verbose_name=u'合同签署人id', null=True, blank=True)
+    pro_person = models.CharField(max_length=20, verbose_name=u'所属部门', null=True, blank=True)
+    department = models.CharField(max_length=20, verbose_name=u'工程负责人', null=True, blank=True)
+    wt_person = models.CharField(max_length=20, verbose_name=u'法人委托', null=True, blank=True)
+    ht_person = models.CharField(max_length=20, verbose_name=u'合同签署人', null=True, blank=True)
 
     ht_name = models.CharField(max_length=50, verbose_name=u'合同名称', null=True, blank=True)
     ht_num = models.CharField(max_length=50, verbose_name=u'合同编号', null=True, blank=True)
@@ -72,29 +81,29 @@ class Project(models.Model):
 
     add_time = models.DateTimeField(default=datetime.now, verbose_name=u'添加时间')
 
-    # 工程负责人
-    def get_pro_person(self):
-        return UserProfile.objects.get(id=self.pro_person_id)
-
-    # 法人委托
-    def get_wt_person(self):
-        return UserProfile.objects.get(id=self.wt_person_id)
-
-    # 合同签署人
-    def get_ht_person(self):
-        return UserProfile.objects.get(id=self.ht_person_id)
-
-    # 工程成员
-    def get_members(self):
-        return self.projectmember_set.filter(project_id=self.id)
-
-    # 工程设备
-    def get_equipments(self):
-        return self.projectequipment_set.filter(project_id=self.id)
-
-    # 工程变更记录
-    def get_change(self):
-        return self.projectchange_set.filter(project_id=self.id).order_by('-add-time')
+    # # 工程负责人
+    # def get_pro_person(self):
+    #     return UserProfile.objects.get(id=self.pro_person_id)
+    #
+    # # 法人委托
+    # def get_wt_person(self):
+    #     return UserProfile.objects.get(id=self.wt_person_id)
+    #
+    # # 合同签署人
+    # def get_ht_person(self):
+    #     return UserProfile.objects.get(id=self.ht_person_id)
+    #
+    # # 工程成员
+    # def get_members(self):
+    #     return self.projectmember_set.filter(project_id=self.id)
+    #
+    # # 工程设备
+    # def get_equipments(self):
+    #     return self.projectequipment_set.filter(project_id=self.id)
+    #
+    # # 工程变更记录
+    # def get_change(self):
+    #     return self.projectchange_set.filter(project_id=self.id).order_by('-add-time')
 
     class Meta:
         verbose_name = u'工程信息'
@@ -102,40 +111,3 @@ class Project(models.Model):
 
     def __unicode__(self):
         return self.pro_name
-
-
-# 工程变更记录
-class ProjectChange(models.Model):
-    project = models.ForeignKey(Project, verbose_name=u'工程名称')
-    type = models.CharField(max_length=4, choices=(
-        ('添加工程', u'添加工程'), ('修改信息', u'修改信息'), ('删除工程', u'删除工程')
-    ), verbose_name=u'申请类型')
-
-    pro_type = models.CharField(max_length=20, verbose_name=u'工程类型', null=True, blank=True)
-    pro_stage = models.CharField(max_length=20, verbose_name=u'项目阶段', null=True, blank=True)
-
-    pro_person = models.CharField(max_length=20, verbose_name=u'工程负责人')
-    wt_person = models.CharField(max_length=20, verbose_name=u'法人委托', null=True, blank=True)
-    ht_person = models.CharField(max_length=20, verbose_name=u'合同签署人', null=True, blank=True)
-
-    ht_name = models.CharField(max_length=50, verbose_name=u'合同名称', null=True, blank=True)
-    ht_num = models.CharField(max_length=50, verbose_name=u'合同编号', null=True, blank=True)
-    ht_money = models.CharField(max_length=20, verbose_name=u'合同金额', null=True, blank=True)
-    js_money = models.CharField(max_length=20, verbose_name=u'结算金额', null=True, blank=True)
-    wt_dw = models.CharField(max_length=50, verbose_name=u'委托单位', null=True, blank=True)
-    mobile = models.CharField(max_length=20, verbose_name=u'联系电话', null=True, blank=True)
-    pro_address = models.CharField(max_length=50, verbose_name=u'项目地址', null=True, blank=True)
-    sign_date = models.DateField(max_length=20, verbose_name=u'签订日期', null=True, blank=True)
-    start_date = models.DateField(max_length=20, verbose_name=u'开工日期', null=True, blank=True)
-    finish_date = models.DateField(max_length=20, verbose_name=u'完工日期', null=True, blank=True)
-    ht_scan = models.FileField(max_length=100, upload_to='hetong/%Y/%m', verbose_name=u'合同扫描件', null=True, blank=True)
-    remark = models.CharField(max_length=200, verbose_name=u'备注', null=True, blank=True)
-
-    add_time = models.DateTimeField(default=datetime.now, verbose_name=u'修改时间')
-
-    class Meta:
-        verbose_name = u'工程变更记录'
-        verbose_name_plural = verbose_name
-
-    def __unicode__(self):
-        return self.project

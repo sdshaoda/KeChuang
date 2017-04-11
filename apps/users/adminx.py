@@ -15,7 +15,7 @@ class BaseSetting(object):
 class GlobalSettings(object):
     site_title = '武汉中科科创工程检测有限公司-后台管理系统'
     site_footer = '武汉中科科创工程检测有限公司'
-    # menu_style = 'accordion'
+    menu_style = 'accordion'
 
 
 # 部门信息Admin
@@ -29,14 +29,11 @@ class DepartmentAdmin(object):
 class UserProfileAdmin(object):
     list_display = ['department', 'name', 'sex', 'username', 'job', 'induction_time', 'permission', 'number', 'mobile',
                     'email', 'office_phone', 'home_phone', 'home_address', 'xueli', 'zhicheng', 'zige', 'image',
-                    'zigezs', 'xuelizs', 'zhichengzs',
                     'add_time']
-    search_fields = ['department', 'name', 'sex', 'username', 'job', 'induction_time', 'permission', 'number', 'mobile',
-                     'email', 'office_phone', 'home_phone', 'home_address', 'xueli', 'zhicheng', 'zige', 'image',
-                     'zigezs', 'xuelizs', 'zhichengzs']
+    search_fields = ['department', 'name', 'sex', 'username', 'job', 'permission', 'number', 'mobile',
+                     'email', 'office_phone', 'home_phone', 'home_address', 'xueli', 'zhicheng', 'zige', 'image']
     list_filter = ['department', 'name', 'sex', 'username', 'job', 'induction_time', 'permission', 'number', 'mobile',
                    'email', 'office_phone', 'home_phone', 'home_address', 'xueli', 'zhicheng', 'zige', 'image',
-                   'zigezs', 'xuelizs', 'zhichengzs',
                    'add_time']
 
 
