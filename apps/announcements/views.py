@@ -1,9 +1,14 @@
 # coding:utf-8
+from datetime import date
+
+from django.core.mail import send_mail
 from django.db.models import Q
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.views.generic import View
 
+from KeChuang.settings import EMAIL_FROM
+from equipments.models import Equipment
 from users.models import UserProfile, Department
 from .models import Announcement, Document
 
@@ -56,6 +61,29 @@ class ListView(View):
         elif category == 'add_time' and mode == 'negative':
             anns = anns.order_by('-add_time')
 
+        equs = Equipment.objects.filter(equ_staff_id=request.user.id)
+        for equ in equs:
+            delta = equ.revert_date - date.today()
+            # 归还日期在一周内
+            if delta.days < 7:
+                msg = '您有设备已快过期，请尽快归还！'
+                # 若用户填写了邮箱地址，发邮件
+                if request.user.email:
+                    email_title = '距设备归还时间还有{0}天'.format(delta.days)
+                    email_body = '您已领用的设备：{0}已接近归还日期，距归还日期还有{1}天，请您尽快归还。' \
+                                 '另外，我们不排除您还有其他设备已接近归还时间，请仔细核对您所领用的设备。' \
+                                 '请在归还日期内归还！'.format(equ.equ_name, delta.days)
+
+                    # 发送状态，成功为 1，失败为 0
+                    send_status = send_mail(email_title, email_body, EMAIL_FROM, [request.user.email])
+                    if send_status:
+                        msg += '已发送邮件至您的邮箱'
+                # 弹窗
+                return render(request, 'announcement/list.html', {
+                    'anns': anns,
+                    'msg': msg
+                })
+
         return render(request, 'announcement/list.html', {
             'anns': anns
         })
@@ -75,7 +103,6 @@ class DeleteAnnView(View):
 # 发布公告 GET POST
 class PublishView(View):
     def get(self, request):
-
         departments = Department.objects.all()
 
         return render(request, 'announcement/publish.html', {

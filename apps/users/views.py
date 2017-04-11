@@ -33,9 +33,10 @@ class LoginView(View):
 
         # 如果已登录，跳转到公告浏览页
         if request.user.username:
-            all_anns = Announcement.objects.all().order_by('-add_time')
+            anns = Announcement.objects.all().order_by('-add_time')
+
             return render(request, 'announcement/list.html', {
-                'all_anns': all_anns
+                'anns': anns
             })
 
         return render(request, 'login.html', {
@@ -56,10 +57,10 @@ class LoginView(View):
                 # 登录
                 login(request, user)
 
-                all_anns = Announcement.objects.all().order_by('-add_time')
+                anns = Announcement.objects.all().order_by('-add_time')
                 # 跳转到公告浏览页
                 return render(request, 'announcement/list.html', {
-                    'all_anns': all_anns
+                    'anns': anns
                 })
             else:
                 return render(request, 'login.html', {
@@ -310,15 +311,11 @@ class AddStaffView(View):
             user_profile.save()
 
             # 筛除超级用户
-            all_staffs = UserProfile.objects.all().order_by('id')
-            staffs = []
-            for staff in all_staffs:
-                if not staff.is_superuser:
-                    staffs.append(staff)
+            staffs = UserProfile.objects.filter(is_superuser=0)
 
             # 返回员工信息页
             return render(request, 'user/staff.html', {
-                'all_staffs': staffs
+                'staffs': staffs
             })
         else:
             return render(request, 'user/add_staff.html', {

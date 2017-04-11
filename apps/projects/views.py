@@ -24,11 +24,7 @@ class AddProView(View):
     def get(self, request):
 
         # 筛除超级用户
-        all_staffs = UserProfile.objects.all().order_by('id')
-        staffs = []
-        for staff in all_staffs:
-            if not staff.is_superuser:
-                staffs.append(staff)
+        staffs = UserProfile.objects.filter(is_superuser=0)
 
         # 工程类型
         pro_types = ProjectType.objects.all()
@@ -130,11 +126,7 @@ class DetailView(View):
         pro = Project.objects.get(id=int(pro_id))
 
         # 筛除超级用户
-        all_staffs = UserProfile.objects.all().order_by('id')
-        staffs = []
-        for staff in all_staffs:
-            if not staff.is_superuser:
-                staffs.append(staff)
+        staffs = UserProfile.objects.filter(is_superuser=0)
 
         # 工程类型
         pro_types = ProjectType.objects.all()
@@ -158,11 +150,7 @@ class EditView(View):
         pro = Project.objects.get(id=int(pro_id))
 
         # 筛除超级用户
-        all_staffs = UserProfile.objects.all().order_by('id')
-        staffs = []
-        for staff in all_staffs:
-            if not staff.is_superuser:
-                staffs.append(staff)
+        staffs = UserProfile.objects.filter(is_superuser=0)
 
         # 工程类型
         pro_types = ProjectType.objects.all()

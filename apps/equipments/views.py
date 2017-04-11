@@ -187,11 +187,7 @@ class EditView(View):
         equ_types = EquipmentType.objects.all().order_by('-add_time')
 
         # 筛除超级用户
-        all_staffs = UserProfile.objects.all().order_by('id')
-        staffs = []
-        for staff in all_staffs:
-            if not staff.is_superuser:
-                staffs.append(staff)
+        staffs = UserProfile.objects.filter(is_superuser=0)
 
         return render(request, 'equipment/edit.html', {
             'equ': equ,
