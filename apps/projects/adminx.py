@@ -20,26 +20,29 @@ class ProjectStageAdmin(object):
 
 # 工程信息Admin
 class ProjectAdmin(object):
-    list_display = ['pro_type', 'pro_stage', 'pro_name', 'wt_person', 'ht_person', 'ht_name', 'ht_num',
+    list_display = ['pro_type', 'pro_stage', 'pro_name', 'pro_person_id', 'wt_person_id', 'ht_person_id', 'ht_name',
+                    'ht_num',
                     'ht_money', 'js_money', 'wt_dw', 'mobile', 'pro_address', 'sign_date', 'start_date', 'finish_date',
                     'remark', 'add_time']
-    search_fields = ['pro_type', 'pro_stage', 'pro_name', 'wt_person', 'ht_person', 'ht_name', 'ht_num',
+    search_fields = ['pro_type', 'pro_stage', 'pro_name', 'pro_person_id', 'wt_person_id', 'ht_person_id', 'ht_name',
+                     'ht_num',
                      'ht_money', 'js_money', 'wt_dw', 'mobile', 'pro_address', 'sign_date', 'start_date', 'finish_date',
                      'remark']
-    list_filter = ['pro_type', 'pro_stage', 'pro_name', 'wt_person', 'ht_person', 'ht_name', 'ht_num',
+    list_filter = ['pro_type', 'pro_stage', 'pro_name', 'pro_person_id', 'wt_person_id', 'ht_person_id', 'ht_name',
+                   'ht_num',
                    'ht_money', 'js_money', 'wt_dw', 'mobile', 'pro_address', 'sign_date', 'start_date', 'finish_date',
                    'remark', 'add_time']
 
 
 # 工程变更记录Admin
 class ProjectChangeAdmin(object):
-    list_display = ['project', 'pro_type', 'stage', 'pro_person', 'wt_person', 'ht_person', 'ht_name', 'ht_num',
+    list_display = ['project', 'pro_type', 'pro_stage', 'pro_person', 'wt_person', 'ht_person', 'ht_name', 'ht_num',
                     'ht_money', 'js_money', 'wt_dw', 'mobile', 'pro_address', 'sign_date', 'start_date', 'finish_date',
                     'remark', 'add_time']
-    search_fields = ['project', 'pro_type', 'stage', 'pro_person', 'wt_person', 'ht_person', 'ht_name', 'ht_num',
+    search_fields = ['project', 'pro_type', 'pro_stage', 'pro_person', 'wt_person', 'ht_person', 'ht_name', 'ht_num',
                      'ht_money', 'js_money', 'wt_dw', 'mobile', 'pro_address', 'sign_date', 'start_date', 'finish_date',
-                     'remark', 'add_time']
-    list_filter = ['project', 'pro_type', 'stage', 'pro_person', 'wt_person', 'ht_person', 'ht_name', 'ht_num',
+                     'remark']
+    list_filter = ['project', 'pro_type', 'pro_stage', 'pro_person', 'wt_person', 'ht_person', 'ht_name', 'ht_num',
                    'ht_money', 'js_money', 'wt_dw', 'mobile', 'pro_address', 'sign_date', 'start_date', 'finish_date',
                    'remark', 'add_time']
 

@@ -109,9 +109,9 @@ class ProjectChange(models.Model):
     pro_type = models.CharField(max_length=20, verbose_name=u'工程类型')
     pro_stage = models.CharField(max_length=20, verbose_name=u'项目阶段', null=True, blank=True)
 
-    pro_person_id = models.IntegerField(verbose_name=u'工程负责人id')
-    wt_person_id = models.IntegerField(verbose_name=u'法人委托id', null=True, blank=True)
-    ht_person_id = models.IntegerField(verbose_name=u'合同签署人id', null=True, blank=True)
+    pro_person = models.CharField(max_length=20, verbose_name=u'工程负责人')
+    wt_person = models.CharField(max_length=20, verbose_name=u'法人委托', null=True, blank=True)
+    ht_person = models.CharField(max_length=20, verbose_name=u'合同签署人', null=True, blank=True)
 
     ht_name = models.CharField(max_length=50, verbose_name=u'合同名称', null=True, blank=True)
     ht_num = models.CharField(max_length=50, verbose_name=u'合同编号', null=True, blank=True)

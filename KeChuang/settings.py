@@ -135,10 +135,10 @@ STATICFILES_DIRS = (
 # 邮箱配置，在发送验证码时会用到
 EMAIL_HOST = 'smtp.126.com'
 EMAIL_PORT = 25
-EMAIL_HOST_USER = 'sdshaoda@126.com'
-EMAIL_HOST_PASSWORD = 'SDshaoda'
+EMAIL_HOST_USER = 'whzkkc@126.com'
+EMAIL_HOST_PASSWORD = '87198270abcd'
 EMAIL_USE_TLS = False
-EMAIL_FROM = 'sdshaoda@126.com'
+EMAIL_FROM = 'whzkkc@126.com'
 
 # 上传文件相关配置
 MEDIA_URL = '/media/'
