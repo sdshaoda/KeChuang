@@ -103,7 +103,7 @@ class InfoView(View):
 class AddView(View):
     def get(self, request):
 
-        # 获取所有 设备类型 信息，根据添加时间排序
+        # 设备类型 信息
         equ_types = EquipmentType.objects.all().order_by('-add_time')
 
         # 筛除超级用户
@@ -131,10 +131,12 @@ class AddView(View):
 
         # 初始化 设备信息
         equipment = Equipment()
-        equipment.equ_type_id = equ_type_id
-        equipment.equ_type_name = EquipmentType.objects.get(id=equ_type_id)
-        equipment.equ_person_id = equ_person_id  # 设备负责人信息
-        equipment.equ_person = UserProfile.objects.get(id=equ_person_id).name
+        if equ_type_id:
+            equipment.equ_type_id = equ_type_id
+            equipment.equ_type_name = EquipmentType.objects.get(id=equ_type_id)
+        if equ_person_id:
+            equipment.equ_person_id = equ_person_id  # 设备负责人信息
+            equipment.equ_person = UserProfile.objects.get(id=equ_person_id).name
         equipment.equ_name = equ_name
         equipment.file_num = file_num
         equipment.equ_num = equ_num
@@ -163,7 +165,6 @@ class AddView(View):
 # 编辑设备 GET
 class EditView(View):
     def get(self, request, equ_id):
-
         # 通过 equ_id 获取当前设备信息
         equ = Equipment.objects.get(id=int(equ_id))
 
@@ -201,10 +202,12 @@ class EditEquView(View):
 
         # 更改 设备信息
         equipment = Equipment.objects.get(id=equ_id)
-        equipment.equ_type_id = equ_type_id
-        equipment.equ_type_name = EquipmentType.objects.get(id=equ_type_id).name
-        equipment.equ_person_id = equ_person_id
-        equipment.equ_person = UserProfile.objects.get(id=equ_person_id).name
+        if equ_type_id:
+            equipment.equ_type_id = equ_type_id
+            equipment.equ_type_name = EquipmentType.objects.get(id=equ_type_id).name
+        if equ_person_id:
+            equipment.equ_person_id = equ_person_id
+            equipment.equ_person = UserProfile.objects.get(id=equ_person_id).name
         equipment.equ_name = equ_name
         equipment.equ_num = equ_num
         equipment.file_num = file_num
@@ -244,14 +247,18 @@ class UseEquView(View):
         # 初始化 设备申请 信息
         equ_apply = EquipmentApply()
         equ_apply.equipment_id = equ_id
+        equ_apply.equipment_name = Equipment.objects.get(id=equ_id)
         equ_apply.person_id = person_id
+        equ_apply.person_name = UserProfile.objects.get(id=person_id)
         # 设备状态为 正常 时，才将它送往 设备负责人 处审核；否则送往 系统管理员
         if equ_status == '正常':
             equ_apply.equipment_person_id = equipment_person_id
+            equ_apply.equipment_person = UserProfile.objects.get(id=equipment_person_id)
         else:
             equ_apply.equipment_person_id = None
-        equ_apply.type = '0'  # 申请类型为 领用
-        equ_apply.status = '0'  # 审核状态为 审核中
+            equ_apply.equipment_person = None
+        equ_apply.type = '领用'  # 申请类型为 领用
+        equ_apply.status = '审核中'  # 审核状态为 审核中
         equ_apply.use_date = use_date
         equ_apply.revert_date = revert_date
         equ_apply.remark = remark
@@ -283,6 +290,7 @@ class ApplyView(View):
 class VerifyView(View):
     def get(self, request):
 
+        # 系统管理员 审核设备状态为 限制使用 的设备，限制使用的设备在领用时设置了 equipment_person_id=None
         if request.user.permission == '系统管理员':
             equ_applys = EquipmentApply.objects.filter(
                 Q(equipment_person_id=request.user.id) | Q(equipment_person_id=None))
@@ -305,9 +313,9 @@ class AgreeEquView(View):
         equ_apply = EquipmentApply.objects.get(id=equ_apply_id)
 
         # 申请类型为 领用
-        if equ_apply.type == '0':
+        if equ_apply.type == '领用':
             # 修改 设备申请 相关信息
-            equ_apply.status = '1'  # 设备状态修改为 审核通过
+            equ_apply.status = '审核通过'  # 设备状态修改为 审核通过
             equ_apply.save()
 
             # 审核通过，修改设备相关信息
@@ -322,9 +330,9 @@ class AgreeEquView(View):
             return HttpResponse('{"status":"success","msg":"同意设备领用申请操作成功"}', content_type='application/json')
 
         # 申请类型为 归还
-        elif equ_apply.type == '1':
+        elif equ_apply.type == '归还':
             # 修改 设备申请 相关信息
-            equ_apply.status = '1'  # 设备状态修改为 审核通过
+            equ_apply.status = '审核通过'  # 设备状态修改为 审核通过
             equ_apply.save()
 
             # 审核通过，修改设备相关信息
@@ -350,16 +358,16 @@ class RefuseEquView(View):
         equ_apply = EquipmentApply.objects.get(id=equ_apply_id)
 
         # 申请类型为 领用
-        if equ_apply.type == '0':
+        if equ_apply.type == '领用':
             # 修改设备申请相关信息
-            equ_apply.status = '2'  # 设备状态修改为 审核未通过
+            equ_apply.status = '审核未通过'  # 设备状态修改为 审核未通过
             equ_apply.save()
             return HttpResponse('{"status":"success","msg":"拒绝设备领用申请操作成功"}', content_type='application/json')
 
         # 申请类型为 归还
-        elif equ_apply.type == '1':
+        elif equ_apply.type == '归还':
             # 修改设备申请相关信息
-            equ_apply.status = '2'  # 设备状态修改为 审核未通过
+            equ_apply.status = '审核未通过'  # 设备状态修改为 审核未通过
             equ_apply.save()
             return HttpResponse('{"status":"success","msg":"拒绝设备归还申请操作成功"}', content_type='application/json')
 
@@ -390,8 +398,8 @@ class RevertEquView(View):
         equ_apply.equipment_id = equ_id
         equ_apply.person_id = person_id
         equ_apply.equipment_person_id = equipment_person_id  # 设备负责人id
-        equ_apply.type = '1'  # 申请类型为 归还
-        equ_apply.status = '0'  # 审核状态为 审核中
+        equ_apply.type = '归还'  # 申请类型为 归还
+        equ_apply.status = '审核中'  # 审核状态为 审核中
         equ_apply.use_date = use_date
         equ_apply.revert_date = revert_date
         equ_apply.save()

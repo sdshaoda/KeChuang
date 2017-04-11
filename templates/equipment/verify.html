@@ -29,16 +29,16 @@
                     <td>{{ equ_apply.get_type_display }}</td>
                     <td>{{ equ_apply.use_date }}</td>
                     <td>{{ equ_apply.revert_date }}</td>
-                    {% if equ_apply.status == '0' %}
+                    {% if equ_apply.status == '审核中' %}
                         <td>
                             <a data-value="{{ equ_apply.id }}" href="javascript:void(0);" class="agree">同意</a>
                         </td>
                         <td>
                             <a data-value="{{ equ_apply.id }}" href="javascript:void(0);" class="refuse">拒绝</a>
                         </td>
-                    {% elif equ_apply.status == '1' %}
+                    {% elif equ_apply.status == '审核通过' %}
                         <td colspan="2">已同意</td>
-                    {% elif equ_apply.status == '2' %}
+                    {% elif equ_apply.status == '审核未通过' %}
                         <td colspan="2">已拒绝</td>
                     {% endif %}
                 </tr>

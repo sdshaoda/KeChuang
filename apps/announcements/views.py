@@ -16,6 +16,7 @@ from .models import Announcement, Document
 # 公告列表 GET
 class ListView(View):
     def get(self, request):
+        # 公告是所有员工都能够浏览的
         anns = Announcement.objects.all()
 
         search_keywords = request.GET.get('keywords', '')
@@ -61,6 +62,7 @@ class ListView(View):
         elif category == 'add_time' and mode == 'negative':
             anns = anns.order_by('-add_time')
 
+        # 因为登录后进入此页，所以设备归还日期在此处验证
         equs = Equipment.objects.filter(equ_staff_id=request.user.id)
         for equ in equs:
             delta = equ.revert_date - date.today()
@@ -95,6 +97,7 @@ class DeleteAnnView(View):
         ann_id = request.POST.get('ann_id', '')
         ann = Announcement.objects.get(id=ann_id)
         ann.delete()
+
         if Announcement.objects.filter(id=ann_id):
             return HttpResponse('{"status":"fail","msg":"删除公告失败"}', content_type='application/json')
         return HttpResponse('{"status":"success","msg":"删除公告成功"}', content_type='application/json')
@@ -103,6 +106,7 @@ class DeleteAnnView(View):
 # 发布公告 GET POST
 class PublishView(View):
     def get(self, request):
+        # 只有 公司负责 和 系统管理员 能够发布公告
         departments = Department.objects.all()
 
         return render(request, 'announcement/publish.html', {

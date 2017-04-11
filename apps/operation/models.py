@@ -185,10 +185,10 @@ class EquipmentApply(models.Model):
     equipment_person = models.CharField(max_length=20, verbose_name=u'设备负责人', null=True, blank=True)
 
     type = models.CharField(default='0', max_length=2, choices=(
-        ('0', u'领用'), ('1', u'归还')
+        ('领用', u'领用'), ('归还', u'归还')
     ), verbose_name=u'申请类型')
     status = models.CharField(default='0', max_length=2, choices=(
-        ('0', u'审核中'), ('1', u'审核通过'), ('2', u'审核未通过')
+        ('审核中', u'审核中'), ('审核通过', u'审核通过'), ('审核未通过', u'审核未通过')
     ), verbose_name=u'审核状态')
     use_date = models.DateField(default=date.today, verbose_name=u'领用时间', null=True, blank=True)
     revert_date = models.DateField(default=date.today, verbose_name=u'归还时间', null=True, blank=True)
