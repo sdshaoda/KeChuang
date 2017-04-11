@@ -23,10 +23,10 @@
             {% for equ_apply in equ_applys %}
                 <tr>
                     <td>{{ equ_apply.id }}</td>
-                    <td>{{ equ_apply.equipment.equ_name }}</td>
-                    <td>{{ equ_apply.equipment.get_equ_status_display }}</td>
-                    <td>{{ equ_apply.person.name }}</td>
-                    <td>{{ equ_apply.get_type_display }}</td>
+                    <td>{{ equ_apply.equipment_name }}</td>
+                    <td>{{ equ_apply.equipment.equ_status }}</td>
+                    <td>{{ equ_apply.person_name }}</td>
+                    <td>{{ equ_apply.type }}</td>
                     <td>{{ equ_apply.use_date }}</td>
                     <td>{{ equ_apply.revert_date }}</td>
                     {% if equ_apply.status == '审核中' %}

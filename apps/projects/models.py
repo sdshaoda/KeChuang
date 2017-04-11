@@ -61,8 +61,8 @@ class Project(models.Model):
     pro_person_id = models.IntegerField(verbose_name=u'工程负责人id', null=True, blank=True)
     wt_person_id = models.IntegerField(verbose_name=u'法人委托id', null=True, blank=True)
     ht_person_id = models.IntegerField(verbose_name=u'合同签署人id', null=True, blank=True)
-    pro_person = models.CharField(max_length=20, verbose_name=u'所属部门', null=True, blank=True)
-    department = models.CharField(max_length=20, verbose_name=u'工程负责人', null=True, blank=True)
+    pro_person = models.CharField(max_length=20, verbose_name=u'工程负责人', null=True, blank=True)
+    department = models.CharField(max_length=20, verbose_name=u'所属部门', null=True, blank=True)
     wt_person = models.CharField(max_length=20, verbose_name=u'法人委托', null=True, blank=True)
     ht_person = models.CharField(max_length=20, verbose_name=u'合同签署人', null=True, blank=True)
 

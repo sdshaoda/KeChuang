@@ -71,28 +71,27 @@
                         {% endif %}
                     </td>
                     <td>
-                        {% if equ.get_person.person %}
-                            {{ equ.get_person.person.name }}
+                        {% if equ.equ_person %}
+                            {{ equ.equ_person }}
                         {% else %}
                             未设置
-                            {{ equ.get_person }}
                         {% endif %}
                     </td>
                     <td>
-                        {% if equ.get_staff.person %}
-                            {{ equ.get_staff.person.name }}
+                        {% if equ.equ_staff %}
+                            {{ equ.equ_staff }}
                         {% else %}
                             仓库
                         {% endif %}
                     </td>
                     <td>
-                        {% if equ.get_staff.person %}
-                            {{ equ.get_staff.person.department.name }}
+                        {% if equ.department %}
+                            {{ equ.department }}
                         {% else %}
                             仓库
                         {% endif %}
                     </td>
-                    <td>{{ equ.get_equ_status_display }}</td>
+                    <td>{{ equ.equ_status }}</td>
                     <td>{{ equ.effect_date }}</td>
                     <td>{{ equ.equ_type }}</td>
                     <td><a href="{% url 'equ:edit' equ.id %}">编辑</a></td>
@@ -102,6 +101,7 @@
     </div>
 
     <a href="{% url 'equ:add' %}" role="button" class="btn btn-primary btn-block">添加新设备</a>
+
 {% endblock %}
 
 

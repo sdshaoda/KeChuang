@@ -54,8 +54,8 @@
                 <tr id="{{ doc.id }}">
                     <td>{{ doc.id }}</td>
                     <td>{{ doc.name }}</td>
-                    <td>{{ doc.department.name }}</td>
-                    <td>{{ doc.person }}</td>
+                    <td>{{ doc.department_name }}</td>
+                    <td>{{ doc.person_name }}</td>
                     <td><a href="{{ MEDIA_URL }}{{ doc.document }}" target="_blank">查看</a></td>
                     {#公司负责 或 系统管理员 删除#}
                     {% if request.user.permission == '公司负责' or request.user.permission == '系统管理员' %}

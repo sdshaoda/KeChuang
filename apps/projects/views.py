@@ -15,13 +15,13 @@ class ListView(View):
 
         # 检测员 浏览自己为项目成员的工程（暂时只做负责人）
         if request.user.permission == '检测员':
-            pros = Project.objects.filter(pro_person_id=request.user.id)
-        # 部门负责 浏览负责人为本部门员工的工程
+            pros = Project.objects.filter(Q(pro_person_id=request.user.id)|Q(is_active=1))
+        # 部门负责 浏览负责人为本部门员工（ OR 自己为项目成员）
         elif request.user.permission == '部门负责':
-            pros = Project.objects.filter(department_id=request.user.department_id)
+            pros = Project.objects.filter(Q(department_id=request.user.department_id)|Q(is_active=1))
         # 公司负责 浏览所有工程
         elif request.user.permission == '公司负责':
-            pros = Project.objects.all().order_by('-add_time')
+            pros = Project.objects.filter(is_active=1)
         else:
             pros = []
 
@@ -61,10 +61,10 @@ class AddProView(View):
     def post(self, request):
         # 获取表单信息
         pro_name = request.POST.get('pro_name', '')
-        department_id = request.POST.get('department_id', '')
-        pro_person_id = request.POST.get('pro_person_id', '')
         pro_type_id = request.POST.get('pro_type_id', '')
         pro_stage_id = request.POST.get('pro_stage_id', '')
+        department_id = request.POST.get('department_id', '')
+        pro_person_id = request.POST.get('pro_person_id', '')
         wt_person_id = request.POST.get('wt_person_id', '')
         ht_person_id = request.POST.get('ht_person_id', '')
 
@@ -84,10 +84,12 @@ class AddProView(View):
         if request.user.permission == '公司负责':
             # 直接新建 工程
             project = Project()
-            project.pro_name = pro_name
             project.is_active = 1  # 工程状态为 有效
+            project.pro_name = pro_name
             project.pro_type_id = pro_type_id
+            project.pro_type_name = ProjectType.objects.get(id=pro_type_id)
             project.pro_stage_id = pro_stage_id
+            project.pro_stage_name = ProjectStage.objects.get(id=pro_stage_id)
             if pro_person_id:
                 project.pro_person_id = pro_person_id
                 project.pro_person = UserProfile.objects.get(id=pro_person_id).name
@@ -118,7 +120,7 @@ class AddProView(View):
             project.remark = remark
             project.save()
         else:
-            # 非 公司负责 用户，初始化 空 工程，等待审核通过后填入相应信息
+            # 非 公司负责 权限，初始化 空 工程。 审核通过 后在 工程 中填入相应信息；审核未通过 则删除
             project = Project()
             project.is_active = 0  # 工程状态为 无效
             project.pro_name = pro_name  # 保存必要的信息
@@ -130,7 +132,9 @@ class AddProView(View):
         # 初始化 工程申请
         pro_apply = ProjectApply()
         pro_apply.project = project
+        pro_apply.project_name = project.pro_name
         pro_apply.person_id = request.user.id
+        pro_apply.person_name = request.user.name
 
         pro_apply.type = '添加工程'
         if request.user.permission == '检测员':
@@ -247,7 +251,9 @@ class EditProView(View):
         if request.user.permission == '公司负责':
             project.pro_name = pro_name
             project.pro_type_id = pro_type_id
+            project.pro_type_name = ProjectType.objects.get(id=pro_type_id)
             project.pro_stage_id = pro_stage_id
+            project.pro_stage_name = ProjectStage.objects.get(id=pro_stage_id)
             if pro_person_id:
                 project.pro_person_id = pro_person_id
                 project.pro_person = UserProfile.objects.get(id=pro_person_id).name
@@ -290,7 +296,9 @@ class EditProView(View):
         # 初始化 工程申请
         pro_apply = ProjectApply()
         pro_apply.project = project
+        pro_apply.project_name = project.pro_name
         pro_apply.person_id = request.user.id
+        pro_apply.person_name = request.user.name
 
         pro_apply.type = '修改信息'
         if request.user.permission == '检测员':
@@ -424,17 +432,21 @@ class VerifyView(View):
 class AgreeProView(View):
     def get(self, request):
 
-        pro_apply = ProjectApply.objects.get()
+        pro_apply_id = request.POST.get('pro_apply_id', '')
+
+        pro_apply = ProjectApply.objects.get(id=int(pro_apply_id))
+        pro = pro_apply.project
 
         # 判断 工程申请 的类型
         if pro_apply.type == '添加工程':
-            is_active = 1
+            pro.is_active = 1
             # 将 申请 中的内容写进 工程 信息
+            pro.save()
         elif pro_apply.type == '修改信息':
-            pass
             # 将 申请 中的内容写进 工程 信息
+            pro.save()
         elif pro_apply.type == '删除工程':
-            pass
+            pro.is_active = 0
 
         return HttpResponse('{"status":"success","msg":"同意工程申请操作成功"}', content_type='application/json')
 
@@ -443,19 +455,22 @@ class AgreeProView(View):
 class RefuseProView(View):
     def get(self, request):
 
-        pro_apply = ProjectApply.objects.get()
+        pro_apply_id = request.POST.get('pro_apply_id', '')
+
+        pro_apply = ProjectApply.objects.get(id=int(pro_apply_id))
+        pro = pro_apply.project
 
         # 判断 工程申请 的类型
         if pro_apply.type == '添加工程':
-            is_active = 1
             # 添加的 工程 不通过审核，直接删除
-            pro_apply.delete()
+            pro.delete()
         elif pro_apply.type == '修改信息':
-            pass
             # 将 申请 中的内容写进 工程 信息
+            pro.save()
         elif pro_apply.type == '删除工程':
             # 工程 在数据库中依然存在，能查看其 变更记录
-            is_active = 0
+            pro.is_active = 0
+            pro.save()
 
         return HttpResponse('{"status":"success","msg":"拒绝工程申请操作成功"}', content_type='application/json')
 

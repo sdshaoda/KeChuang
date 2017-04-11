@@ -59,8 +59,8 @@
                     <td>{{ ann.id }}</td>
                     <td><a href="{% url 'ann:detail' ann.id %}">{{ ann.title }}</a></td>
                     <td>{{ ann.add_time }}</td>
-                    <td>{{ ann.department.name }}</td>
-                    <td>{{ ann.person }}</td>
+                    <td>{{ ann.department_name }}</td>
+                    <td>{{ ann.person_name }}</td>
                     {#公司负责 或 系统管理员 删除#}
                     {% if request.user.permission == '公司负责' or request.user.permission == '系统管理员' %}
                         <td>

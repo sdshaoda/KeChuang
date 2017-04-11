@@ -2,8 +2,7 @@
 
 {% block title %}设备浏览{% endblock %}
 
-{% block style %}
-{% endblock %}
+{% block style %}{% endblock %}
 
 {% block content %}
 
@@ -63,16 +62,16 @@
                         {% endif %}
                     </td>
                     <td>
-                        {% if equ.get_person.person %}
-                            {{ equ.get_person.person.name }}
+                        {% if equ.equ_person %}
+                            {{ equ.equ_person }}
                         {% else %}
                             未设置
                         {% endif %}
                     </td>
-                    <td>{{ equ.get_equ_status_display }}</td>
+                    <td>{{ equ.equ_status }}</td>
                     <td>
-                        {% if equ.get_staff.person %}
-                            {{ equ.get_staff.person.name }}
+                        {% if equ.equ_staff %}
+                            {{ equ.equ_staff }}
                         {% else %}
                             仓库
                         {% endif %}
@@ -96,7 +95,7 @@
                             设备已被领用
                         {% elif equ.equ_status == '停用' %}
                             设备停用
-                        {% elif equ.get_person.person %}
+                        {% elif equ.equ_person %}
                             <a href="{% url 'equ:use' equ.id %}">申请领用</a>
                         {% else %}
                             未设置负责人
@@ -107,24 +106,3 @@
         </table>
     </div>
 {% endblock %}
-
-{#{% block js %}#}
-{#    <script>#}
-{#        function search_click() {#}
-{#            var type = $('#jsSelectOption').attr('data-value'),#}
-{#                keywords = $('#search_keywords').val(),#}
-{#                request_url = '';#}
-{#            if (keywords == "") {#}
-{#                return#}
-{#            }#}
-{#            if (type == "course") {#}
-{#                request_url = "/course/list?keywords=" + keywords#}
-{#            } else if (type == "teacher") {#}
-{#                request_url = "/org/teacher/list?keywords=" + keywords#}
-{#            } else if (type == "org") {#}
-{#                request_url = "/org/list?keywords=" + keywords#}
-{#            }#}
-{#            window.location.href = request_url#}
-{#        }#}
-{#    </script>#}
-{#{% endblock %}#}

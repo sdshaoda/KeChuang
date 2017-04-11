@@ -55,6 +55,8 @@ class Equipment(models.Model):
     ), verbose_name=u'使用状态')
     equ_staff_id = models.IntegerField(verbose_name=u'设备保管人id', null=True, blank=True)
     equ_staff = models.CharField(max_length=20, verbose_name=u'设备保管人', null=True, blank=True)
+    department_id = models.IntegerField(verbose_name=u'所在部门id', null=True, blank=True)
+    department = models.CharField(max_length=20, verbose_name=u'所在部门', null=True, blank=True)
     use_date = models.DateField(verbose_name=u'领用时间', null=True, blank=True)
     revert_date = models.DateField(verbose_name=u'归还时间', null=True, blank=True)
 

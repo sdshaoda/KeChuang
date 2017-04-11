@@ -95,10 +95,10 @@ class ListView(View):
 class DeleteAnnView(View):
     def post(self, request):
         ann_id = request.POST.get('ann_id', '')
-        ann = Announcement.objects.get(id=ann_id)
+        ann = Announcement.objects.get(id=int(ann_id))
         ann.delete()
 
-        if Announcement.objects.filter(id=ann_id):
+        if Announcement.objects.filter(id=int(ann_id)):
             return HttpResponse('{"status":"fail","msg":"删除公告失败"}', content_type='application/json')
         return HttpResponse('{"status":"success","msg":"删除公告成功"}', content_type='application/json')
 
@@ -123,9 +123,9 @@ class PublishView(View):
         announcement = Announcement()
         announcement.title = title
         announcement.person_id = person_id
-        announcement.person_name = UserProfile.objects.get(id=person_id)
+        announcement.person_name = UserProfile.objects.get(id=int(person_id))
         announcement.department_id = department_id
-        announcement.department_name = Department.objects.get(id=department_id)
+        announcement.department_name = Department.objects.get(id=int(department_id))
         announcement.content = content
         announcement.remark = remark
         announcement.save()

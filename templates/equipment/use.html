@@ -14,7 +14,7 @@
         <!-- 当前用户 -->
         <input type="hidden" id="person_id" name="person_id" value="{{ request.user.id }}">
         <!-- 设备负责人 -->
-        <input type="hidden" id="equipment_person_id" name="equipment_person_id" value="{{ equ.get_person.person.id }}">
+        <input type="hidden" id="equipment_person_id" name="equipment_person_id" value="{{ equ.equ_person_id }}">
         <!-- 设备状态 -->
         <input type="hidden" id="equ_status" name="equ_status" value="{{ equ.equ_status }}">
 

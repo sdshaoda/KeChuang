@@ -44,7 +44,7 @@
             <div class="col-md-5 col-sm-10">
                 <select class="form-control" id="equ_person_id" name="equ_person_id" required>
                     {% for staff in staffs %}
-                        <option value="{{ staff.id }}" {% ifequal equ.equ_person staff %}selected{% endifequal %}>
+                        <option value="{{ staff.id }}" {% ifequal equ.equ_person_id staff.id %}selected{% endifequal %}>
                             {{ staff.name }}
                         </option>
                     {% endfor %}

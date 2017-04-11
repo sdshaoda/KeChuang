@@ -149,6 +149,8 @@ class AddView(View):
         equipment.use_status = '未领用'  # 使用状态为 未领用
         equipment.equ_staff_id = None  # 设备保管人信息
         equipment.equ_staff = None
+        equipment.department_id = None  # 所在部门信息
+        equipment.department = None
         equipment.use_date = None  # 领用时间
         equipment.revert_date = None  # 归还时间
         equipment.save()
@@ -323,6 +325,8 @@ class AgreeEquView(View):
             equ.use_status = '已领用'  # 设备使用状态设为 已领用
             equ.equ_staff_id = equ_apply.person_id  # 设备保管人
             equ.equ_staff = UserProfile.objects.get(id=equ_apply.person_id).name
+            equ.department_id = UserProfile.objects.get(id=equ_apply.person_id).department_id  # 所在部门
+            equ.equ_staff = UserProfile.objects.get(id=equ_apply.person_id).department.name
             equ.use_date = equ_apply.use_date  # 将设备申请中的信息放入设备信息中
             equ.revert_date = equ_apply.revert_date
             equ.save()
@@ -339,6 +343,8 @@ class AgreeEquView(View):
             equ = equ_apply.equipment
             equ.use_status = '未领用'  # 设备使用状态设为 未领用
             equ.equ_staff_id = None  # 删除 设备保管人 中的信息
+            equ.equ_staff = None
+            equ.department_id = None  # 删除 所在部门 中的信息
             equ.equ_staff = None
             equ.use_date = None  # 删除设备信息中的 领用时间
             equ.revert_date = None  # 删除设备信息中的 归还时间
