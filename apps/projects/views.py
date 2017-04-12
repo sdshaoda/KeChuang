@@ -4,7 +4,8 @@ from django.http import HttpResponse
 from django.shortcuts import render
 from django.views.generic import View
 
-from operation.models import ProjectApply, ProjectAttendance
+from equipments.models import Equipment
+from operation.models import ProjectApply, ProjectAttendance, ProjectMember, ProjectEquipment
 from users.models import UserProfile, Department
 from .models import Project, ProjectType, ProjectStage
 
@@ -13,17 +14,23 @@ from .models import Project, ProjectType, ProjectStage
 class ListView(View):
     def get(self, request):
 
-        # 检测员 浏览自己为项目成员的工程（暂时只做负责人）
-        #######################################################
+        # 检测员 浏览自己为 项目成员 的工程，包括了自己是 工程负责人
         if request.user.permission == '检测员':
-            pros = Project.objects.filter(pro_person_id=request.user.id, is_active=1).order_by('-add_time')
+            pro_members = ProjectMember.objects.filter(person_id=request.user.id).order_by('-add_time')
+            pros = []
+            for pro_member in pro_members:
+                # 排除已被删除，或者添加未审核的
+                if pro_member.project.is_active == 1:
+                    pros.append(pro_member.project)
 
-        # 部门负责 浏览负责人为本部门员工（ OR 自己为项目成员）
-        #######################################################
+        # 部门负责 浏览负责人为本部门员工 OR 自己为项目成员
         elif request.user.permission == '部门负责':
-            pros = Project.objects.filter(
-                (Q(department_id=request.user.department_id) | Q(pro_person_id=request.user.id)), is_active=1).order_by(
-                '-add_time')
+            pro_members = ProjectMember.objects.filter(
+                Q(department_id=request.user.department_id) | Q(person_id=request.user.id)).order_by('-add_time')
+            pros = []
+            for pro_member in pro_members:
+                if pro_member.project.is_active == 1:
+                    pros.append(pro_member.project)
 
         # 公司负责 浏览所有工程
         elif request.user.permission == '公司负责':
@@ -128,11 +135,16 @@ class DetailView(View):
         # 项目阶段
         pro_stages = ProjectStage.objects.all()
 
+        pro_members = ProjectMember.objects.filter(project_id=pro_id)
+        pro_equs = ProjectEquipment.objects.filter(project_id=pro_id)
+
         return render(request, 'project/detail.html', {
             'pro': pro,
             'staffs': staffs,
             'pro_types': pro_types,
-            'pro_stages': pro_stages
+            'pro_stages': pro_stages,
+            'pro_members': pro_members,
+            'pro_equs': pro_equs
         })
 
 
@@ -225,6 +237,17 @@ class AddProView(View):
             project.ht_scan = ht_scan
             project.remark = remark
             project.save()
+
+            # 新建 工程项目成员 信息，且设为 负责人
+            pro_member = ProjectMember()
+            pro_member.is_pro_person = 1  # 设为 负责人
+            pro_member.project_id = project.id
+            pro_member.project_name = project.pro_name
+            pro_member.person_id = project.pro_person_id
+            pro_member.person_name = project.pro_person
+            pro_member.department_id = project.department_id
+            pro_member.department = project.department
+            pro_member.save()
         else:
             # 非 公司负责 权限，初始化 空 工程。 审核通过 后在 工程 中填入相应信息；审核未通过 则删除
             project = Project()
@@ -315,12 +338,26 @@ class EditView(View):
         else:
             departments = Department.objects.filter(id=request.user.department.id)
 
+        # 如果是 工程负责人 或 公司负责 ，能够直接添加 工程项目成员 和 工程设备
+        if pro.pro_person_id == request.user.id or request.user.permission == '公司负责':
+            is_permit = 1
+        else:
+            is_permit = 0
+
+        pro_members = ProjectMember.objects.filter(project_id=pro_id)
+        pro_equs = ProjectEquipment.objects.filter(project_id=pro_id)
+        equs = Equipment.objects.all()
+
         return render(request, 'project/edit.html', {
             'pro': pro,
             'staffs': staffs,
             'pro_types': pro_types,
             'pro_stages': pro_stages,
-            'departments': departments
+            'departments': departments,
+            'is_permit': is_permit,
+            'pro_members': pro_members,
+            'equs': equs,
+            'pro_equs': pro_equs
         })
 
 
@@ -355,6 +392,24 @@ class EditProView(View):
 
         # 公司负责 直接修改 工程 信息，但要生成 审核通过 的 工程申请
         if request.user.permission == '公司负责':
+            # 修改了 工程负责人
+            if pro_person_id != project.pro_person_id:
+                # 删除原有的 工程负责人 信息
+                old_pro_member = ProjectMember.objects.get(is_pro_person=1)
+                old_pro_member.delete()
+                # 新建 工程项目成员 信息，且设为 负责人
+                pro_member = ProjectMember()
+                pro_member.is_pro_person = 1  # 设为 负责人
+                pro_member.project_id = project.id
+                pro_member.project_name = pro_name
+                if pro_person_id:
+                    pro_member.person_id = pro_person_id
+                    pro_member.person_name = UserProfile.objects.get(id=pro_person_id).name
+                if department_id:
+                    pro_member.department_id = department_id
+                    pro_member.department = Department.objects.get(id=department_id).name
+                pro_member.save()
+
             project.pro_name = pro_name
             if pro_type_id:
                 project.pro_type_id = pro_type_id
@@ -777,12 +832,39 @@ class AgreeProView(View):
                 pro.remark = pro_apply.remark
                 pro.save()
 
+                # 新建 工程项目成员 信息，且设为 负责人
+                pro_member = ProjectMember()
+                pro_member.is_pro_person = 1  # 设为 负责人
+                pro_member.project_id = pro.id
+                pro_member.project_name = pro_apply.project_name
+                pro_member.person_id = pro_apply.pro_person_id
+                pro_member.person_name = pro_apply.pro_person
+                pro_member.department_id = pro_apply.department_id
+                pro_member.department = pro_apply.department
+                pro_member.save()
+
                 pro_apply.status = '审核通过'
                 pro_apply.save()
 
                 return HttpResponse('{"status":"success","msg":"同意工程添加申请操作成功"}', content_type='application/json')
 
             elif pro_apply.type == '修改信息':
+                # 修改了 工程负责人
+                if pro_apply.pro_person_id != pro.pro_person_id:
+                    # 删除原有的 工程负责人 信息
+                    old_pro_member = ProjectMember.objects.get(is_pro_person=1)
+                    old_pro_member.delete()
+                    # 新建 工程项目成员 信息，且设为 负责人
+                    pro_member = ProjectMember()
+                    pro_member.is_pro_person = 1  # 设为 负责人
+                    pro_member.project_id = pro.id
+                    pro_member.project_name = pro_apply.project_name
+                    pro_member.person_id = pro_apply.pro_person_id
+                    pro_member.person_name = pro_apply.pro_person
+                    pro_member.department_id = pro_apply.department_id
+                    pro_member.department = pro_apply.department
+                    pro_member.save()
+
                 # 将 工程申请 中的内容写进 工程 信息
                 pro.pro_name = pro_apply.project_name
 
@@ -1032,3 +1114,66 @@ class AddAttendanceView(View):
         return render(request, 'project/attendance.html', {
             'atts': atts
         })
+
+
+# 添加工程项目成员 Ajax
+class AddMemberView(View):
+    def post(self, request):
+        person_id = request.POST.get('person_id', '')
+        project_id = request.POST.get('project_id', '')
+
+        if ProjectMember.objects.filter(project_id=project_id, person_id=person_id):
+            return HttpResponse('{"status":"success","msg":"该工程项目成员已存在，请勿重复添加！"}', content_type='application/json')
+        else:
+            pro_member = ProjectMember()
+            pro_member.is_pro_person = 0 # 非 工程负责人
+            pro_member.project_id = project_id
+            pro_member.project_name = Project.objects.get(id=project_id).pro_name
+            pro_member.person_id = person_id
+            pro_member.person_name = UserProfile.objects.get(id=person_id)
+            pro_member.department_id = Project.objects.get(id=project_id).department_id
+            pro_member.department = Project.objects.get(id=project_id).department
+            pro_member.save()
+
+            return HttpResponse('{"status":"success","msg":"添加工程项目成员操作成功"}', content_type='application/json')
+
+
+# 删除工程项目成员 Ajax
+class DeleteMemberView(View):
+    def post(self, request):
+        pro_member_id = request.POST.get('pro_member_id', '')
+
+        pro_member = ProjectMember.objects.get(id=pro_member_id)
+        pro_member.delete()
+
+        return HttpResponse('{"status":"success","msg":"删除工程项目成员操作成功"}', content_type='application/json')
+
+
+# 添加工程设备 Ajax
+class AddEquView(View):
+    def post(self, request):
+        equ_id = request.POST.get('equ_id', '')
+        project_id = request.POST.get('project_id', '')
+
+        if ProjectEquipment.objects.filter(project_id=project_id, equipment_id=equ_id):
+            return HttpResponse('{"status":"success","msg":"该工程设备已存在，请勿重复添加！"}', content_type='application/json')
+        else:
+            pro_equ = ProjectEquipment()
+            pro_equ.project_id = project_id
+            pro_equ.project_name = Project.objects.get(id=project_id).pro_name
+            pro_equ.equipment_id = equ_id
+            pro_equ.equipment_name = Equipment.objects.get(id=equ_id)
+            pro_equ.save()
+
+            return HttpResponse('{"status":"success","msg":"添加工程设备操作成功"}', content_type='application/json')
+
+
+# 删除工程设备 Ajax
+class DeleteEquView(View):
+    def post(self, request):
+        pro_equ_id = request.POST.get('pro_equ_id', '')
+
+        pro_equ = ProjectEquipment.objects.get(id=pro_equ_id)
+        pro_equ.delete()
+
+        return HttpResponse('{"status":"success","msg":"删除工程设备操作成功"}', content_type='application/json')

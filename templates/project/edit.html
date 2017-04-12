@@ -6,6 +6,95 @@
 
 {% block content %}
 
+    {% for pro_member in pro_members %}
+        <form class="form-horizontal" method="post" action="">
+            <div class="form-group">
+                <label class="col-md-2 col-sm-2 col-xs-4 control-label">项目成员：</label>
+                <div class="col-md-5 col-sm-8 col-xs-6">
+                    <select class="form-control" disabled>
+                        <option value="{{ pro_member.person_id }}">
+                            {{ pro_member.person_name }}
+                            {% if pro_member.is_pro_person %}
+                                <span>（负责人）</span>
+                            {% endif %}
+                        </option>
+                    </select>
+                </div>
+                {% if is_permit == 1 and pro_member.is_pro_person == 0 %}
+                    <button data-value="{{ pro_member.id }}" type="button" class="btn btn-primary delete-member">删除
+                    </button>
+                {% endif %}
+            </div>
+        </form>
+    {% endfor %}
+
+    {% if is_permit != 0 %}
+        <form id="add_member" class="form-horizontal" method="post" action="{% url "pro:add_member" %}">
+
+            <input type="hidden" name="project_id" value="{{ pro.id }}">
+
+            <div class="form-group">
+                <label for="person_id" class="col-md-2 col-sm-2 col-xs-4 control-label required">项目成员：</label>
+                <div class="col-md-5 col-sm-8 col-xs-6">
+                    <select class="form-control" id="person_id" name="person_id">
+                        {% for staff in staffs %}
+                            <option value="{{ staff.id }}">
+                                {{ staff.name }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <button class="btn btn-primary add-member" type="button">添加</button>
+            </div>
+            {% csrf_token %}
+        </form>
+    {% endif %}
+
+    <hr>
+
+    {% for pro_equ in pro_equs %}
+        <form class="form-horizontal" method="post" action="">
+            <div class="form-group">
+                <label class="col-md-2 col-sm-2 col-xs-4 control-label">工程设备：</label>
+                <div class="col-md-5 col-sm-8 col-xs-6">
+                    <select class="form-control" disabled>
+                        <option value="{{ pro_equ.equipment_id }}">
+                            {{ pro_equ.equipment_name }}
+                        </option>
+                    </select>
+                </div>
+                {% if is_permit != 0 %}
+                    <button data-value="{{ pro_equ.id }}" type="button" class="btn btn-primary delete-equ">删除</button>
+                {% endif %}
+            </div>
+        </form>
+    {% endfor %}
+
+    {% if is_permit != 0 %}
+        <form id="add_equ" class="form-horizontal" method="post" action="{% url "pro:add_member" %}">
+            <input type="hidden" name="project_id" value="{{ pro.id }}">
+            <div class="form-group">
+                <label for="equ_id" class="col-md-2 col-sm-2 col-xs-4 control-label required">工程设备：</label>
+                <div class="col-md-5 col-sm-8 col-xs-6">
+                    <select class="form-control" id="equ_id" name="equ_id">
+                        {% for equ in equs %}
+                            <option value="{{ equ.id }}">
+                                {{ equ.equ_name }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <button class="btn btn-primary add-equ" type="button">添加</button>
+            </div>
+            {% csrf_token %}
+        </form>
+    {% endif %}
+
+    <p><b>工程负责人</b>或<b>公司负责</b>能够在此页面中修改<b>项目成员</b>和<b>工程设备</b></p>
+    <p>只修改<b>项目成员</b>和<b>工程设备</b>时，不需要提交下方的表单申请</p>
+
+    <hr>
+
     <form class="form-horizontal" method="post" enctype="multipart/form-data" action="{% url 'pro:pro_edit' %}">
 
         <input type="hidden" name="pro_id" value="{{ pro.id }}">
@@ -36,7 +125,8 @@
             <div class="col-md-5 col-sm-10">
                 <select class="form-control" id="department_id" name="department_id">
                     {% for department in departments %}
-                        <option value="{{ department.id }}" {% ifequal pro.department_id department.id %}selected{% endifequal %}>
+                        <option value="{{ department.id }}"
+                                {% ifequal pro.department_id department.id %}selected{% endifequal %}>
                             {{ department.name }}
                         </option>
                     {% endfor %}
@@ -193,13 +283,14 @@
             <label for="ht_scan" class="col-md-2 col-sm-2 control-label">上传合同扫描件：</label>
             <div class="col-md-5 col-sm-10">
                 <input type="file" id="ht_scan" name="ht_scan">
-            <p class="help-block">
-                {% if pro.ht_scan %}
-                    已上传，<a style="display: inline" href="{{ MEDIA_URL }}{{ pro.ht_scan }}" target="_blank">点此查看</a>或重新上传
-                {% else %}
-                    未上传合同扫描件
-                {% endif %}
-            </p>
+                <p class="help-block">
+                    {% if pro.ht_scan %}
+                        已上传，<a style="display: inline" href="{{ MEDIA_URL }}{{ pro.ht_scan }}" target="_blank">点此查看</a>
+                        或重新上传
+                    {% else %}
+                        未上传合同扫描件
+                    {% endif %}
+                </p>
             </div>
         </div>
 
@@ -211,8 +302,124 @@
             </div>
         </div>
 
-        <button style="margin-bottom: 100px" type="submit" class="btn btn-primary col-md-7">修改</button>
+        <button style="margin-bottom: 100px" type="submit" class="btn btn-primary col-md-7 col-sm-12 col-xs-12">修改
+        </button>
         {% csrf_token %}
     </form>
+{% endblock %}
 
+
+{% block js %}
+    <script>
+        $('.add-member').click(function () {
+            $.ajax({
+                cache: false,
+                url: '{% url "pro:add_member" %}',
+                type: 'POST',
+                async: true,
+                dataType: 'json',
+                beforeSend: function (xhr, settings) {
+                    xhr.setRequestHeader("X-CSRFToken", "{{ csrf_token }}");
+                },
+                data: $('#add_member').serializeArray(),
+                success: function (data) {
+                    if (data.status === 'success' && data.msg === '添加工程项目成员操作成功') {
+                        {#强制刷新页面#}
+                        location.reload()
+                    }
+                    $('#msg').text(data.msg)
+                    setTimeout(function () {
+                        $('#msg').text('')
+                    }, 10000)
+                },
+                error: function () {
+                    $('#msg').text('出错了')
+                }
+            })
+        })
+
+        $('.delete-member').click(function () {
+            var pro_member_id = $(this).attr('data-value')
+            $.ajax({
+                cache: false,
+                url: '{% url "pro:delete_member" %}',
+                type: 'POST',
+                async: true,
+                dataType: 'json',
+                beforeSend: function (xhr, settings) {
+                    xhr.setRequestHeader("X-CSRFToken", "{{ csrf_token }}");
+                },
+                data: {'pro_member_id': pro_member_id},
+                success: function (data) {
+                    if (data.status === 'success') {
+                        {#强制刷新页面#}
+                        location.reload()
+                    }
+                    $('#msg').text(data.msg)
+                    setTimeout(function () {
+                        $('#msg').text('')
+                    }, 10000)
+                },
+                error: function () {
+                    $('#msg').text('出错了')
+                }
+            })
+        })
+
+
+        $('.add-equ').click(function () {
+            $.ajax({
+                cache: false,
+                url: '{% url "pro:add_equ" %}',
+                type: 'POST',
+                async: true,
+                dataType: 'json',
+                beforeSend: function (xhr, settings) {
+                    xhr.setRequestHeader("X-CSRFToken", "{{ csrf_token }}");
+                },
+                data: $('#add_equ').serializeArray(),
+                success: function (data) {
+                    if (data.status === 'success' && data.msg === '添加工程设备操作成功') {
+                        {#强制刷新页面#}
+                        location.reload()
+                    }
+                    $('#msg').text(data.msg)
+                    setTimeout(function () {
+                        $('#msg').text('')
+                    }, 10000)
+                },
+                error: function () {
+                    $('#msg').text('出错了')
+                }
+            })
+        })
+
+        $('.delete-equ').click(function () {
+            var pro_equ_id = $(this).attr('data-value')
+            $.ajax({
+                cache: false,
+                url: '{% url "pro:delete_equ" %}',
+                type: 'POST',
+                async: true,
+                dataType: 'json',
+                beforeSend: function (xhr, settings) {
+                    xhr.setRequestHeader("X-CSRFToken", "{{ csrf_token }}");
+                },
+                data: {'pro_equ_id': pro_equ_id},
+                success: function (data) {
+                    if (data.status === 'success') {
+                        {#强制刷新页面#}
+                        location.reload()
+                    }
+                    $('#msg').text(data.msg)
+                    setTimeout(function () {
+                        $('#msg').text('')
+                    }, 10000)
+                },
+                error: function () {
+                    $('#msg').text('出错了')
+                }
+            })
+        })
+    </script>
 {% endblock %}

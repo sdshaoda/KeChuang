@@ -17,6 +17,9 @@ class ProjectMember(models.Model):
     project_name = models.CharField(max_length=50, verbose_name=u'工程名称', null=True, blank=True)
     person_name = models.CharField(max_length=20, verbose_name=u'项目成员名称', null=True, blank=True)
 
+    is_pro_person = models.BooleanField(default=0, verbose_name=u'工程负责人状态')
+    department = models.CharField(max_length=20, verbose_name=u'工程所属部门', null=True, blank=True)
+    department_id = models.IntegerField(verbose_name=u'部门id', null=True, blank=True)
     remark = models.CharField(max_length=200, verbose_name=u'备注', null=True, blank=True)
 
     add_time = models.DateTimeField(default=datetime.now, verbose_name=u'添加时间')

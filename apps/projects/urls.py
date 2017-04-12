@@ -1,12 +1,12 @@
 # coding:utf-8
 from django.conf.urls import url
 
-from .views import ListView, EditView, AddProView, VerifyView, DetailView, ApplyView, DeleteView, AttendanceView, EditProView, ChangeView, ApplyDetailView, AgreeProView, RefuseProView, AddAttendanceView
+from .views import ListView, EditView, AddProView, VerifyView, DetailView, ApplyView, DeleteView, AttendanceView, EditProView, ChangeView, ApplyDetailView, AgreeProView, RefuseProView, AddAttendanceView, AddEquView, AddMemberView, DeleteEquView, DeleteMemberView
 
 # namespace='pro'
 urlpatterns = [
     # 添加工程 GET POST
-    url(r'^add/$', AddProView.as_view(), name='add'),
+    url(r'^add/project/$', AddProView.as_view(), name='add'),
     # 工程浏览 GET
     url(r'^list/$', ListView.as_view(), name='list'),
     # 编辑工程 GET
@@ -16,7 +16,16 @@ urlpatterns = [
     # 工程详情 GET
     url(r'^detail/(?P<pro_id>\d+)$', DetailView.as_view(), name='detail'),
     # 删除工程 Ajax
-    url(r'^delete/$', DeleteView.as_view(), name='delete'),
+    url(r'^delete/project/$', DeleteView.as_view(), name='delete'),
+
+    # 添加工程项目成员 Ajax
+    url(r'^add/member/$', AddMemberView.as_view(), name='add_member'),
+    # 删除工程项目成员 Ajax
+    url(r'^delete/member/$', DeleteMemberView.as_view(), name='delete_member'),
+    # 添加工程设备 Ajax
+    url(r'^add/equipment/$', AddEquView.as_view(), name='add_equ'),
+    # 删除工程设备 Ajax
+    url(r'^delete/equipment/$', DeleteEquView.as_view(), name='delete_equ'),
 
     # 工程申请 GET
     url(r'^apply/$', ApplyView.as_view(), name='apply'),
