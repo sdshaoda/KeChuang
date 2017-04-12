@@ -15,10 +15,6 @@ class Department(models.Model):
     remark = models.CharField(max_length=200, verbose_name=u'备注', null=True, blank=True)
     add_time = models.DateTimeField(default=datetime.now, verbose_name=u'添加时间')
 
-    # 部门下的所有职工
-    # def get_staff(self):
-    #     return self.userprofile_set.filter(id=self.id)
-
     class Meta:
         verbose_name = u'部门信息'
         verbose_name_plural = verbose_name
@@ -64,22 +60,6 @@ class UserProfile(AbstractUser):
                                   blank=True)
 
     add_time = models.DateTimeField(default=datetime.now, verbose_name=u'添加时间')
-
-    # # 设备负责人
-    # def get_equipment_person(self):
-    #     return self.equipmentperson_set.filter(id=self.id)
-    #
-    # # 设备保管人
-    # def get_equipment_staff(self):
-    #     return self.equipmentstaff_set.filter(id=self.id)
-    #
-    # # 设备申请
-    # def get_apply(self):
-    #     return self.equipmentapply_set.filter(person_id=self.id)
-
-    # 设备审核
-    # def get_verify(self):
-    #     return EquipmentApply.objects.filter(equipment_person_id=self.id)
 
     class Meta:
         verbose_name = u'职工信息'

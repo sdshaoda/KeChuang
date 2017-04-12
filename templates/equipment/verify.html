@@ -8,6 +8,42 @@
 
 {% block content %}
 
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+            <form id="search" method="get" class="navbar-form navbar-left col-md-6 col-sm-6 col-xs-12"
+                  style="border: none;">
+                <div class="input-group">
+                    <input type="text" id="keywords" name="keywords" class="form-control" placeholder="搜索设备审核">
+                    <span class="input-group-btn">
+                        <button class="btn btn-default" type="submit">搜索</button>
+                    </span>
+                </div>
+            </form>
+
+            <form method="get" class="navbar-form navbar-left col-md-6 col-sm-6 col-xs-12" style="border: none;">
+                <div class="input-group">
+                    <select class="form-control" name="category" id="category">
+                        <option value="equ_apply_id">设备申请ID</option>
+                        <option value="use_date">领取时间</option>
+                        <option value="revert_date">归还时间</option>
+                        <option value="equipment_name">设备名称</option>
+                        <option value="person_name">申请人</option>
+                        <option value="equipment_person_id">设备负责人</option>
+                        <option value="type">申请类型</option>
+                        <option value="status">审核状态</option>
+                        <option value="add_time">添加时间</option>
+                    </select>
+                    <span class="input-group-btn">
+                        <button name="mode" value="positive" class="btn btn-default" type="submit">正序</button>
+                    </span>
+                    <span class="input-group-btn">
+                        <button name="mode" value="negative" class="btn btn-default" type="submit">倒序</button>
+                    </span>
+                </div>
+            </form>
+        </div>
+    </nav>
+
     <div class="table-responsive">
         <table class="table table-hover">
             <tr>

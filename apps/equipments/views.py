@@ -27,6 +27,9 @@ class ListView(View):
                                Q(equ_staff__icontains=search_keywords) |
                                Q(equ_num__icontains=search_keywords) |
                                Q(equ_status__icontains=search_keywords) |
+                               Q(use_status__icontains=search_keywords) |
+                               Q(department__icontains=search_keywords) |
+                               Q(remark__icontains=search_keywords) |
                                # 不可搜索日期
                                # Q(effect_date__icontains=search_keywords) |
                                Q(equ_money__icontains=search_keywords) |
@@ -73,6 +76,11 @@ class InfoView(View):
                                Q(equ_staff__icontains=search_keywords) |
                                Q(equ_num__icontains=search_keywords) |
                                Q(equ_status__icontains=search_keywords) |
+                               Q(use_status__icontains=search_keywords) |
+                               Q(department__icontains=search_keywords) |
+                               Q(remark__icontains=search_keywords) |
+                               # 不可搜索日期
+                               # Q(effect_date__icontains=search_keywords) |
                                Q(equ_money__icontains=search_keywords) |
                                Q(equ_person__icontains=search_keywords))
 
@@ -283,6 +291,58 @@ class ApplyView(View):
         # 获取当前用户的 设备申请 信息
         equ_applys = EquipmentApply.objects.filter(person_id=request.user.id).order_by('-add_time')
 
+        search_keywords = request.GET.get('keywords', '')
+        category = request.GET.get('category', '')
+        mode = request.GET.get('mode', '')
+
+        # 搜索
+        if search_keywords:
+            equ_applys = equ_applys.filter(Q(equipment_name__icontains=search_keywords) |
+                               Q(id__icontains=search_keywords) |
+                               Q(person_name__icontains=search_keywords) |
+                               Q(equipment_person__icontains=search_keywords) |
+                               Q(type__icontains=search_keywords) |
+                               Q(status__icontains=search_keywords) |
+                               Q(remark__icontains=search_keywords))
+
+        # 排序
+        if category == 'equ_apply_id' and mode == 'positive':
+            equ_applys = equ_applys.order_by('id')
+        elif category == 'equ_apply_id' and mode == 'negative':
+            equ_applys = equ_applys.order_by('-id')
+        elif category == 'equipment_name' and mode == 'positive':
+            equ_applys = equ_applys.order_by('equipment_name')
+        elif category == 'equipment_name' and mode == 'negative':
+            equ_applys = equ_applys.order_by('-equipment_name')
+        elif category == 'person_name' and mode == 'positive':
+            equ_applys = equ_applys.order_by('person_name')
+        elif category == 'person_name' and mode == 'negative':
+            equ_applys = equ_applys.order_by('-person_name')
+        elif category == 'equipment_person_id' and mode == 'positive':
+            equ_applys = equ_applys.order_by('equipment_person_id')
+        elif category == 'equipment_person_id' and mode == 'negative':
+            equ_applys = equ_applys.order_by('-equipment_person_id')
+        elif category == 'type' and mode == 'positive':
+            equ_applys = equ_applys.order_by('type')
+        elif category == 'type' and mode == 'negative':
+            equ_applys = equ_applys.order_by('-type')
+        elif category == 'status' and mode == 'positive':
+            equ_applys = equ_applys.order_by('status')
+        elif category == 'status' and mode == 'negative':
+            equ_applys = equ_applys.order_by('-status')
+        elif category == 'use_date' and mode == 'positive':
+            equ_applys = equ_applys.order_by('use_date')
+        elif category == 'use_date' and mode == 'negative':
+            equ_applys = equ_applys.order_by('-use_date')
+        elif category == 'revert_date' and mode == 'positive':
+            equ_applys = equ_applys.order_by('revert_date')
+        elif category == 'revert_date' and mode == 'negative':
+            equ_applys = equ_applys.order_by('-revert_date')
+        elif category == 'add_time' and mode == 'positive':
+            equ_applys = equ_applys.order_by('add_time')
+        elif category == 'add_time' and mode == 'negative':
+            equ_applys = equ_applys.order_by('-add_time')
+
         return render(request, 'equipment/apply.html', {
             'equ_applys': equ_applys
         })
@@ -298,6 +358,58 @@ class VerifyView(View):
                 Q(equipment_person_id=request.user.id) | Q(equipment_person_id=None))
         else:
             equ_applys = EquipmentApply.objects.filter(equipment_person_id=request.user.id)
+
+        search_keywords = request.GET.get('keywords', '')
+        category = request.GET.get('category', '')
+        mode = request.GET.get('mode', '')
+
+        # 搜索
+        if search_keywords:
+            equ_applys = equ_applys.filter(Q(equipment_name__icontains=search_keywords) |
+                               Q(id__icontains=search_keywords) |
+                               Q(person_name__icontains=search_keywords) |
+                               Q(equipment_person__icontains=search_keywords) |
+                               Q(type__icontains=search_keywords) |
+                               Q(status__icontains=search_keywords) |
+                               Q(remark__icontains=search_keywords))
+
+        # 排序
+        if category == 'equ_apply_id' and mode == 'positive':
+            equ_applys = equ_applys.order_by('id')
+        elif category == 'equ_apply_id' and mode == 'negative':
+            equ_applys = equ_applys.order_by('-id')
+        elif category == 'equipment_name' and mode == 'positive':
+            equ_applys = equ_applys.order_by('equipment_name')
+        elif category == 'equipment_name' and mode == 'negative':
+            equ_applys = equ_applys.order_by('-equipment_name')
+        elif category == 'person_name' and mode == 'positive':
+            equ_applys = equ_applys.order_by('person_name')
+        elif category == 'person_name' and mode == 'negative':
+            equ_applys = equ_applys.order_by('-person_name')
+        elif category == 'equipment_person_id' and mode == 'positive':
+            equ_applys = equ_applys.order_by('equipment_person_id')
+        elif category == 'equipment_person_id' and mode == 'negative':
+            equ_applys = equ_applys.order_by('-equipment_person_id')
+        elif category == 'type' and mode == 'positive':
+            equ_applys = equ_applys.order_by('type')
+        elif category == 'type' and mode == 'negative':
+            equ_applys = equ_applys.order_by('-type')
+        elif category == 'status' and mode == 'positive':
+            equ_applys = equ_applys.order_by('status')
+        elif category == 'status' and mode == 'negative':
+            equ_applys = equ_applys.order_by('-status')
+        elif category == 'use_date' and mode == 'positive':
+            equ_applys = equ_applys.order_by('use_date')
+        elif category == 'use_date' and mode == 'negative':
+            equ_applys = equ_applys.order_by('-use_date')
+        elif category == 'revert_date' and mode == 'positive':
+            equ_applys = equ_applys.order_by('revert_date')
+        elif category == 'revert_date' and mode == 'negative':
+            equ_applys = equ_applys.order_by('-revert_date')
+        elif category == 'add_time' and mode == 'positive':
+            equ_applys = equ_applys.order_by('add_time')
+        elif category == 'add_time' and mode == 'negative':
+            equ_applys = equ_applys.order_by('-add_time')
 
         return render(request, 'equipment/verify.html', {
             'equ_applys': equ_applys

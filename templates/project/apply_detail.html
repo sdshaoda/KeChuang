@@ -5,24 +5,24 @@
 {% block style %}{% endblock %}
 
 {% block content %}
-
+{#此页面需要改#}
     <form class="form-horizontal" method="post" enctype="multipart/form-data" action="{% url 'pro:add' %}">
 
         <div class="form-group">
             <label for="pro_name" class="col-md-2 col-sm-2 control-label">工程名称：</label>
             <div class="col-md-5 col-sm-10">
                 <input type="text" class="form-control" id="pro_name" name="pro_name" placeholder="未填写"
-                       value="{{ pro.pro_name }}" disabled>
+                       value="{{ pro_apply.project_name }}" readonly>
             </div>
         </div>
 
         <div class="form-group">
             <label for="pro_person_id" class="col-md-2 col-sm-2 control-label">项目负责人：</label>
             <div class="col-md-5 col-sm-10">
-                <select class="form-control" id="pro_person_id" name="pro_person_id" disabled>
+                <select class="form-control" id="pro_person_id" name="pro_person_id" readonly>
                     <option value="">未填写</option>
                     {% for staff in staffs %}
-                        <option value="{{ staff.id }}" {% ifequal pro.pro_person_id staff.id %}selected{% endifequal %}>
+                        <option value="{{ staff.id }}" {% ifequal pro_apply.pro_person_id staff.id %}selected{% endifequal %}>
                             {{ staff.name }}
                         </option>
                     {% endfor %}
@@ -33,11 +33,11 @@
         <div class="form-group">
             <label for="pro_type_id" class="col-md-2 col-sm-2 control-label">工程类型：</label>
             <div class="col-md-5 col-sm-10">
-                <select class="form-control" id="pro_type_id" name="pro_type_id" disabled>
+                <select class="form-control" id="pro_type_id" name="pro_type_id" readonly>
                     <option value="">未填写</option>
                     {% for pro_type in pro_types %}
                         <option value="{{ pro_type.id }}"
-                                {% ifequal pro.pro_type_id pro_type.id %}selected{% endifequal %}>
+                                {% ifequal pro_apply.pro_type_id pro_type.id %}selected{% endifequal %}>
                             {{ pro_type.name }}
                         </option>
                     {% endfor %}
@@ -48,11 +48,11 @@
         <div class="form-group">
             <label for="pro_stage_id" class="col-md-2 col-sm-2 control-label">项目阶段：</label>
             <div class="col-md-5 col-sm-10">
-                <select class="form-control" id="pro_stage_id" name="pro_stage_id" disabled>
+                <select class="form-control" id="pro_stage_id" name="pro_stage_id" readonly>
                     <option value="">未填写</option>
                     {% for pro_stage in pro_stages %}
                         <option value="{{ pro_stage.id }}"
-                                {% ifequal pro.pro_stage_id pro_stage.id %}selected{% endifequal %}>
+                                {% ifequal pro_apply.pro_stage_id pro_stage.id %}selected{% endifequal %}>
                             {{ pro_stage.name }}
                         </option>
                     {% endfor %}
@@ -63,10 +63,10 @@
         <div class="form-group">
             <label for="wt_person_id" class="col-md-2 col-sm-2 control-label">法人委托：</label>
             <div class="col-md-5 col-sm-10">
-                <select class="form-control" id="wt_person_id" name="wt_person_id" disabled>
+                <select class="form-control" id="wt_person_id" name="wt_person_id" readonly>
                     <option value="">未填写</option>
                     {% for staff in staffs %}
-                        <option value="{{ staff.id }}" {% ifequal pro.wt_person_id staff.id %}selected{% endifequal %}>
+                        <option value="{{ staff.id }}" {% ifequal pro_apply.wt_person_id staff.id %}selected{% endifequal %}>
                             {{ staff.name }}
                         </option>
                     {% endfor %}
@@ -77,10 +77,10 @@
         <div class="form-group">
             <label for="ht_person_id" class="col-md-2 col-sm-2 control-label">合同签署人：</label>
             <div class="col-md-5 col-sm-10">
-                <select class="form-control" id="ht_person_id" name="ht_person_id" disabled>
+                <select class="form-control" id="ht_person_id" name="ht_person_id" readonly>
                     <option value="">未填写</option>
                     {% for staff in staffs %}
-                        <option value="{{ staff.id }}" {% ifequal pro.ht_person_id staff.id %}selected{% endifequal %}>
+                        <option value="{{ staff.id }}" {% ifequal pro_apply.ht_person_id staff.id %}selected{% endifequal %}>
                             {{ staff.name }}
                         </option>
                     {% endfor %}
@@ -92,7 +92,7 @@
             <label for="ht_name" class="col-md-2 col-sm-2 control-label">合同名称：</label>
             <div class="col-md-5 col-sm-10">
                 <input type="text" class="form-control" id="ht_name" name="ht_name" placeholder="未填写"
-                       value="{{ pro.ht_name }}" disabled>
+                       value="{{ pro_apply.ht_name }}" readonly>
             </div>
         </div>
 
@@ -100,7 +100,7 @@
             <label for="ht_num" class="col-md-2 col-sm-2 control-label">合同编号：</label>
             <div class="col-md-5 col-sm-10">
                 <input type="text" class="form-control" id="ht_num" name="ht_num" placeholder="未填写"
-                       value="{{ pro.ht_num }}" disabled>
+                       value="{{ pro_apply.ht_num }}" readonly>
             </div>
         </div>
 
@@ -108,7 +108,7 @@
             <label for="ht_money" class="col-md-2 col-sm-2 control-label">合同金额：</label>
             <div class="col-md-5 col-sm-10">
                 <input type="text" class="form-control" id="ht_money" name="ht_money" placeholder="未填写"
-                       value="{{ pro.ht_money }}" disabled>
+                       value="{{ pro_apply.ht_money }}" readonly>
             </div>
         </div>
 
@@ -116,7 +116,7 @@
             <label for="js_money" class="col-md-2 col-sm-2 control-label">结算金额：</label>
             <div class="col-md-5 col-sm-10">
                 <input type="text" class="form-control" id="js_money" name="js_money" placeholder="未填写"
-                       value="{{ pro.js_money }}" disabled>
+                       value="{{ pro_apply.js_money }}" readonly>
             </div>
         </div>
 
@@ -124,7 +124,7 @@
             <label for="wt_dw" class="col-md-2 col-sm-2 control-label">委托单位：</label>
             <div class="col-md-5 col-sm-10">
                 <input type="text" class="form-control" id="wt_dw" name="wt_dw" placeholder="未填写"
-                       value="{{ pro.wt_dw }}" disabled>
+                       value="{{ pro_apply.wt_dw }}" readonly>
             </div>
         </div>
 
@@ -132,7 +132,7 @@
             <label for="mobile" class="col-md-2 col-sm-2 control-label">联系电话：</label>
             <div class="col-md-5 col-sm-10">
                 <input type="text" class="form-control" id="mobile" name="mobile" placeholder="未填写"
-                       value="{{ pro.mobile }}" disabled>
+                       value="{{ pro_apply.mobile }}" readonly>
             </div>
         </div>
 
@@ -140,7 +140,7 @@
             <label for="pro_address" class="col-md-2 col-sm-2 control-label">项目地址：</label>
             <div class="col-md-5 col-sm-10">
                 <input type="text" class="form-control" id="pro_address" name="pro_address" placeholder="未填写"
-                       value="{{ pro.pro_address }}" disabled>
+                       value="{{ pro_apply.pro_address }}" readonly>
             </div>
         </div>
 
@@ -148,7 +148,7 @@
             <label for="sign_date" class="col-md-2 col-sm-2 control-label">签订日期：</label>
             <div class="col-md-5 col-sm-10">
                 <input type="date" class="form-control" id="sign_date" name="sign_date"
-                       placeholder="未填写" value="{{ pro.sign_date|date:"Y-m-d" }}" disabled>
+                       placeholder="未填写" value="{{ pro_apply.sign_date|date:"Y-m-d" }}" readonly>
             </div>
         </div>
 
@@ -156,7 +156,7 @@
             <label for="start_date" class="col-md-2 col-sm-2 control-label">开工日期：</label>
             <div class="col-md-5 col-sm-10">
                 <input type="date" class="form-control" id="start_date" name="start_date"
-                       placeholder="未填写" value="{{ pro.start_date|date:"Y-m-d" }}" disabled>
+                       placeholder="未填写" value="{{ pro_apply.start_date|date:"Y-m-d" }}" readonly>
             </div>
         </div>
 
@@ -164,7 +164,7 @@
             <label for="finish_date" class="col-md-2 col-sm-2 control-label">完工日期：</label>
             <div class="col-md-5 col-sm-10">
                 <input type="date" class="form-control" id="finish_date" name="finish_date"
-                       placeholder="未填写" value="{{ pro.finish_date|date:"Y-m-d" }}" disabled>
+                       placeholder="未填写" value="{{ pro_apply.finish_date|date:"Y-m-d" }}" readonly>
             </div>
         </div>
         {##}
@@ -179,8 +179,8 @@
             <label for="ht_scan" class="col-md-2 col-sm-2 control-label">上传合同扫描件：</label>
             <div class="col-md-5 col-sm-10">
                 {#                <input type="file" id="ht_scan" name="ht_scan">#}
-                {% if pro.ht_scan %}
-                    <a href="{{ MEDIA_URL }}{{ pro.ht_scan }}" target="_blank">查看</a>
+                {% if pro_apply.ht_scan %}
+                    <a href="{{ MEDIA_URL }}{{ pro_apply.ht_scan }}" target="_blank">查看</a>
                 {% else %}
                     未上传
                 {% endif %}
@@ -192,7 +192,7 @@
             <label for="remark" class="col-md-2 col-sm-2 control-label">备注：</label>
             <div class="col-md-5 col-sm-10">
                 <input type="text" class="form-control" id="remark" name="remark" placeholder="未填写"
-                       value="{{ pro.remark }}" disabled>
+                       value="{{ pro_apply.remark }}" readonly>
             </div>
         </div>
 
@@ -201,7 +201,7 @@
     </form>
 
 
-    <a style="margin-top: 50px; margin-bottom: 100px" href="{% url 'pro:list' %}" class="btn btn-primary col-md-7"
+    <a style="margin-top: 50px; margin-bottom: 100px" href="javascript:history.go(-1);" class="btn btn-primary col-md-7"
        role="button">返回</a>
 
 {% endblock %}

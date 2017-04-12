@@ -6,19 +6,12 @@ from datetime import datetime
 from django.db import models
 
 
-# from users.models import UserProfile
-
-
 # 工程类型
 class ProjectType(models.Model):
     name = models.CharField(max_length=20, verbose_name=u'工程类型名称')
     remark = models.CharField(max_length=200, verbose_name=u'备注', null=True, blank=True)
 
     add_time = models.DateTimeField(default=datetime.now, verbose_name=u'添加时间')
-
-    # 类型下所有工程
-    # def get_projects(self):
-    #     return self.project_set.filter(id=self.id)
 
     class Meta:
         verbose_name = u'工程类型信息'
@@ -34,10 +27,6 @@ class ProjectStage(models.Model):
     remark = models.CharField(max_length=200, verbose_name=u'备注', null=True, blank=True)
 
     add_time = models.DateTimeField(default=datetime.now, verbose_name=u'添加时间')
-
-    # 阶段下所有工程
-    # def get_projects(self):
-    #     return self.project_set.filter(id=self.id)
 
     class Meta:
         verbose_name = u'项目阶段信息'
@@ -80,30 +69,6 @@ class Project(models.Model):
     remark = models.CharField(max_length=200, verbose_name=u'备注', null=True, blank=True)
 
     add_time = models.DateTimeField(default=datetime.now, verbose_name=u'添加时间')
-
-    # # 工程负责人
-    # def get_pro_person(self):
-    #     return UserProfile.objects.get(id=self.pro_person_id)
-    #
-    # # 法人委托
-    # def get_wt_person(self):
-    #     return UserProfile.objects.get(id=self.wt_person_id)
-    #
-    # # 合同签署人
-    # def get_ht_person(self):
-    #     return UserProfile.objects.get(id=self.ht_person_id)
-    #
-    # # 工程成员
-    # def get_members(self):
-    #     return self.projectmember_set.filter(project_id=self.id)
-    #
-    # # 工程设备
-    # def get_equipments(self):
-    #     return self.projectequipment_set.filter(project_id=self.id)
-    #
-    # # 工程变更记录
-    # def get_change(self):
-    #     return self.projectchange_set.filter(project_id=self.id).order_by('-add-time')
 
     class Meta:
         verbose_name = u'工程信息'

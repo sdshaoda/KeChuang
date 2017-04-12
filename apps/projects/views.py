@@ -14,21 +14,125 @@ class ListView(View):
     def get(self, request):
 
         # 检测员 浏览自己为项目成员的工程（暂时只做负责人）
+        #######################################################
         if request.user.permission == '检测员':
-            pros = Project.objects.filter(Q(pro_person_id=request.user.id)|Q(is_active=1))
+            pros = Project.objects.filter(pro_person_id=request.user.id, is_active=1).order_by('-add_time')
+
         # 部门负责 浏览负责人为本部门员工（ OR 自己为项目成员）
+        #######################################################
         elif request.user.permission == '部门负责':
-            pros = Project.objects.filter(Q(department_id=request.user.department_id)|Q(is_active=1))
+            pros = Project.objects.filter(
+                (Q(department_id=request.user.department_id) | Q(pro_person_id=request.user.id)), is_active=1).order_by(
+                '-add_time')
+
         # 公司负责 浏览所有工程
         elif request.user.permission == '公司负责':
-            pros = Project.objects.filter(is_active=1)
+            pros = Project.objects.filter(is_active=1).order_by('-add_time')
         else:
             pros = []
 
-        # 搜索 排序
+        search_keywords = request.GET.get('keywords', '')
+        category = request.GET.get('category', '')
+        mode = request.GET.get('mode', '')
+
+        # 搜索
+        if search_keywords:
+            pros = pros.filter(Q(pro_type_name__icontains=search_keywords) |
+                               Q(pro_stage_name__icontains=search_keywords) |
+                               Q(id__icontains=search_keywords) |
+                               Q(pro_name__icontains=search_keywords) |
+                               Q(pro_person__icontains=search_keywords) |
+                               Q(department__icontains=search_keywords) |
+                               Q(wt_person__icontains=search_keywords) |
+                               Q(ht_person__icontains=search_keywords) |
+                               Q(ht_name__icontains=search_keywords) |
+                               Q(ht_num__icontains=search_keywords) |
+                               Q(ht_money__icontains=search_keywords) |
+                               Q(js_money__icontains=search_keywords) |
+                               Q(wt_dw__icontains=search_keywords) |
+                               Q(mobile__icontains=search_keywords) |
+                               Q(pro_address__icontains=search_keywords) |
+                               Q(remark__icontains=search_keywords))
+
+        # 排序
+        if category == 'pro_id' and mode == 'positive':
+            pros = pros.order_by('id')
+        elif category == 'pro_id' and mode == 'negative':
+            pros = pros.order_by('-id')
+        elif category == 'pro_person_id' and mode == 'positive':
+            pros = pros.order_by('pro_person_id')
+        elif category == 'pro_person_id' and mode == 'negative':
+            pros = pros.order_by('-pro_person_id')
+        elif category == 'department_id' and mode == 'positive':
+            pros = pros.order_by('department_id')
+        elif category == 'department_id' and mode == 'negative':
+            pros = pros.order_by('-department_id')
+        elif category == 'wt_person_id' and mode == 'positive':
+            pros = pros.order_by('wt_person_id')
+        elif category == 'wt_person_id' and mode == 'negative':
+            pros = pros.order_by('-wt_person_id')
+        elif category == 'ht_person_id' and mode == 'positive':
+            pros = pros.order_by('ht_person_id')
+        elif category == 'ht_person_id' and mode == 'negative':
+            pros = pros.order_by('-ht_person_id')
+        elif category == 'ht_num' and mode == 'positive':
+            pros = pros.order_by('ht_num')
+        elif category == 'ht_num' and mode == 'negative':
+            pros = pros.order_by('-ht_num')
+        elif category == 'ht_money' and mode == 'positive':
+            pros = pros.order_by('ht_money')
+        elif category == 'ht_money' and mode == 'negative':
+            pros = pros.order_by('-ht_money')
+        elif category == 'js_money' and mode == 'positive':
+            pros = pros.order_by('js_money')
+        elif category == 'js_money' and mode == 'negative':
+            pros = pros.order_by('-js_money')
+        elif category == 'mobile' and mode == 'positive':
+            pros = pros.order_by('mobile')
+        elif category == 'mobile' and mode == 'negative':
+            pros = pros.order_by('-mobile')
+        elif category == 'sign_date' and mode == 'positive':
+            pros = pros.order_by('sign_date')
+        elif category == 'sign_date' and mode == 'negative':
+            pros = pros.order_by('-sign_date')
+        elif category == 'start_date' and mode == 'positive':
+            pros = pros.order_by('start_date')
+        elif category == 'start_date' and mode == 'negative':
+            pros = pros.order_by('-start_date')
+        elif category == 'finish_date' and mode == 'positive':
+            pros = pros.order_by('finish_date')
+        elif category == 'finish_date' and mode == 'negative':
+            pros = pros.order_by('-finish_date')
+        elif category == 'add_time' and mode == 'positive':
+            pros = pros.order_by('add_time')
+        elif category == 'add_time' and mode == 'negative':
+            pros = pros.order_by('-add_time')
 
         return render(request, 'project/list.html', {
             'pros': pros
+        })
+
+
+# 工程详情 GET
+class DetailView(View):
+    def get(self, request, pro_id):
+        # 根据 URL 中的 pro_id 获取工程详情
+        pro = Project.objects.get(id=int(pro_id))
+
+        # 筛除超级用户
+        staffs = UserProfile.objects.filter(is_superuser=0)
+
+        # 工程类型
+        pro_types = ProjectType.objects.all()
+
+        # 项目阶段
+        pro_stages = ProjectStage.objects.all()
+
+        return render(request, 'project/detail.html', {
+            'pro': pro,
+            'staffs': staffs,
+            'pro_types': pro_types,
+            'pro_stages': pro_stages
         })
 
 
@@ -86,10 +190,12 @@ class AddProView(View):
             project = Project()
             project.is_active = 1  # 工程状态为 有效
             project.pro_name = pro_name
-            project.pro_type_id = pro_type_id
-            project.pro_type_name = ProjectType.objects.get(id=pro_type_id)
-            project.pro_stage_id = pro_stage_id
-            project.pro_stage_name = ProjectStage.objects.get(id=pro_stage_id)
+            if pro_type_id:
+                project.pro_type_id = pro_type_id
+                project.pro_type_name = ProjectType.objects.get(id=pro_type_id)
+            if pro_stage_id:
+                project.pro_stage_id = pro_stage_id
+                project.pro_stage_name = ProjectStage.objects.get(id=pro_stage_id)
             if pro_person_id:
                 project.pro_person_id = pro_person_id
                 project.pro_person = UserProfile.objects.get(id=pro_person_id).name
@@ -145,23 +251,23 @@ class AddProView(View):
             pro_apply.status = '审核通过'  # 变更记录的筛选条件
 
         if pro_type_id:
-            project.pro_type_id = pro_type_id
-            project.pro_type = ProjectType.objects.get(id=pro_type_id).name
+            pro_apply.pro_type_id = pro_type_id
+            pro_apply.pro_type = ProjectType.objects.get(id=pro_type_id).name
         if pro_stage_id:
-            project.pro_stage_id = pro_stage_id
-            project.pro_stage = ProjectStage.objects.get(id=pro_stage_id).name
+            pro_apply.pro_stage_id = pro_stage_id
+            pro_apply.pro_stage = ProjectStage.objects.get(id=pro_stage_id).name
         if pro_person_id:
-            project.pro_person_id = pro_person_id
-            project.pro_person = UserProfile.objects.get(id=pro_person_id).name
+            pro_apply.pro_person_id = pro_person_id
+            pro_apply.pro_person = UserProfile.objects.get(id=pro_person_id).name
         if department_id:
-            project.department_id = department_id
-            project.department = Department.objects.get(id=department_id).name
+            pro_apply.department_id = department_id
+            pro_apply.department = Department.objects.get(id=department_id).name
         if wt_person_id:
-            project.wt_person_id = wt_person_id
-            project.wt_person = UserProfile.objects.get(id=wt_person_id).name
+            pro_apply.wt_person_id = wt_person_id
+            pro_apply.wt_person = UserProfile.objects.get(id=wt_person_id).name
         if ht_person_id:
-            project.ht_person_id = ht_person_id
-            project.ht_person = UserProfile.objects.get(id=ht_person_id).name
+            pro_apply.ht_person_id = ht_person_id
+            pro_apply.ht_person = UserProfile.objects.get(id=ht_person_id).name
 
         pro_apply.ht_name = ht_name
         pro_apply.ht_num = ht_num
@@ -181,7 +287,7 @@ class AddProView(View):
         pro_apply.save()
 
         # 申请人 为当前用户的申请
-        pro_applys = ProjectApply.objects.filter(person_id=request.user.id)
+        pro_applys = ProjectApply.objects.filter(person_id=request.user.id).order_by('-add_time')
         # 转到 工程申请
         return render(request, 'project/apply.html', {
             'pro_applys': pro_applys
@@ -247,13 +353,15 @@ class EditProView(View):
 
         project = Project.objects.get(id=pro_id)
 
-        # 直接修改 工程 信息，并生成 审核通过 的 工程申请
+        # 公司负责 直接修改 工程 信息，但要生成 审核通过 的 工程申请
         if request.user.permission == '公司负责':
             project.pro_name = pro_name
-            project.pro_type_id = pro_type_id
-            project.pro_type_name = ProjectType.objects.get(id=pro_type_id)
-            project.pro_stage_id = pro_stage_id
-            project.pro_stage_name = ProjectStage.objects.get(id=pro_stage_id)
+            if pro_type_id:
+                project.pro_type_id = pro_type_id
+                project.pro_type_name = ProjectType.objects.get(id=pro_type_id)
+            if pro_stage_id:
+                project.pro_stage_id = pro_stage_id
+                project.pro_stage_name = ProjectStage.objects.get(id=pro_stage_id)
             if pro_person_id:
                 project.pro_person_id = pro_person_id
                 project.pro_person = UserProfile.objects.get(id=pro_person_id).name
@@ -309,23 +417,23 @@ class EditProView(View):
             pro_apply.status = '审核通过'  # 变更记录的筛选条件
 
         if pro_type_id:
-            project.pro_type_id = pro_type_id
-            project.pro_type = ProjectType.objects.get(id=pro_type_id).name
+            pro_apply.pro_type_id = pro_type_id
+            pro_apply.pro_type = ProjectType.objects.get(id=pro_type_id).name
         if pro_stage_id:
-            project.pro_stage_id = pro_stage_id
-            project.pro_stage = ProjectStage.objects.get(id=pro_stage_id).name
+            pro_apply.pro_stage_id = pro_stage_id
+            pro_apply.pro_stage = ProjectStage.objects.get(id=pro_stage_id).name
         if pro_person_id:
-            project.pro_person_id = pro_person_id
-            project.pro_person = UserProfile.objects.get(id=pro_person_id).name
+            pro_apply.pro_person_id = pro_person_id
+            pro_apply.pro_person = UserProfile.objects.get(id=pro_person_id).name
         if department_id:
-            project.department_id = department_id
-            project.department = Department.objects.get(id=department_id).name
+            pro_apply.department_id = department_id
+            pro_apply.department = Department.objects.get(id=department_id).name
         if wt_person_id:
-            project.wt_person_id = wt_person_id
-            project.wt_person = UserProfile.objects.get(id=wt_person_id).name
+            pro_apply.wt_person_id = wt_person_id
+            pro_apply.wt_person = UserProfile.objects.get(id=wt_person_id).name
         if ht_person_id:
-            project.ht_person_id = ht_person_id
-            project.ht_person = UserProfile.objects.get(id=ht_person_id).name
+            pro_apply.ht_person_id = ht_person_id
+            pro_apply.ht_person = UserProfile.objects.get(id=ht_person_id).name
 
         pro_apply.ht_name = ht_name
         pro_apply.ht_num = ht_num
@@ -345,33 +453,10 @@ class EditProView(View):
         pro_apply.save()
 
         # 申请人 为当前用户的申请
-        pro_applys = ProjectApply.objects.filter(person_id=request.user.id)
+        pro_applys = ProjectApply.objects.filter(person_id=request.user.id).order_by('-add_time')
         # 转到 工程申请
         return render(request, 'project/apply.html', {
             'pro_applys': pro_applys
-        })
-
-
-# 工程详情 GET
-class DetailView(View):
-    def get(self, request, pro_id):
-        # 根据 URL 中的 pro_id 获取工程详情
-        pro = Project.objects.get(id=int(pro_id))
-
-        # 筛除超级用户
-        staffs = UserProfile.objects.filter(is_superuser=0)
-
-        # 工程类型
-        pro_types = ProjectType.objects.all()
-
-        # 项目阶段
-        pro_stages = ProjectStage.objects.all()
-
-        return render(request, 'project/detail.html', {
-            'pro': pro,
-            'staffs': staffs,
-            'pro_types': pro_types,
-            'pro_stages': pro_stages
         })
 
 
@@ -380,20 +465,128 @@ class DeleteView(View):
     def post(self, request):
         pro_id = request.POST.get('pro_id', '')
 
-        # 初始化 工程申请
-        pro = Project.objects.get(id=pro_id)
-        pro.delete()
+        project = Project.objects.get(id=int(pro_id))
+        # 除 公司负责 外，不对 工程 进行任何操作
 
-        if Project.objects.filter(id=pro_id):
-            return HttpResponse('{"status":"success","msg":"删除工程操作失败"}', content_type='application/json')
-        return HttpResponse('{"status":"success","msg":"删除工程操作成功"}', content_type='application/json')
+        # 初始化 工程申请
+        pro_apply = ProjectApply()
+        # 删除工程 的 工程申请 只保存基本信息
+        pro_apply.project = project
+        pro_apply.project_name = project.pro_name
+        pro_apply.person_id = request.user.id
+        pro_apply.person_name = request.user.name
+        pro_apply.type = '删除工程'
+        if request.user.permission == '检测员':
+            pro_apply.status = '部门主任审核中'
+            pro_apply.save()
+        if request.user.permission == '部门负责':
+            pro_apply.status = '公司领导审核中'
+            pro_apply.save()
+        if request.user.permission == '公司负责':
+            project.is_active = 0  # 工程状态设置为无效，保留在数据库
+            project.save()
+            pro_apply.status = '审核通过'  # 变更记录的筛选条件
+            pro_apply.save()
+            return HttpResponse('{"status":"success","msg":"删除工程已成功"}', content_type='application/json')
+
+        if ProjectApply.objects.filter(id=pro_apply.id):
+            return HttpResponse('{"status":"success","msg":"删除工程申请已提交"}', content_type='application/json')
+        return HttpResponse('{"status":"success","msg":"删除工程申请提交失败"}', content_type='application/json')
 
 
 # 工程申请 GET
 class ApplyView(View):
     def get(self, request):
         # 申请人 为当前用户的申请
-        pro_applys = ProjectApply.objects.filter(person_id=request.user.id)
+        pro_applys = ProjectApply.objects.filter(person_id=request.user.id).order_by('-add_time')
+
+        search_keywords = request.GET.get('keywords', '')
+        category = request.GET.get('category', '')
+        mode = request.GET.get('mode', '')
+
+        # 搜索
+        if search_keywords:
+            pro_applys = pro_applys.filter(Q(pro_type__icontains=search_keywords) |
+                                           Q(pro_stage__icontains=search_keywords) |
+                                           Q(id__icontains=search_keywords) |
+                                           Q(type__icontains=search_keywords) |
+                                           Q(status__icontains=search_keywords) |
+                                           Q(project_name__icontains=search_keywords) |
+                                           Q(person_name__icontains=search_keywords) |
+                                           Q(pro_person__icontains=search_keywords) |
+                                           Q(department__icontains=search_keywords) |
+                                           Q(wt_person__icontains=search_keywords) |
+                                           Q(ht_person__icontains=search_keywords) |
+                                           Q(ht_name__icontains=search_keywords) |
+                                           Q(ht_num__icontains=search_keywords) |
+                                           Q(ht_money__icontains=search_keywords) |
+                                           Q(js_money__icontains=search_keywords) |
+                                           Q(wt_dw__icontains=search_keywords) |
+                                           Q(mobile__icontains=search_keywords) |
+                                           Q(pro_address__icontains=search_keywords) |
+                                           Q(remark__icontains=search_keywords))
+
+        # 排序
+        if category == 'pro_apply_id' and mode == 'positive':
+            pro_applys = pro_applys.order_by('id')
+        elif category == 'pro_apply_id' and mode == 'negative':
+            pro_applys = pro_applys.order_by('-id')
+        elif category == 'pro_type_id' and mode == 'positive':
+            pro_applys = pro_applys.order_by('pro_type_id')
+        elif category == 'pro_type_id' and mode == 'negative':
+            pro_applys = pro_applys.order_by('-pro_type_id')
+        elif category == 'pro_stage_id' and mode == 'positive':
+            pro_applys = pro_applys.order_by('pro_stage_id')
+        elif category == 'pro_stage_id' and mode == 'negative':
+            pro_applys = pro_applys.order_by('-pro_stage_id')
+        elif category == 'department_id' and mode == 'positive':
+            pro_applys = pro_applys.order_by('department_id')
+        elif category == 'department_id' and mode == 'negative':
+            pro_applys = pro_applys.order_by('-department_id')
+        elif category == 'pro_person_id' and mode == 'positive':
+            pro_applys = pro_applys.order_by('pro_person_id')
+        elif category == 'pro_person_id' and mode == 'negative':
+            pro_applys = pro_applys.order_by('-pro_person_id')
+        elif category == 'wt_person_id' and mode == 'positive':
+            pro_applys = pro_applys.order_by('wt_person_id')
+        elif category == 'wt_person_id' and mode == 'negative':
+            pro_applys = pro_applys.order_by('-wt_person_id')
+        elif category == 'ht_person_id' and mode == 'positive':
+            pro_applys = pro_applys.order_by('ht_person_id')
+        elif category == 'ht_person_id' and mode == 'negative':
+            pro_applys = pro_applys.order_by('-ht_person_id')
+        elif category == 'ht_num' and mode == 'positive':
+            pro_applys = pro_applys.order_by('ht_num')
+        elif category == 'ht_num' and mode == 'negative':
+            pro_applys = pro_applys.order_by('-ht_num')
+        elif category == 'ht_money' and mode == 'positive':
+            pro_applys = pro_applys.order_by('ht_money')
+        elif category == 'ht_money' and mode == 'negative':
+            pro_applys = pro_applys.order_by('-ht_money')
+        elif category == 'js_money' and mode == 'positive':
+            pro_applys = pro_applys.order_by('js_money')
+        elif category == 'js_money' and mode == 'negative':
+            pro_applys = pro_applys.order_by('-js_money')
+        elif category == 'mobile' and mode == 'positive':
+            pro_applys = pro_applys.order_by('mobile')
+        elif category == 'mobile' and mode == 'negative':
+            pro_applys = pro_applys.order_by('-mobile')
+        elif category == 'sign_date' and mode == 'positive':
+            pro_applys = pro_applys.order_by('sign_date')
+        elif category == 'sign_date' and mode == 'negative':
+            pro_applys = pro_applys.order_by('-sign_date')
+        elif category == 'start_date' and mode == 'positive':
+            pro_applys = pro_applys.order_by('start_date')
+        elif category == 'start_date' and mode == 'negative':
+            pro_applys = pro_applys.order_by('-start_date')
+        elif category == 'finish_date' and mode == 'positive':
+            pro_applys = pro_applys.order_by('finish_date')
+        elif category == 'finish_date' and mode == 'negative':
+            pro_applys = pro_applys.order_by('-finish_date')
+        elif category == 'add_time' and mode == 'positive':
+            pro_applys = pro_applys.order_by('add_time')
+        elif category == 'add_time' and mode == 'negative':
+            pro_applys = pro_applys.order_by('-add_time')
 
         return render(request, 'project/apply.html', {
             'pro_applys': pro_applys
@@ -405,8 +598,20 @@ class ApplyDetailView(View):
     def get(self, request, pro_apply_id):
         pro_apply = ProjectApply.objects.get(id=int(pro_apply_id))
 
+        # 筛除超级用户
+        staffs = UserProfile.objects.filter(is_superuser=0)
+
+        # 工程类型
+        pro_types = ProjectType.objects.all()
+
+        # 项目阶段
+        pro_stages = ProjectStage.objects.all()
+
         return render(request, 'project/apply_detail.html', {
-            'pro_apply': pro_apply
+            'pro_apply': pro_apply,
+            'staffs': staffs,
+            'pro_types': pro_types,
+            'pro_stages': pro_stages
         })
 
 
@@ -416,12 +621,101 @@ class VerifyView(View):
 
         # 部门负责 只接受本部门的申请，且 审核状态 为 部门主任审核中
         if request.user.permission == '部门负责':
-            pro_applys = ProjectApply.objects.filter(Q(department=request.user.department.name) | Q(status='部门主任审核中'))
+            pro_applys = ProjectApply.objects.filter(department=request.user.department.name,
+                                                     status='部门主任审核中').order_by('-add_time')
         # 公司负责 接受所有部门的申请，且 审核状态 为 公司领导审核中
         elif request.user.permission == '公司负责':
-            pro_applys = ProjectApply.objects.filter(status='公司领导审核中')
+            pro_applys = ProjectApply.objects.filter(status='公司领导审核中').order_by('-add_time')
         else:
             pro_applys = []
+
+        search_keywords = request.GET.get('keywords', '')
+        category = request.GET.get('category', '')
+        mode = request.GET.get('mode', '')
+
+        # 搜索
+        if search_keywords:
+            pro_applys = pro_applys.filter(Q(pro_type__icontains=search_keywords) |
+                                           Q(pro_stage__icontains=search_keywords) |
+                                           Q(id__icontains=search_keywords) |
+                                           Q(type__icontains=search_keywords) |
+                                           Q(status__icontains=search_keywords) |
+                                           Q(project_name__icontains=search_keywords) |
+                                           Q(person_name__icontains=search_keywords) |
+                                           Q(pro_person__icontains=search_keywords) |
+                                           Q(department__icontains=search_keywords) |
+                                           Q(wt_person__icontains=search_keywords) |
+                                           Q(ht_person__icontains=search_keywords) |
+                                           Q(ht_name__icontains=search_keywords) |
+                                           Q(ht_num__icontains=search_keywords) |
+                                           Q(ht_money__icontains=search_keywords) |
+                                           Q(js_money__icontains=search_keywords) |
+                                           Q(wt_dw__icontains=search_keywords) |
+                                           Q(mobile__icontains=search_keywords) |
+                                           Q(pro_address__icontains=search_keywords) |
+                                           Q(remark__icontains=search_keywords))
+
+        # 排序
+        if category == 'pro_apply_id' and mode == 'positive':
+            pro_applys = pro_applys.order_by('id')
+        elif category == 'pro_apply_id' and mode == 'negative':
+            pro_applys = pro_applys.order_by('-id')
+        elif category == 'pro_type_id' and mode == 'positive':
+            pro_applys = pro_applys.order_by('pro_type_id')
+        elif category == 'pro_type_id' and mode == 'negative':
+            pro_applys = pro_applys.order_by('-pro_type_id')
+        elif category == 'pro_stage_id' and mode == 'positive':
+            pro_applys = pro_applys.order_by('pro_stage_id')
+        elif category == 'pro_stage_id' and mode == 'negative':
+            pro_applys = pro_applys.order_by('-pro_stage_id')
+        elif category == 'department_id' and mode == 'positive':
+            pro_applys = pro_applys.order_by('department_id')
+        elif category == 'department_id' and mode == 'negative':
+            pro_applys = pro_applys.order_by('-department_id')
+        elif category == 'pro_person_id' and mode == 'positive':
+            pro_applys = pro_applys.order_by('pro_person_id')
+        elif category == 'pro_person_id' and mode == 'negative':
+            pro_applys = pro_applys.order_by('-pro_person_id')
+        elif category == 'wt_person_id' and mode == 'positive':
+            pro_applys = pro_applys.order_by('wt_person_id')
+        elif category == 'wt_person_id' and mode == 'negative':
+            pro_applys = pro_applys.order_by('-wt_person_id')
+        elif category == 'ht_person_id' and mode == 'positive':
+            pro_applys = pro_applys.order_by('ht_person_id')
+        elif category == 'ht_person_id' and mode == 'negative':
+            pro_applys = pro_applys.order_by('-ht_person_id')
+        elif category == 'ht_num' and mode == 'positive':
+            pro_applys = pro_applys.order_by('ht_num')
+        elif category == 'ht_num' and mode == 'negative':
+            pro_applys = pro_applys.order_by('-ht_num')
+        elif category == 'ht_money' and mode == 'positive':
+            pro_applys = pro_applys.order_by('ht_money')
+        elif category == 'ht_money' and mode == 'negative':
+            pro_applys = pro_applys.order_by('-ht_money')
+        elif category == 'js_money' and mode == 'positive':
+            pro_applys = pro_applys.order_by('js_money')
+        elif category == 'js_money' and mode == 'negative':
+            pro_applys = pro_applys.order_by('-js_money')
+        elif category == 'mobile' and mode == 'positive':
+            pro_applys = pro_applys.order_by('mobile')
+        elif category == 'mobile' and mode == 'negative':
+            pro_applys = pro_applys.order_by('-mobile')
+        elif category == 'sign_date' and mode == 'positive':
+            pro_applys = pro_applys.order_by('sign_date')
+        elif category == 'sign_date' and mode == 'negative':
+            pro_applys = pro_applys.order_by('-sign_date')
+        elif category == 'start_date' and mode == 'positive':
+            pro_applys = pro_applys.order_by('start_date')
+        elif category == 'start_date' and mode == 'negative':
+            pro_applys = pro_applys.order_by('-start_date')
+        elif category == 'finish_date' and mode == 'positive':
+            pro_applys = pro_applys.order_by('finish_date')
+        elif category == 'finish_date' and mode == 'negative':
+            pro_applys = pro_applys.order_by('-finish_date')
+        elif category == 'add_time' and mode == 'positive':
+            pro_applys = pro_applys.order_by('add_time')
+        elif category == 'add_time' and mode == 'negative':
+            pro_applys = pro_applys.order_by('-add_time')
 
         return render(request, 'project/verify.html', {
             'pro_applys': pro_applys
@@ -430,56 +724,274 @@ class VerifyView(View):
 
 # 同意申请 Ajax
 class AgreeProView(View):
-    def get(self, request):
+    def post(self, request):
 
         pro_apply_id = request.POST.get('pro_apply_id', '')
 
         pro_apply = ProjectApply.objects.get(id=int(pro_apply_id))
         pro = pro_apply.project
 
-        # 判断 工程申请 的类型
-        if pro_apply.type == '添加工程':
-            pro.is_active = 1
-            # 将 申请 中的内容写进 工程 信息
-            pro.save()
-        elif pro_apply.type == '修改信息':
-            # 将 申请 中的内容写进 工程 信息
-            pro.save()
-        elif pro_apply.type == '删除工程':
-            pro.is_active = 0
+        if request.user.permission == '部门负责':
+            # 部门负责 将申请提交给 公司负责
+            pro_apply.status = '公司领导审核中'
+            pro_apply.save()
+            return HttpResponse('{"status":"success","msg":"同意工程申请操作成功，申请转到公司领导审核"}', content_type='application/json')
+
+        elif request.user.permission == '公司负责':
+            # 判断 工程申请 的类型
+            if pro_apply.type == '添加工程':
+                pro.is_active = 1  # 工程状态设置为有效
+                # 将 工程申请 中的内容写进 工程 信息
+                pro.pro_name = pro_apply.project_name
+
+                pro.pro_type_id = pro_apply.pro_type_id
+                pro.pro_type_name = pro_apply.pro_type
+                pro.pro_stage_id = pro_apply.pro_stage_id
+                pro.pro_stage_name = pro_apply.pro_stage
+                pro.department_id = pro_apply.department_id
+                pro.department = pro_apply.department
+                pro.pro_person_id = pro_apply.pro_person_id
+                pro.pro_person = pro_apply.pro_person
+                pro.wt_person_id = pro_apply.wt_person_id
+                pro.wt_person = pro_apply.wt_person
+                pro.ht_person_id = pro_apply.ht_person_id
+                pro.ht_person = pro_apply.ht_person
+
+                pro.ht_name = pro_apply.ht_name
+                pro.ht_num = pro_apply.ht_num
+                pro.ht_money = pro_apply.ht_money
+                pro.js_money = pro_apply.js_money
+                pro.wt_dw = pro_apply.wt_dw
+                pro.mobile = pro_apply.mobile
+                pro.pro_address = pro_apply.pro_address
+                # 不写判断会报错
+                if pro_apply.sign_date:
+                    pro.sign_date = pro_apply
+                if pro_apply.start_date:
+                    pro.start_date = pro_apply.start_date
+                if pro_apply.finish_date:
+                    pro.finish_date = pro_apply.finish_date
+                # 上传文件才修改原有值，否则不修改
+                if pro_apply.ht_scan:
+                    pro.ht_scan = pro_apply.ht_scan
+                pro.remark = pro_apply.remark
+                pro.save()
+
+                pro_apply.status = '审核通过'
+                pro_apply.save()
+
+                return HttpResponse('{"status":"success","msg":"同意工程添加申请操作成功"}', content_type='application/json')
+
+            elif pro_apply.type == '修改信息':
+                # 将 工程申请 中的内容写进 工程 信息
+                pro.pro_name = pro_apply.project_name
+
+                pro.pro_type_id = pro_apply.pro_type_id
+                pro.pro_type_name = pro_apply.pro_type
+                pro.pro_stage_id = pro_apply.pro_stage_id
+                pro.pro_stage_name = pro_apply.pro_stage
+                pro.department_id = pro_apply.department_id
+                pro.department = pro_apply.department
+                pro.pro_person_id = pro_apply.pro_person_id
+                pro.pro_person = pro_apply.pro_person
+                pro.wt_person_id = pro_apply.wt_person_id
+                pro.wt_person = pro_apply.wt_person
+                pro.ht_person_id = pro_apply.ht_person_id
+                pro.ht_person = pro_apply.ht_person
+
+                pro.ht_name = pro_apply.ht_name
+                pro.ht_num = pro_apply.ht_num
+                pro.ht_money = pro_apply.ht_money
+                pro.js_money = pro_apply.js_money
+                pro.wt_dw = pro_apply.wt_dw
+                pro.mobile = pro_apply.mobile
+                pro.pro_address = pro_apply.pro_address
+                # 不写判断会报错
+                if pro_apply.sign_date:
+                    pro.sign_date = pro_apply
+                if pro_apply.start_date:
+                    pro.start_date = pro_apply.start_date
+                if pro_apply.finish_date:
+                    pro.finish_date = pro_apply.finish_date
+                # 上传文件才修改原有值，否则不修改
+                if pro_apply.ht_scan:
+                    pro.ht_scan = pro_apply.ht_scan
+                pro.remark = pro_apply.remark
+                pro.save()
+
+                pro_apply.status = '审核通过'
+                pro_apply.save()
+
+                return HttpResponse('{"status":"success","msg":"同意工程修改申请操作成功"}', content_type='application/json')
+
+            elif pro_apply.type == '删除工程':
+                pro.is_active = 0  # 工程状态设置为无效，保留在数据库
+                pro.save()
+
+                pro_apply.status = '审核通过'  # 变更记录 判断的依据
+                pro_apply.save()
+
+                return HttpResponse('{"status":"success","msg":"同意工程删除申请操作成功"}', content_type='application/json')
 
         return HttpResponse('{"status":"success","msg":"同意工程申请操作成功"}', content_type='application/json')
 
 
 # 拒绝申请 Ajax
 class RefuseProView(View):
-    def get(self, request):
+    def post(self, request):
 
         pro_apply_id = request.POST.get('pro_apply_id', '')
 
         pro_apply = ProjectApply.objects.get(id=int(pro_apply_id))
         pro = pro_apply.project
 
-        # 判断 工程申请 的类型
+        # 部门负责 或 公司负责 ，拒绝都生效
         if pro_apply.type == '添加工程':
-            # 添加的 工程 不通过审核，直接删除
+            # 添加的 工程 审核不通过，直接删除
             pro.delete()
+            pro_apply.status = '审核未通过'
+            pro_apply.save()
+            return HttpResponse('{"status":"success","msg":"拒绝工程添加申请操作成功"}', content_type='application/json')
+
         elif pro_apply.type == '修改信息':
-            # 将 申请 中的内容写进 工程 信息
-            pro.save()
+            # 不对 工程 信息作出修改
+            pro_apply.status = '审核未通过'
+            pro_apply.save()
+            return HttpResponse('{"status":"success","msg":"拒绝工程修改申请操作成功"}', content_type='application/json')
+
         elif pro_apply.type == '删除工程':
-            # 工程 在数据库中依然存在，能查看其 变更记录
-            pro.is_active = 0
-            pro.save()
+            # 不对 工程 信息作出修改
+            pro_apply.status = '审核未通过'
+            pro_apply.save()
+            return HttpResponse('{"status":"success","msg":"拒绝工程删除申请操作成功"}', content_type='application/json')
 
         return HttpResponse('{"status":"success","msg":"拒绝工程申请操作成功"}', content_type='application/json')
+
+
+# 变更信息 GET
+class ChangeView(View):
+    def get(self, request):
+        # 根据权限查看 变更记录信息，同 工程浏览
+        if request.user.permission == '检测员':
+            # 工程负责人 为 自己 ， 工程申请 中状态为 审核通过 的信息
+            pro_applys = ProjectApply.objects.filter(Q(pro_person_id=request.user.id) | Q(status='审核通过')).order_by(
+                '-add_time')
+        elif request.user.permission == '部门负责':
+            pro_applys = ProjectApply.objects.filter(
+                Q(department_id=request.user.department_id) | Q(status='审核通过')).order_by('-add_time')
+        elif request.user.permission == '公司负责':
+            pro_applys = ProjectApply.objects.filter(status='审核通过').order_by('-add_time')
+        else:
+            pro_applys = []
+
+        search_keywords = request.GET.get('keywords', '')
+        category = request.GET.get('category', '')
+        mode = request.GET.get('mode', '')
+
+        # 搜索
+        if search_keywords:
+            pro_applys = pro_applys.filter(Q(pro_type__icontains=search_keywords) |
+                                           Q(pro_stage__icontains=search_keywords) |
+                                           Q(id__icontains=search_keywords) |
+                                           Q(type__icontains=search_keywords) |
+                                           Q(status__icontains=search_keywords) |
+                                           Q(project_name__icontains=search_keywords) |
+                                           Q(person_name__icontains=search_keywords) |
+                                           Q(pro_person__icontains=search_keywords) |
+                                           Q(department__icontains=search_keywords) |
+                                           Q(wt_person__icontains=search_keywords) |
+                                           Q(ht_person__icontains=search_keywords) |
+                                           Q(ht_name__icontains=search_keywords) |
+                                           Q(ht_num__icontains=search_keywords) |
+                                           Q(ht_money__icontains=search_keywords) |
+                                           Q(js_money__icontains=search_keywords) |
+                                           Q(wt_dw__icontains=search_keywords) |
+                                           Q(mobile__icontains=search_keywords) |
+                                           Q(pro_address__icontains=search_keywords) |
+                                           Q(remark__icontains=search_keywords))
+
+        # 排序
+        if category == 'pro_apply_id' and mode == 'positive':
+            pro_applys = pro_applys.order_by('id')
+        elif category == 'pro_apply_id' and mode == 'negative':
+            pro_applys = pro_applys.order_by('-id')
+        elif category == 'pro_type_id' and mode == 'positive':
+            pro_applys = pro_applys.order_by('pro_type_id')
+        elif category == 'pro_type_id' and mode == 'negative':
+            pro_applys = pro_applys.order_by('-pro_type_id')
+        elif category == 'pro_stage_id' and mode == 'positive':
+            pro_applys = pro_applys.order_by('pro_stage_id')
+        elif category == 'pro_stage_id' and mode == 'negative':
+            pro_applys = pro_applys.order_by('-pro_stage_id')
+        elif category == 'department_id' and mode == 'positive':
+            pro_applys = pro_applys.order_by('department_id')
+        elif category == 'department_id' and mode == 'negative':
+            pro_applys = pro_applys.order_by('-department_id')
+        elif category == 'pro_person_id' and mode == 'positive':
+            pro_applys = pro_applys.order_by('pro_person_id')
+        elif category == 'pro_person_id' and mode == 'negative':
+            pro_applys = pro_applys.order_by('-pro_person_id')
+        elif category == 'wt_person_id' and mode == 'positive':
+            pro_applys = pro_applys.order_by('wt_person_id')
+        elif category == 'wt_person_id' and mode == 'negative':
+            pro_applys = pro_applys.order_by('-wt_person_id')
+        elif category == 'ht_person_id' and mode == 'positive':
+            pro_applys = pro_applys.order_by('ht_person_id')
+        elif category == 'ht_person_id' and mode == 'negative':
+            pro_applys = pro_applys.order_by('-ht_person_id')
+        elif category == 'ht_num' and mode == 'positive':
+            pro_applys = pro_applys.order_by('ht_num')
+        elif category == 'ht_num' and mode == 'negative':
+            pro_applys = pro_applys.order_by('-ht_num')
+        elif category == 'ht_money' and mode == 'positive':
+            pro_applys = pro_applys.order_by('ht_money')
+        elif category == 'ht_money' and mode == 'negative':
+            pro_applys = pro_applys.order_by('-ht_money')
+        elif category == 'js_money' and mode == 'positive':
+            pro_applys = pro_applys.order_by('js_money')
+        elif category == 'js_money' and mode == 'negative':
+            pro_applys = pro_applys.order_by('-js_money')
+        elif category == 'mobile' and mode == 'positive':
+            pro_applys = pro_applys.order_by('mobile')
+        elif category == 'mobile' and mode == 'negative':
+            pro_applys = pro_applys.order_by('-mobile')
+        elif category == 'sign_date' and mode == 'positive':
+            pro_applys = pro_applys.order_by('sign_date')
+        elif category == 'sign_date' and mode == 'negative':
+            pro_applys = pro_applys.order_by('-sign_date')
+        elif category == 'start_date' and mode == 'positive':
+            pro_applys = pro_applys.order_by('start_date')
+        elif category == 'start_date' and mode == 'negative':
+            pro_applys = pro_applys.order_by('-start_date')
+        elif category == 'finish_date' and mode == 'positive':
+            pro_applys = pro_applys.order_by('finish_date')
+        elif category == 'finish_date' and mode == 'negative':
+            pro_applys = pro_applys.order_by('-finish_date')
+        elif category == 'add_time' and mode == 'positive':
+            pro_applys = pro_applys.order_by('add_time')
+        elif category == 'add_time' and mode == 'negative':
+            pro_applys = pro_applys.order_by('-add_time')
+
+        return render(request, 'project/change.html', {
+            'pro_applys': pro_applys
+        })
 
 
 # 考勤记录 GET
 class AttendanceView(View):
     def get(self, request):
-        # 获取 当前用户 的考勤记录
-        atts = ProjectAttendance.objects.filter(person_id=request.user.id)
+
+        # 检测员 获取 当前用户 的考勤记录
+        if request.user.permission == '检测员':
+            atts = ProjectAttendance.objects.filter(person_id=request.user.id).order_by('-add_time')
+            # 部门负责 获取部门所有考勤
+        elif request.user.permission == '部门负责':
+            atts = ProjectAttendance.objects.filter(department_id=request.user.department_id).order_by('-add_time')
+        elif request.user.permission == '公司负责':
+            # 公司负责 获取全公司考勤
+            atts = ProjectAttendance.objects.all().order_by('-add_time')
+        else:
+            atts = []
 
         return render(request, 'project/attendance.html', {
             'atts': atts
@@ -490,7 +1002,7 @@ class AttendanceView(View):
 class AddAttendanceView(View):
     def get(self, request):
         # 当前用户为 项目成员 的工程（目前暂时只做负责人的）
-        pros = Project.objects.filter(pro_person_id=request.user.id)
+        pros = Project.objects.filter(pro_person_id=request.user.id, is_active=1)
 
         return render(request, 'project/add_attendance.html', {
             'pros': pros
@@ -504,7 +1016,11 @@ class AddAttendanceView(View):
 
         pro_att = ProjectAttendance()
         pro_att.project_id = pro_id
+        pro_att.project_name = Project.objects.get(id=pro_id).pro_name
         pro_att.person_id = request.user.id
+        pro_att.person_name = request.user.name
+        pro_att.department_id = Project.objects.get(id=pro_id).department_id
+        pro_att.department = Project.objects.get(id=pro_id).department
         pro_att.time = time
         pro_att.location = location
         pro_att.remark = remark
@@ -515,23 +1031,4 @@ class AddAttendanceView(View):
 
         return render(request, 'project/attendance.html', {
             'atts': atts
-        })
-
-
-# 变更信息 GET
-class ChangeView(View):
-    def get(self, request):
-        # 根据权限查看 变更记录信息，同 工程浏览
-        if request.user.permission == '检测员':
-            # 工程负责人 为 自己 ， 工程申请 中状态为 审核通过 的信息
-            pro_applys = ProjectApply.objects.filter(Q(pro_person_id=request.user.id) | Q(status='审核通过'))
-        elif request.user.permission == '部门负责':
-            pro_applys = ProjectApply.objects.filter(Q(department_id=request.user.department_id) | Q(status='审核通过'))
-        elif request.user.permission == '公司负责':
-            pro_applys = ProjectApply.objects.filter(status='审核通过')
-        else:
-            pro_applys = []
-
-        return render(request, 'project/change.html', {
-            'pro_applys': pro_applys
         })

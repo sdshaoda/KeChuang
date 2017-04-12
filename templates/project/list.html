@@ -2,43 +2,49 @@
 
 {% block title %}浏览工程{% endblock %}
 
-{% block style %}
-    {#    <style>#}
-    {#        table {#}
-    {#            margin-top: 40px;#}
-    {#        }#}
-    {#    </style>#}
-{% endblock %}
+{% block style %}{% endblock %}
 
 {% block content %}
 
-    {#    <div class="handle">#}
-    {#        <div class="filter">#}
-    {#            筛选：#}
-    {#            <select>#}
-    {#                <option value="">时间</option>#}
-    {#                <option value="">金额</option>#}
-    {#                <option value="">负责人</option>#}
-    {#                <option value="">委托单位</option>#}
-    {#                <option value="">工程类型</option>#}
-    {#            </select>#}
-    {#            <input type="text" name="" value="">#}
-    {#            <button type="button">确定</button>#}
-    {#        </div>#}
-    {#        <div class="sort">#}
-    {#            排序：#}
-    {#            <select>#}
-    {#                <option value="">时间</option>#}
-    {#                <option value="">金额</option>#}
-    {#            </select>#}
-    {#            <select name="" id="">#}
-    {#                <option value="">从高到底</option>#}
-    {#                <option value="">从底到高</option>#}
-    {#            </select>#}
-    {#            <button type="button">确定</button>#}
-    {#        </div>#}
-    {#    </div>#}
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+            <form id="search" method="get" class="navbar-form navbar-left col-md-6 col-sm-6 col-xs-12"
+                  style="border: none;">
+                <div class="input-group">
+                    <input type="text" id="keywords" name="keywords" class="form-control" placeholder="搜索工程信息">
+                    <span class="input-group-btn">
+                        <button class="btn btn-default" type="submit">搜索</button>
+                    </span>
+                </div>
+            </form>
 
+            <form method="get" class="navbar-form navbar-left col-md-6 col-sm-6 col-xs-12" style="border: none;">
+                <div class="input-group">
+                    <select class="form-control" name="category" id="category">
+                        <option value="pro_id">工程ID</option>
+                        <option value="pro_person_id">工程负责人</option>
+                        <option value="department_id">所属部门</option>
+                        <option value="wt_person_id">法人委托</option>
+                        <option value="ht_person_id">合同签署人</option>
+                        <option value="ht_num">合同编号</option>
+                        <option value="ht_money">合同金额</option>
+                        <option value="js_money">结算金额</option>
+                        <option value="mobile">联系电话</option>
+                        <option value="sign_date">签订日期</option>
+                        <option value="start_date">开工日期</option>
+                        <option value="finish_date">完工日期</option>
+                        <option value="add_time">添加时间</option>
+                    </select>
+                    <span class="input-group-btn">
+                        <button name="mode" value="positive" class="btn btn-default" type="submit">正序</button>
+                    </span>
+                    <span class="input-group-btn">
+                        <button name="mode" value="negative" class="btn btn-default" type="submit">倒序</button>
+                    </span>
+                </div>
+            </form>
+        </div>
+    </nav>
 
     <div class="table-responsive">
         <table class="table table-hover">
@@ -46,6 +52,7 @@
                 <th>#</th>
                 <th>工程名称</th>
                 <th>负责人</th>
+                <th>所属部门</th>
                 <th>工程类型</th>
                 <th>项目阶段</th>
                 <th>签订日期</th>
@@ -60,23 +67,23 @@
                     <td>{{ pro.id }}</td>
                     <td>{{ pro.pro_name }}</td>
                     <td>
-                        {% if pro.get_pro_person %}
-                            {{ pro.get_pro_person.name }}
-                        {% else %}
-                            未填写
-                        {% endif %}
-{#                        {{ pro.get_person.person.name }}#}
-                    </td>
-                    <td>
-                        {% if pro.pro_type.name %}
-                            {{ pro.pro_type.name }}
+                        {% if pro.pro_person %}
+                            {{ pro.pro_person }}
                         {% else %}
                             未填写
                         {% endif %}
                     </td>
+                    <td>{{ pro.department }}</td>
                     <td>
-                        {% if pro.pro_stage.name %}
-                            {{ pro.pro_stage.name }}
+                        {% if pro.pro_type_name %}
+                            {{ pro.pro_type_name }}
+                        {% else %}
+                            未填写
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if pro.pro_stage_name %}
+                            {{ pro.pro_stage_name }}
                         {% else %}
                             未填写
                         {% endif %}
@@ -135,7 +142,7 @@
                 },
                 data: {'pro_id': pro_id},
                 success: function (data) {
-                    if (data.status === 'success') {
+                    if (data.status === 'success' && data.msg === '删除工程已成功') {
                         $('#' + pro_id).remove()
                     }
                     $('#msg').text(data.msg)
