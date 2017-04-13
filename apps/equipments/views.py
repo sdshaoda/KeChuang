@@ -31,7 +31,8 @@ class ListView(View):
                                Q(department__icontains=search_keywords) |
                                Q(remark__icontains=search_keywords) |
                                # 不可搜索日期
-                               # Q(effect_date__icontains=search_keywords) |
+                               Q(number__icontains=search_keywords) |
+                               Q(biaodingzs__icontains=search_keywords) |
                                Q(equ_money__icontains=search_keywords) |
                                Q(equ_person__icontains=search_keywords))
 
@@ -79,6 +80,8 @@ class InfoView(View):
                                Q(use_status__icontains=search_keywords) |
                                Q(department__icontains=search_keywords) |
                                Q(remark__icontains=search_keywords) |
+                               Q(number__icontains=search_keywords) |
+                               Q(biaodingzs__icontains=search_keywords) |
                                # 不可搜索日期
                                # Q(effect_date__icontains=search_keywords) |
                                Q(equ_money__icontains=search_keywords) |
@@ -132,6 +135,9 @@ class AddView(View):
         equ_person_id = request.POST.get('equ_person_id', '')
         equ_num = request.POST.get('equ_num', '')
         equ_status = request.POST.get('equ_status', '')
+        number = request.POST.get('number', '')
+        biaodingzs = request.POST.get('biaodingzs', '')
+        biaoding_date = request.POST.get('biaoding_date', '')
         effect_date = request.POST.get('effect_date', '')
         equ_money = request.POST.get('equ_money', '')
         buy_date = request.POST.get('buy_date', '')
@@ -149,9 +155,14 @@ class AddView(View):
         equipment.file_num = file_num
         equipment.equ_num = equ_num
         equipment.equ_status = equ_status
-        equipment.effect_date = effect_date
+        equipment.number = number
+        equipment.biaodingzs = biaodingzs
+        equipment.biaoding_date = biaoding_date
+        if effect_date:
+            equipment.effect_date = effect_date
         equipment.equ_money = equ_money
-        equipment.buy_date = buy_date
+        if buy_date:
+            equipment.buy_date = buy_date
         equipment.remark = remark
 
         equipment.use_status = '未领用'  # 使用状态为 未领用
@@ -205,6 +216,9 @@ class EditEquView(View):
         equ_person_id = request.POST.get('equ_person_id', '')
         equ_num = request.POST.get('equ_num', '')
         equ_status = request.POST.get('equ_status', '')
+        number = request.POST.get('number', '')
+        biaodingzs = request.POST.get('biaodingzs', '')
+        biaoding_date = request.POST.get('biaoding_date', '')
         effect_date = request.POST.get('effect_date', '')
         equ_money = request.POST.get('equ_money', '')
         buy_date = request.POST.get('buy_date', '')
@@ -222,9 +236,14 @@ class EditEquView(View):
         equipment.equ_num = equ_num
         equipment.file_num = file_num
         equipment.equ_status = equ_status
-        equipment.effect_date = effect_date
+        equipment.number = number
+        equipment.biaodingzs = biaodingzs
+        equipment.biaoding_date = biaoding_date
+        if effect_date:
+            equipment.effect_date = effect_date
         equipment.equ_money = equ_money
-        equipment.buy_date = buy_date
+        if buy_date:
+            equipment.buy_date = buy_date
         equipment.remark = remark
         equipment.save()
 

@@ -37,9 +37,12 @@ class Equipment(models.Model):
         (u'限制使用', u'限制使用'),
         (u'停用', u'停用'),
     ), verbose_name=u'设备状态')
-    effect_date = models.DateField(default=date.today, verbose_name=u'计量有效期', null=True, blank=True)
+    number = models.CharField(max_length=20, verbose_name=u'设备编号', null=True, blank=True)
+    biaodingzs = models.CharField(max_length=20, verbose_name=u'标定证书号', null=True, blank=True)
+    biaoding_date = models.DateField(verbose_name=u'标定日期', null=True, blank=True)
+    effect_date = models.DateField(verbose_name=u'计量有效期', null=True, blank=True)
     equ_money = models.CharField(max_length=10, verbose_name=u'购买价格', null=True, blank=True)
-    buy_date = models.DateField(default=date.today, verbose_name=u'购买日期', null=True, blank=True)
+    buy_date = models.DateField(verbose_name=u'购买日期', null=True, blank=True)
 
     # 设备领用信息
     use_status = models.CharField(default='未领用', max_length=10, choices=(

@@ -43,6 +43,7 @@
                 <th>#</th>
                 <th>设备名称</th>
                 <th>档案编号</th>
+                <th>设备编号</th>
                 <th>设备型号</th>
                 <th>设备负责人</th>
                 <th>保管人</th>
@@ -59,6 +60,13 @@
                     <td>
                         {% if equ.file_num %}
                             {{ equ.file_num }}
+                        {% else %}
+                            未填写
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if equ.number %}
+                            {{ equ.number }}
                         {% else %}
                             未填写
                         {% endif %}

@@ -1080,11 +1080,29 @@ class AttendanceView(View):
         })
 
 
+# 个人考勤记录 GET
+class StaffAttendanceView(View):
+    def get(self, request, staff_id):
+
+        # 获取 指定用户 的考勤记录
+        atts = ProjectAttendance.objects.filter(person_id=staff_id).order_by('-add_time')
+
+        return render(request, 'project/attendance.html', {
+            'atts': atts,
+            'individual': 1
+        })
+
+
 # 添加考勤 GET POST
 class AddAttendanceView(View):
     def get(self, request):
-        # 当前用户为 项目成员 的工程（目前暂时只做负责人的）
-        pros = Project.objects.filter(pro_person_id=request.user.id, is_active=1)
+        # 当前用户为 项目成员 的工程
+        pro_members = ProjectMember.objects.filter(person_id=request.user.id)
+
+        pros = []
+        for pro_member in pro_members:
+            if pro_member.project.is_active == 1:
+                pros.append(pro_member.project)
 
         return render(request, 'project/add_attendance.html', {
             'pros': pros

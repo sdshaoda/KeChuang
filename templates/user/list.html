@@ -64,8 +64,12 @@
                     <td>{{ staff.get_sex_display }}</td>
                     <td>{{ staff.department.name }}</td>
                     <td>{{ staff.job }}</td>
-                    <td>待完善</td>
-                    <td>待完善</td>
+                    <td>
+                        {% for pro_member in staff.get_projects %}
+                            <div>{{ pro_member.project_name }}</div>
+                        {% endfor %}
+                    </td>
+                    <td><a href="{% url 'pro:staff_attendance' staff.id %}">查看</a></td>
                     <td>
                         {% if staff.xueli %}
                             {{ staff.xueli }}

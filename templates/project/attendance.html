@@ -37,7 +37,11 @@
         </table>
     </div>
 
-    <a style="margin-bottom: 100px" role="button" class="btn btn-primary btn-block"
-       href="{% url 'pro:add_attendance' %}">添加考勤记录</a>
+    {% if individual == 1 %}
+        <a style="margin-top: 50px; margin-bottom: 100px" role="button" class="btn btn-primary btn-block" href="javascript:history.go(-1);">返回</a>
+    {% else %}
+        <a style="margin-bottom: 100px" role="button" class="btn btn-primary btn-block"
+           href="{% url 'pro:add_attendance' %}">添加考勤记录</a>
+    {% endif %}
 
 {% endblock %}

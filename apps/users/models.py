@@ -59,6 +59,9 @@ class UserProfile(AbstractUser):
     zhichengzs = models.FileField(upload_to='zhicheng/%Y/%m', verbose_name=u'职称证书', max_length=100, null=True,
                                   blank=True)
 
+    def get_projects(self):
+        return self.projectmember_set.filter(person_id=self.id, is_pro_person=1)
+
     add_time = models.DateTimeField(default=datetime.now, verbose_name=u'添加时间')
 
     class Meta:

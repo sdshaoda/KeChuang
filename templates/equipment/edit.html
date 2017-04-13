@@ -72,26 +72,50 @@
         </div>
 
         <div class="form-group">
-            <label for="effect_date" class="col-md-2 col-sm-2 control-label required">计量有效期：</label>
+            <label for="number" class="col-md-2 col-sm-2 control-label required">设备编号：</label>
+            <div class="col-md-5 col-sm-10">
+                <input type="text" class="form-control" id="number" name="number" placeholder="设备编号"
+                       value="{{ equ.equ_num }}" required>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="biaodingzs" class="col-md-2 col-sm-2 control-label">标定证书号：</label>
+            <div class="col-md-5 col-sm-10">
+                <input type="text" class="form-control" id="biaodingzs" name="biaodingzs" placeholder="标定证书号"
+                       value="{{ equ.equ_num }}">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="biaoding_date" class="col-md-2 col-sm-2 control-label">标定日期：</label>
+            <div class="col-md-5 col-sm-10">
+                <input type="date" class="form-control" id="biaoding_date" name="biaoding_date" placeholder="标定日期，格式：2017-04-01"
+                       value="{{ equ.equ_num }}">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="effect_date" class="col-md-2 col-sm-2 control-label">计量有效期：</label>
             <div class="col-md-5 col-sm-10">
                 <input type="date" class="form-control" id="effect_date" name="effect_date"
-                       value="{{ equ.effect_date|date:"Y-m-d" }}" placeholder="格式：2017-04-01" required>
+                       value="{{ equ.effect_date|date:"Y-m-d" }}" placeholder="计量有效期，格式：2017-04-01">
             </div>
         </div>
 
         <div class="form-group">
-            <label for="equ_money" class="col-md-2 col-sm-2 control-label required">购买价格：</label>
+            <label for="equ_money" class="col-md-2 col-sm-2 control-label">购买价格：</label>
             <div class="col-md-5 col-sm-10">
                 <input type="text" class="form-control" id="equ_money" name="equ_money" placeholder="购买价格"
-                       value="{{ equ.equi_money }}" required>
+                       value="{{ equ.equi_money }}">
             </div>
         </div>
 
         <div class="form-group">
-            <label for="buy_date" class="col-md-2 col-sm-2 control-label required">购买日期：</label>
+            <label for="buy_date" class="col-md-2 col-sm-2 control-label">购买日期：</label>
             <div class="col-md-5 col-sm-10">
                 <input type="date" class="form-control" id="buy_date" name="buy_date"
-                       value="{{ equ.buy_date|date:"Y-m-d" }}" placeholder="格式：2017-04-01" required>
+                       value="{{ equ.buy_date|date:"Y-m-d" }}" placeholder="格式：2017-04-01">
             </div>
         </div>
 

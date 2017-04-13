@@ -1,7 +1,7 @@
 # coding:utf-8
 from django.conf.urls import url
 
-from .views import ListView, EditView, AddProView, VerifyView, DetailView, ApplyView, DeleteView, AttendanceView, EditProView, ChangeView, ApplyDetailView, AgreeProView, RefuseProView, AddAttendanceView, AddEquView, AddMemberView, DeleteEquView, DeleteMemberView
+from .views import ListView, EditView, AddProView, VerifyView, DetailView, ApplyView, DeleteView, AttendanceView, EditProView, ChangeView, ApplyDetailView, AgreeProView, RefuseProView, AddAttendanceView, AddEquView, AddMemberView, DeleteEquView, DeleteMemberView, StaffAttendanceView
 
 # namespace='pro'
 urlpatterns = [
@@ -40,6 +40,8 @@ urlpatterns = [
 
     # 考勤记录 GET
     url(r'^attendance/$', AttendanceView.as_view(), name='attendance'),
+    # 个人考勤记录 GET
+    url(r'^staff/attendance/(?P<staff_id>\d+)$', StaffAttendanceView.as_view(), name='staff_attendance'),
     # 添加考勤 GET POST
     url(r'^add/attendance/$', AddAttendanceView.as_view(), name='add_attendance'),
     # 变更信息 GET
