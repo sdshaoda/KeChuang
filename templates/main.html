@@ -142,30 +142,33 @@
         {#左侧导航栏#}
         <div class="col-md-2 left">
             <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
-                <div class="panel panel-default">
-                    <div class="panel-heading" role="tab" id="headingOne">
-                        <h4 class="panel-title">
-                            <a class="left-nav-head collapsed" role="button" data-toggle="collapse"
-                               data-parent="#accordion"
-                               href="#collapseOne"
-                               aria-expanded="false" aria-controls="collapseOne">
-                                工程管理
-                            </a>
-                        </h4>
-                    </div>
-                    <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
-                        <div class="panel-body list-group">
-                            <a href="{% url 'pro:add' %}" class="list-group-item">添加工程</a>
-                            <a href="{% url 'pro:list' %}" class="list-group-item">浏览工程</a>
-                            <a href="{% url 'pro:attendance' %}" class="list-group-item">考勤登记</a>
-                            <a href="{% url 'pro:apply' %}" class="list-group-item">工程申请</a>
-                            {% if request.user.permission == '部门负责' or request.user.permission == '公司负责' %}
-                                <a href="{% url 'pro:verify' %}" class="list-group-item">工程审核</a>
-                            {% endif %}
-                            <a href="{% url 'pro:change' %}" class="list-group-item">变更记录</a>
+                {% if request.user.permission == '检测员' or request.user.permission == '部门负责' or request.user.permission == '公司负责' %}
+                    <div class="panel panel-default">
+                        <div class="panel-heading" role="tab" id="headingOne">
+                            <h4 class="panel-title">
+                                <a class="left-nav-head collapsed" role="button" data-toggle="collapse"
+                                   data-parent="#accordion"
+                                   href="#collapseOne"
+                                   aria-expanded="false" aria-controls="collapseOne">
+                                    工程管理
+                                </a>
+                            </h4>
+                        </div>
+                        <div id="collapseOne" class="panel-collapse collapse" role="tabpanel"
+                             aria-labelledby="headingOne">
+                            <div class="panel-body list-group">
+                                <a href="{% url 'pro:add' %}" class="list-group-item">添加工程</a>
+                                <a href="{% url 'pro:list' %}" class="list-group-item">浏览工程</a>
+                                <a href="{% url 'pro:attendance' %}" class="list-group-item">考勤登记</a>
+                                <a href="{% url 'pro:apply' %}" class="list-group-item">工程申请</a>
+                                {% if request.user.permission == '部门负责' or request.user.permission == '公司负责' %}
+                                    <a href="{% url 'pro:verify' %}" class="list-group-item">工程审核</a>
+                                {% endif %}
+                                <a href="{% url 'pro:change' %}" class="list-group-item">变更记录</a>
+                            </div>
                         </div>
                     </div>
-                </div>
+                {% endif %}
                 <div class="panel panel-default">
                     <div class="panel-heading" role="tab" id="headingTwo">
                         <h4 class="panel-title">
