@@ -45,7 +45,7 @@ class Equipment(models.Model):
     buy_date = models.DateField(verbose_name=u'购买日期', null=True, blank=True)
 
     # 设备领用信息
-    use_status = models.CharField(default='未领用', max_length=10, choices=(
+    use_status = models.CharField(default=u'未领用', max_length=10, choices=(
         ('未领用', u'未领用'),
         ('已领用', u'已领用'),
     ), verbose_name=u'使用状态')

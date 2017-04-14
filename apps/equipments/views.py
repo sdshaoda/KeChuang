@@ -533,8 +533,11 @@ class RevertEquView(View):
         # 初始化 设备申请 信息
         equ_apply = EquipmentApply()
         equ_apply.equipment_id = equ_id
+        equ_apply.equipment_name = Equipment.objects.get(id=equ_id)
         equ_apply.person_id = person_id
+        equ_apply.person_name = UserProfile.objects.get(id=person_id)
         equ_apply.equipment_person_id = equipment_person_id  # 设备负责人id
+        equ_apply.equipment_person = UserProfile.objects.get(id=equipment_person_id)
         equ_apply.type = '归还'  # 申请类型为 归还
         equ_apply.status = '审核中'  # 审核状态为 审核中
         equ_apply.use_date = use_date

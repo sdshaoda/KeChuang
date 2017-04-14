@@ -37,7 +37,7 @@ class UserProfile(AbstractUser):
     ), verbose_name=u'性别')
     job = models.CharField(max_length=20, verbose_name=u'职务')
     induction_time = models.DateField(max_length=20, default=date.today, verbose_name=u'入职时间')
-    permission = models.CharField(default='系统管理员', max_length=5, choices=(
+    permission = models.CharField(default=u'系统管理员', max_length=10, choices=(
         ('检测员', u'检测员'),
         ('部门负责', u'部门负责'),
         ('公司负责', u'公司负责'),

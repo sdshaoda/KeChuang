@@ -84,12 +84,12 @@ class ProjectApply(models.Model):
     person_name = models.CharField(max_length=20, verbose_name=u'申请人名称', null=True, blank=True)
 
     # 申请相关
-    type = models.CharField(max_length=4, choices=(
+    type = models.CharField(max_length=10, choices=(
         ('添加工程', u'添加工程'),
         ('修改信息', u'修改信息'),
         ('删除工程', u'删除工程')
     ), verbose_name=u'申请类型')
-    status = models.CharField(default='0', max_length=10, choices=(
+    status = models.CharField(default=u'部门主任审核中', max_length=10, choices=(
         ('部门主任审核中', u'部门主任审核中'),
         ('公司领导审核中', u'公司领导审核中'),
         ('审核通过', u'审核通过'),
@@ -144,10 +144,10 @@ class EquipmentApply(models.Model):
     equipment_person_id = models.IntegerField(verbose_name=u'设备负责人id', null=True, blank=True)
     equipment_person = models.CharField(max_length=20, verbose_name=u'设备负责人', null=True, blank=True)
 
-    type = models.CharField(default='0', max_length=2, choices=(
+    type = models.CharField(max_length=10, choices=(
         ('领用', u'领用'), ('归还', u'归还')
     ), verbose_name=u'申请类型')
-    status = models.CharField(default='0', max_length=2, choices=(
+    status = models.CharField(default=u'审核中', max_length=10, choices=(
         ('审核中', u'审核中'), ('审核通过', u'审核通过'), ('审核未通过', u'审核未通过')
     ), verbose_name=u'审核状态')
     use_date = models.DateField(default=date.today, verbose_name=u'领用时间', null=True, blank=True)
