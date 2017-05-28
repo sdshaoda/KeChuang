@@ -1,6 +1,6 @@
 {% extends 'main.html' %}
 
-{% block title %}通讯录{% endblock %}
+{% block title %}设备详情{% endblock %}
 
 {% block style %}
 {% endblock %}
@@ -12,7 +12,7 @@
             <form id="search" method="get" class="navbar-form navbar-left col-md-6 col-sm-6 col-xs-12"
                   style="border: none;">
                 <div class="input-group">
-                    <input type="text" id="keywords" name="keywords" class="form-control" placeholder="搜索职工信息">
+                    <input type="text" id="keywords" name="keywords" class="form-control" placeholder="搜索设备使用记录">
                     <span class="input-group-btn">
                         <button class="btn btn-default" type="submit">搜索</button>
                     </span>
@@ -22,12 +22,12 @@
             <form method="get" class="navbar-form navbar-left col-md-6 col-sm-6 col-xs-12" style="border: none;">
                 <div class="input-group">
                     <select class="form-control" name="category" id="category">
-                        <option value="staff_id">职工ID</option>
-                        <option value="number">人员编号</option>
-                        <option value="sex">性别</option>
-                        <option value="mobile">联系电话</option>
-                        <option value="email">电子邮箱</option>
-                        <option value="induction_time">入职时间</option>
+                        <option value="equ_apply_id">设备使用记录ID</option>
+                        <option value="use_date">领取时间</option>
+                        <option value="revert_date">归还时间</option>
+                        <option value="equipment_name">设备名称</option>
+                        <option value="person_name">申请人</option>
+                        <option value="equipment_person_id">设备负责人</option>
                         <option value="add_time">添加时间</option>
                     </select>
                     <span class="input-group-btn">
@@ -45,34 +45,25 @@
         <table class="table table-hover">
             <tr>
                 <th>#</th>
-                <th>姓名</th>
-                <th>部门</th>
-                <th>联系电话</th>
-                <th>电子邮箱</th>
+                <th>设备名称</th>
+                <th>使用人</th>
+                <th>领用日期</th>
+                <th>归还日期</th>
+                <th>设备负责人</th>
             </tr>
-            {% for staff in staffs %}
+            {% for equ_apply in equ_applys %}
                 <tr>
-                    <td>{{ staff.id }}</td>
-                    <td>{{ staff.name }}</td>
-                    <td>{{ staff.department.name }}</td>
-                    <td>
-                        {% if staff.mobile %}
-                            {{ staff.mobile }}
-                        {% else %}
-                            未填写
-                        {% endif %}
-                    </td>
-                    <td>
-                        {% if staff.email %}
-                            {{ staff.email }}
-                        {% else %}
-                            未填写
-                        {% endif %}
-                    </td>
+                    <td>{{ equ_apply.id }}</td>
+                    <td>{{ equ_apply.equipment_name }}</td>
+                    <td>{{ equ_apply.person_name }}</td>
+                    <td>{{ equ_apply.use_date }}</td>
+                    <td>{{ equ_apply.revert_date }}</td>
+                    <td>{{ equ_apply.equipment_person }}</td>
                 </tr>
             {% endfor %}
         </table>
     </div>
 
-{% endblock %}
+    <a href="javascript:history.go(-1);" role="button" class="btn btn-primary btn-block">返回</a>
 
+{% endblock %}

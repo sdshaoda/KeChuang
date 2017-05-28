@@ -33,7 +33,7 @@ class ListView(View):
                     pros.append(pro_member.project)
 
         # 公司负责 浏览所有工程
-        elif request.user.permission == '公司负责':
+        elif request.user.permission == '公司负责' or request.user.permission == '系统管理员':
             pros = Project.objects.filter(is_active=1).order_by('-add_time')
         else:
             pros = []

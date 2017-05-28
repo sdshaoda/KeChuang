@@ -51,6 +51,7 @@
                 <th>设备状态</th>
                 <th>计量有效期</th>
                 <th>设备类型</th>
+                <th>使用记录</th>
                 <th>操作</th>
             </tr>
             {% for equ in equs %}
@@ -99,9 +100,32 @@
                             仓库
                         {% endif %}
                     </td>
-                    <td>{{ equ.equ_status }}</td>
-                    <td>{{ equ.effect_date }}</td>
-                    <td>{{ equ.equ_type }}</td>
+                    <td>
+                        {% if equ.equ_status %}
+                            {{ equ.equ_status }}
+                        {% else %}
+                            未填写
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if equ.effect_date %}
+                            {{ equ.effect_date }}
+                        {% else %}
+                            未填写
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if equ.equ_type %}
+                            {{ equ.equ_type }}
+                        {% else %}
+                            未填写
+                        {% endif %}
+                    </td>
+                    <td>
+                        <form id="{{ equ.id }}" method="get" action="{% url 'equ:use_record' %}">
+                            <input type="hidden" name="equipment_id" value="{{ equ.id }}">
+                        </form>
+                        <a href="javascript:$('#'+{{ equ.id }}).submit();">查看</a></td>
                     <td><a href="{% url 'equ:edit' equ.id %}">编辑</a></td>
                 </tr>
             {% endfor %}

@@ -19,4 +19,4 @@ class LoginForm(forms.Form):
 class AddStaffForm(forms.ModelForm):
     class Meta:
         model = UserProfile
-        fields = ['username', 'password']
+        fields = ['username']

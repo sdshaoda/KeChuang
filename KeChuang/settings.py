@@ -12,7 +12,8 @@ sys.path.insert(0, os.path.join(BASE_DIR, 'extra_apps'))
 
 SECRET_KEY = '&op0-flpkhx@7iar$qc%8$a+lju4j(o2u@+y^*21gh-a2))973'
 
-# 开发模式，部署时修改
+# 开发模式，部署时修改为
+# DEBUG = False
 DEBUG = True
 
 # 主机名
@@ -125,9 +126,11 @@ USE_TZ = False
 
 # 静态文件相关配置，部署时修改
 STATIC_URL = '/static/'
+# 部署时修改
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'static'),
 )
+# 为
 # STATIC_ROOT = os.path.join(BASE_DIR, "static")
 
 # 邮箱配置，在发送验证码时会用到

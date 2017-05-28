@@ -205,17 +205,9 @@
             </div>
         </div>
 
-        {#        <div class="form-group">#}
-        {#            <label for="pro_name" class="col-md-2 col-sm-2 control-label">检测设备：</label>#}
-        {#            <div class="col-md-5 col-sm-10">#}
-        {#                <input type="text" class="form-control" id="pro_name" name="pro_name" placeholder="检测设备">#}
-        {#            </div>#}
-        {#        </div>#}
-
         <div class="form-group">
             <label for="ht_scan" class="col-md-2 col-sm-2 control-label">上传合同扫描件：</label>
             <div class="col-md-5 col-sm-10">
-                {#                <input type="file" id="ht_scan" name="ht_scan">#}
                 {% if pro.ht_scan %}
                     <a href="{{ MEDIA_URL }}{{ pro.ht_scan }}" target="_blank">查看</a>
                 {% else %}
@@ -233,11 +225,11 @@
             </div>
         </div>
 
-        {#        <button style="margin-bottom: 100px" type="submit" class="btn btn-primary col-md-7">添加</button>#}
         {% csrf_token %}
     </form>
 
-    <a style="margin-top: 50px; margin-bottom: 100px" href="{% url 'pro:list' %}" class="btn btn-primary col-md-7 col-sm-12 col-xs-12"
+    <a style="margin-top: 50px; margin-bottom: 100px" href="javascript:history.back(-1);"
+       class="btn btn-primary col-md-7 col-sm-12 col-xs-12"
        role="button">返回</a>
 
 {% endblock %}

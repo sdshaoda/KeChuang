@@ -157,7 +157,8 @@ class AddView(View):
         equipment.equ_status = equ_status
         equipment.number = number
         equipment.biaodingzs = biaodingzs
-        equipment.biaoding_date = biaoding_date
+        if biaoding_date:
+            equipment.biaoding_date = biaoding_date
         if effect_date:
             equipment.effect_date = effect_date
         equipment.equ_money = equ_money
@@ -238,7 +239,8 @@ class EditEquView(View):
         equipment.equ_status = equ_status
         equipment.number = number
         equipment.biaodingzs = biaodingzs
-        equipment.biaoding_date = biaoding_date
+        if biaoding_date:
+            equipment.biaoding_date = biaoding_date
         if effect_date:
             equipment.effect_date = effect_date
         equipment.equ_money = equ_money
@@ -317,12 +319,12 @@ class ApplyView(View):
         # 搜索
         if search_keywords:
             equ_applys = equ_applys.filter(Q(equipment_name__icontains=search_keywords) |
-                               Q(id__icontains=search_keywords) |
-                               Q(person_name__icontains=search_keywords) |
-                               Q(equipment_person__icontains=search_keywords) |
-                               Q(type__icontains=search_keywords) |
-                               Q(status__icontains=search_keywords) |
-                               Q(remark__icontains=search_keywords))
+                                           Q(id__icontains=search_keywords) |
+                                           Q(person_name__icontains=search_keywords) |
+                                           Q(equipment_person__icontains=search_keywords) |
+                                           Q(type__icontains=search_keywords) |
+                                           Q(status__icontains=search_keywords) |
+                                           Q(remark__icontains=search_keywords))
 
         # 排序
         if category == 'equ_apply_id' and mode == 'positive':
@@ -385,12 +387,12 @@ class VerifyView(View):
         # 搜索
         if search_keywords:
             equ_applys = equ_applys.filter(Q(equipment_name__icontains=search_keywords) |
-                               Q(id__icontains=search_keywords) |
-                               Q(person_name__icontains=search_keywords) |
-                               Q(equipment_person__icontains=search_keywords) |
-                               Q(type__icontains=search_keywords) |
-                               Q(status__icontains=search_keywords) |
-                               Q(remark__icontains=search_keywords))
+                                           Q(id__icontains=search_keywords) |
+                                           Q(person_name__icontains=search_keywords) |
+                                           Q(equipment_person__icontains=search_keywords) |
+                                           Q(type__icontains=search_keywords) |
+                                           Q(status__icontains=search_keywords) |
+                                           Q(remark__icontains=search_keywords))
 
         # 排序
         if category == 'equ_apply_id' and mode == 'positive':
@@ -545,3 +547,83 @@ class RevertEquView(View):
         equ_apply.save()
 
         return HttpResponse('{"status":"success","msg":"归还申请提交成功"}', content_type='application/json')
+
+
+# 修改归还时间 Ajax
+class ChangeRevertDateView(View):
+    def post(self, request):
+        equ_apply_id = request.POST.get('equ_apply_id', '')
+        revert_date = request.POST.get('revert_date', '')
+
+        equ_apply = EquipmentApply.objects.get(id=int(equ_apply_id))
+        equ_apply.revert_date = revert_date
+        equ_apply.save()
+
+        return HttpResponse('{"status":"success","msg":"修改归还时间成功"}', content_type='application/json')
+
+
+# 设备使用记录 GET
+class EquUseRecordView(View):
+    def get(self, request):
+        equipment_id = request.GET.get('equipment_id', '')
+        search_keywords = request.GET.get('keywords', '')
+        category = request.GET.get('category', '')
+        mode = request.GET.get('mode', '')
+
+        if equipment_id:
+            equ_applys = EquipmentApply.objects.filter(equipment_id=int(equipment_id), type='归还', status='审核通过')
+        else:
+            equ_applys = EquipmentApply.objects.filter(type='归还', status='审核通过')
+
+
+        # 搜索
+        if search_keywords:
+            equ_applys = equ_applys.filter(Q(equipment_name__icontains=search_keywords) |
+                                           Q(id__icontains=search_keywords) |
+                                           Q(person_name__icontains=search_keywords) |
+                                           Q(equipment_person__icontains=search_keywords) |
+                                           Q(type__icontains=search_keywords) |
+                                           Q(status__icontains=search_keywords) |
+                                           Q(remark__icontains=search_keywords))
+
+        # 排序
+        if category == 'equ_apply_id' and mode == 'positive':
+            equ_applys = equ_applys.order_by('id')
+        elif category == 'equ_apply_id' and mode == 'negative':
+            equ_applys = equ_applys.order_by('-id')
+        elif category == 'equipment_name' and mode == 'positive':
+            equ_applys = equ_applys.order_by('equipment_name')
+        elif category == 'equipment_name' and mode == 'negative':
+            equ_applys = equ_applys.order_by('-equipment_name')
+        elif category == 'person_name' and mode == 'positive':
+            equ_applys = equ_applys.order_by('person_name')
+        elif category == 'person_name' and mode == 'negative':
+            equ_applys = equ_applys.order_by('-person_name')
+        elif category == 'equipment_person_id' and mode == 'positive':
+            equ_applys = equ_applys.order_by('equipment_person_id')
+        elif category == 'equipment_person_id' and mode == 'negative':
+            equ_applys = equ_applys.order_by('-equipment_person_id')
+        elif category == 'type' and mode == 'positive':
+            equ_applys = equ_applys.order_by('type')
+        elif category == 'type' and mode == 'negative':
+            equ_applys = equ_applys.order_by('-type')
+        elif category == 'status' and mode == 'positive':
+            equ_applys = equ_applys.order_by('status')
+        elif category == 'status' and mode == 'negative':
+            equ_applys = equ_applys.order_by('-status')
+        elif category == 'use_date' and mode == 'positive':
+            equ_applys = equ_applys.order_by('use_date')
+        elif category == 'use_date' and mode == 'negative':
+            equ_applys = equ_applys.order_by('-use_date')
+        elif category == 'revert_date' and mode == 'positive':
+            equ_applys = equ_applys.order_by('revert_date')
+        elif category == 'revert_date' and mode == 'negative':
+            equ_applys = equ_applys.order_by('-revert_date')
+        elif category == 'add_time' and mode == 'positive':
+            equ_applys = equ_applys.order_by('add_time')
+        elif category == 'add_time' and mode == 'negative':
+            equ_applys = equ_applys.order_by('-add_time')
+
+        return render(request, 'equipment/use_record.html', {
+            'equ_applys': equ_applys
+        })

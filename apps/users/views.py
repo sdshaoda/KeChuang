@@ -286,16 +286,9 @@ class AddStaffView(View):
                     'msg': '登录名已经存在！'
                 })
 
-            password = request.POST.get('password', '')
-            password_repeat = request.POST.get('password_repeat', '')
-            if password != password_repeat:
-                return render(request, 'user/add_staff.html', {
-                    'register_form': register_form,
-                    'msg': '两次输入的密码不一致！'
-                })
-
             name = request.POST.get('name', '')
             sex = request.POST.get('sex', '')
+            age = request.POST.get('age', '')
             department_id = request.POST.get('department_id', '')
             job = request.POST.get('job', '')
             induction_time = request.POST.get('induction_time', '')
@@ -304,9 +297,11 @@ class AddStaffView(View):
 
             user_profile = UserProfile()
             user_profile.username = username
-            user_profile.password = make_password(password)
+            # 初始密码为 123456
+            user_profile.password = make_password('123456')
             user_profile.name = name
             user_profile.sex = sex
+            user_profile.age = age
             user_profile.department_id = department_id
             user_profile.department_name = Department.objects.get(id=department_id).name
             user_profile.job = job
@@ -349,6 +344,12 @@ class EditStaffView(View):
     def post(self, request):
         # 获取表单信息
         staff_id = request.POST.get('staff_id', '')
+        age = request.POST.get('age', '')
+        job = request.POST.get('job', '')
+        department_id = request.POST.get('department_id', '')
+        induction_time = request.POST.get('induction_time', '')
+        number = request.POST.get('number', '')
+        identity_num = request.POST.get('identity_num', '')
         mobile = request.POST.get('mobile', '')
         email = request.POST.get('email', '')
         office_phone = request.POST.get('office_phone', '')
@@ -357,13 +358,20 @@ class EditStaffView(View):
         xueli = request.POST.get('xueli', '')
         zhicheng = request.POST.get('zhicheng', '')
         zige = request.POST.get('zige', '')
-        image = request.FILES.get('image', '')
+        identity_image = request.FILES.get('identity_image', '')
+        person_image = request.FILES.get('person_image', '')
         zigezs = request.FILES.get('zigezs', '')
         xuelizs = request.FILES.get('xuelizs', '')
         zhichengzs = request.FILES.get('zhichengzs', '')
 
         # 更新用户信息
         user = UserProfile.objects.get(id=staff_id)
+        user.age = age
+        user.job = job
+        user.department = Department.objects.get(id=int(department_id))
+        user.induction_time = induction_time
+        user.number = number
+        user.identity_num = identity_num
         user.mobile = mobile
         user.email = email
         user.office_phone = office_phone
@@ -372,8 +380,10 @@ class EditStaffView(View):
         user.xueli = xueli
         user.zhicheng = zhicheng
         user.zige = zige
-        if image:
-            user.image = image
+        if identity_image:
+            user.identity_image = identity_image
+        if person_image:
+            user.person_image = person_image
         if zigezs:
             user.zigezs = zigezs
         if xuelizs:

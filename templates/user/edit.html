@@ -30,18 +30,13 @@
         </div>
 
         <div class="form-group">
-            <label for="induction_time" class="col-md-2 col-sm-2 control-label">入职时间：</label>
+            <label for="age" class="col-md-2 col-sm-2 control-label">年龄：</label>
             <div class="col-md-5 col-sm-10">
-                <input type="text" class="form-control" id="induction_time" name="induction_time"
-                       placeholder="入职时间，格式：2017-04-01" value="{{ staff.induction_time }}" disabled>
-            </div>
-        </div>
-
-        <div class="form-group">
-            <label for="number" class="col-md-2 col-sm-2 control-label">人员编号：</label>
-            <div class="col-md-5 col-sm-10">
-                <input type="text" class="form-control" id="number" name="number" placeholder="人员编号"
-                       value="{{ staff.number }}" disabled>
+                <div class="input-group">
+                    <input type="number" class="form-control" id="age" name="age" placeholder="年龄"
+                           value="{{ staff.age }}" {% if request.user.permission != '系统管理员' %}disabled{% endif %}>
+                    <span class="input-group-addon">岁</span>
+                </div>
             </div>
         </div>
 
@@ -49,21 +44,47 @@
             <label for="job" class="col-md-2 col-sm-2 control-label">职务：</label>
             <div class="col-md-5 col-sm-10">
                 <input type="text" class="form-control" id="job" name="job" placeholder="职务" value="{{ staff.job }}"
-                       disabled>
+                       {% if request.user.permission != '系统管理员' %}disabled{% endif %}>
             </div>
         </div>
 
         <div class="form-group">
-            <label for="department" class="col-md-2 col-sm-2 control-label">所属部门：</label>
+            <label for="department_id" class="col-md-2 col-sm-2 control-label">所属部门：</label>
             <div class="col-md-5 col-sm-10">
-                <select class="form-control" id="department" name="department" disabled>
+                <select class="form-control" id="department_id" name="department_id"
+                        {% if request.user.permission != '系统管理员' %}disabled{% endif %}>
                     {% for department in departments %}
-                        <option value="{{ department.name }}"
+                        <option value="{{ department.id }}"
                                 {% ifequal request.user.department department %}selected{% endifequal %}>
                             {{ department.name }}
                         </option>
                     {% endfor %}
                 </select>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="induction_time" class="col-md-2 col-sm-2 control-label">入职时间：</label>
+            <div class="col-md-5 col-sm-10">
+                <input type="date" class="form-control" id="induction_time" name="induction_time"
+                       placeholder="入职时间，格式：2017-04-01" value="{{ staff.induction_time|date:"Y-m-d" }}"
+                       {% if request.user.permission != '系统管理员' %}disabled{% endif %}>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="number" class="col-md-2 col-sm-2 control-label">人员编号：</label>
+            <div class="col-md-5 col-sm-10">
+                <input type="text" class="form-control" id="number" name="number" placeholder="人员编号"
+                       value="{{ staff.number }}" {% if request.user.permission != '系统管理员' %}disabled{% endif %}>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="identity_num" class="col-md-2 col-sm-2 control-label">身份证号：</label>
+            <div class="col-md-5 col-sm-10">
+                <input type="number" class="form-control" id="identity_num" name="identity_num" placeholder="身份证号"
+                       value="{{ staff.identity_num }}">
             </div>
         </div>
 
@@ -132,20 +153,35 @@
         </div>
 
         <div class="form-group">
-            <label for="image" class="col-md-2 col-sm-2 control-label">上传照片：</label>
+            <label for="identity_image" class="col-md-2 col-sm-2 control-label">身份证照片：</label>
             <div class="col-md-5 col-sm-10">
-                <input type="file" id="image" name="image">
+                <input type="file" id="identity_image" name="identity_image">
                 <p class="help-block">
                     {% if staff.image %}
-                        已有照片，选择可重新上传
-                        <img style="max-height: 100px; width: initial;" src="{{ MEDIA_URL }}{{ staff.image }}" alt="照片">
+                        已有身份证照片，选择可重新上传
+                        <img style="max-height: 100px; width: initial;" src="{{ MEDIA_URL }}{{ staff.identity_image }}"
+                             alt="身份证照片">
                     {% endif %}
                 </p>
             </div>
         </div>
 
         <div class="form-group">
-            <label for="xuelizs" class="col-md-2 col-sm-2 control-label">上传学历证书：</label>
+            <label for="person_image" class="col-md-2 col-sm-2 control-label">个人照片：</label>
+            <div class="col-md-5 col-sm-10">
+                <input type="file" id="person_image" name="person_image">
+                <p class="help-block">
+                    {% if staff.image %}
+                        已有个人照片，选择可重新上传
+                        <img style="max-height: 100px; width: initial;" src="{{ MEDIA_URL }}{{ staff.person_image }}"
+                             alt="个人照片">
+                    {% endif %}
+                </p>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="xuelizs" class="col-md-2 col-sm-2 control-label">学历证书：</label>
             <div class="col-md-5 col-sm-10">
                 <input type="file" id="xuelizs" name="xuelizs">
                 <p class="help-block">
@@ -159,13 +195,14 @@
         </div>
 
         <div class="form-group">
-            <label for="zhichengzs" class="col-md-2 col-sm-2 control-label">上传职称证书：</label>
+            <label for="zhichengzs" class="col-md-2 col-sm-2 control-label">职称证书：</label>
             <div class="col-md-5 col-sm-10">
                 <input type="file" id="zhichengzs" name="zhichengzs">
                 <p class="help-block">
                     {% if staff.zhichengzs %}
                         已有职称证书，
-                        <a style="display: inline;" target="_blank" href="{{ MEDIA_URL }}{{ staff.zhichengzs }}">点击查看</a>
+                        <a style="display: inline;" target="_blank"
+                           href="{{ MEDIA_URL }}{{ staff.zhichengzs }}">点击查看</a>
                         ，选择可重新上传
                     {% endif %}
                 </p>
@@ -173,7 +210,7 @@
         </div>
 
         <div class="form-group">
-            <label for="zigezs" class="col-md-2 col-sm-2 control-label">上传资格证书：</label>
+            <label for="zigezs" class="col-md-2 col-sm-2 control-label">资格证书：</label>
             <div class="col-md-5 col-sm-10">
                 <input type="file" id="zigezs" name="zigezs">
                 <p class="help-block">

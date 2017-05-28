@@ -2,7 +2,7 @@
 from django.conf.urls import url
 
 from .views import ListView, UseView, UseEquView, RevertView, InfoView, EditView, ApplyView, VerifyView, AddView, \
-    EditEquView, AgreeEquView, RefuseEquView, RevertEquView
+    EditEquView, AgreeEquView, RefuseEquView, RevertEquView, ChangeRevertDateView, EquUseRecordView
 
 # namespace='equ'
 urlpatterns = [
@@ -25,6 +25,8 @@ urlpatterns = [
     url(r'^edit/(?P<equ_id>\d+)$', EditView.as_view(), name='edit'),
     # 编辑设备 Ajax
     url(r'^equipment/edit/$', EditEquView.as_view(), name='equ_edit'),
+    # 使用记录 GET
+    url(r'^equipment/use_record/$', EquUseRecordView.as_view(), name='use_record'),
 
     # 设备申请 GET
     url(r'^apply/$', ApplyView.as_view(), name='apply'),
@@ -34,4 +36,6 @@ urlpatterns = [
     url(r'^agree/$', AgreeEquView.as_view(), name='agree'),
     # 拒绝领用 Ajax
     url(r'^refuse/$', RefuseEquView.as_view(), name='refuse'),
+    # 修改归还时间
+    url(r'^change/revert_date$', ChangeRevertDateView.as_view(), name='change_revert_date'),
 ]

@@ -3,11 +3,22 @@
 {% block title %}设备审核{% endblock %}
 
 {% block style %}
+    <style>
+        .glyphicon {
+            display: none;
+            cursor: pointer;
+        }
 
+{#        .use_date.show_date:hover .glyphicon-wrench,#}
+{#        .use_date.edit_date:hover .glyphicon-ok-sign,#}
+        .revert_date.show_date:hover .glyphicon-wrench,
+        .revert_date.edit_date:hover .glyphicon-ok-sign {
+            display: inline-block;
+        }
+    </style>
 {% endblock %}
 
 {% block content %}
-
     <nav class="navbar navbar-default">
         <div class="container-fluid">
             <form id="search" method="get" class="navbar-form navbar-left col-md-6 col-sm-6 col-xs-12"
@@ -63,8 +74,29 @@
                     <td>{{ equ_apply.equipment.equ_status }}</td>
                     <td>{{ equ_apply.person_name }}</td>
                     <td>{{ equ_apply.type }}</td>
-                    <td>{{ equ_apply.use_date }}</td>
-                    <td>{{ equ_apply.revert_date }}</td>
+                    <td>
+                        <div class="use_date show_date">
+                            <span>{{ equ_apply.use_date|date:"Y-m-d" }}</span>
+                            <span class="glyphicon glyphicon-wrench"></span>
+                        </div>
+                        <div class="use_date edit_date hidden">
+                            <input type="date" name="use_date" value="{{ equ_apply.use_date|date:"Y-m-d" }}">
+                            <span class="glyphicon glyphicon-ok-sign"></span>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="revert_date show_date">
+                            <span>{{ equ_apply.revert_date|date:"Y-m-d" }}</span>
+                            <span class="glyphicon glyphicon-wrench"></span>
+                        </div>
+                        <div class="revert_date edit_date hidden">
+                            <form action="">
+                                <input type="hidden" name="equ_apply_id" value="{{ equ_apply.id }}">
+                                <input type="date" name="revert_date" value="{{ equ_apply.revert_date|date:"Y-m-d" }}">
+                                <span class="glyphicon glyphicon-ok-sign"></span>
+                            </form>
+                        </div>
+                    </td>
                     {% if equ_apply.status == '审核中' %}
                         <td>
                             <a data-value="{{ equ_apply.id }}" href="javascript:void(0);" class="agree">同意</a>
@@ -81,11 +113,61 @@
             {% endfor %}
         </table>
     </div>
-
 {% endblock %}
 
 {% block js %}
     <script>
+        {#领用时间#}
+{#        $('.use_date.show_date .glyphicon-wrench').click(function () {#}
+{#            $(this).parent().addClass('hidden')#}
+{#            $(this).parent().next().removeClass('hidden')#}
+{#        })#}
+{##}
+{#        $('.use_date.edit_date .glyphicon-ok-sign').click(function () {#}
+{#            var date = $(this).prev().val()#}
+{#            $(this).parent().addClass('hidden')#}
+{#            $(this).parent().parent().prev().removeClass('hidden')#}
+{#            $(this).parent().parent().prev().children()[0].innerText = date#}
+{#        })#}
+
+        {#归还时间#}
+        $('.revert_date.show_date .glyphicon-wrench').click(function () {
+            $(this).parent().addClass('hidden')
+            $(this).parent().next().removeClass('hidden')
+        })
+
+        $('.revert_date.edit_date .glyphicon-ok-sign').click(function () {
+            var date = $(this).prev().val()
+            var data = $(this).parent().serializeArray()
+            var _this = this;
+            console.log($(this))
+
+            $.ajax({
+                cache: false,
+                url: '{% url "equ:change_revert_date" %}',
+                type: 'POST',
+                data: data,
+                async: true,
+                dataType: 'json',
+                beforeSend: function (xhr, settings) {
+                    xhr.setRequestHeader("X-CSRFToken", "{{ csrf_token }}");
+                },
+                success: function (data) {
+                    $('#msg').text(data.msg);
+                    console.log($(_this))
+                    $(_this).parent().parent().addClass('hidden')
+                    $(_this).parent().parent().prev().removeClass('hidden')
+                    $(_this).parent().parent().prev().children()[0].innerText = date
+                    setTimeout(function () {
+                        $('#msg').text('')
+                    }, 10000)
+                },
+                error: function () {
+                    $('#msg').text('出错了')
+                }
+            })
+        })
+
         {#同意#}
         $('.agree').click(function () {
             var equ_apply_id = $(this).attr('data-value')
@@ -102,7 +184,7 @@
                 success: function (data) {
                     $('#msg').text(data.msg)
                     $('a[data-value="' + equ_apply_id + '"]').parent()[1].remove()
-                    $('a[data-value="' + equ_apply_id + '"]').parent().text('已同意')
+                    $('a[data-value="' + equ_apply_id + '"]').parent()[0].outerHTML = '<td colspan="2">已同意</td>'
                     setTimeout(function () {
                         $('#msg').text('')
                     }, 10000)
@@ -129,7 +211,7 @@
                 success: function (data) {
                     $('#msg').text(data.msg)
                     $('a[data-value="' + equ_apply_id + '"]').parent()[1].remove()
-                    $('a[data-value="' + equ_apply_id + '"]').parent().text('已拒绝')
+                    $('a[data-value="' + equ_apply_id + '"]').parent()[0].outerHTML = '<td colspan="2">已拒绝</td>'
                     setTimeout(function () {
                         $('#msg').text('')
                     }, 2000)

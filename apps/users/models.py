@@ -35,6 +35,7 @@ class UserProfile(AbstractUser):
         ('男', u'男'),
         ('女', u'女'),
     ), verbose_name=u'性别')
+    age = models.SmallIntegerField(verbose_name=u'年龄', null=True, blank=True)
     job = models.CharField(max_length=20, verbose_name=u'职务')
     induction_time = models.DateField(max_length=20, default=date.today, verbose_name=u'入职时间')
     permission = models.CharField(default=u'系统管理员', max_length=10, choices=(
@@ -45,6 +46,7 @@ class UserProfile(AbstractUser):
     ), verbose_name=u'系统权限')
     number = models.CharField(max_length=20, verbose_name=u'人员编号')
 
+    identity_num = models.CharField(max_length=20, verbose_name=u'身份证号', null=True, blank=True)
     mobile = models.CharField(max_length=11, verbose_name=u'手机号码', null=True, blank=True)
     email = models.EmailField(max_length=20, verbose_name=u'邮箱地址', null=True, blank=True)
     office_phone = models.CharField(max_length=20, verbose_name=u'办公电话', null=True, blank=True)
@@ -53,7 +55,8 @@ class UserProfile(AbstractUser):
     xueli = models.CharField(max_length=50, verbose_name=u'学历', null=True, blank=True)
     zhicheng = models.CharField(max_length=50, verbose_name=u'职称', null=True, blank=True)
     zige = models.CharField(max_length=50, verbose_name=u'资格', null=True, blank=True)
-    image = models.ImageField(upload_to='image/%Y/%m', verbose_name=u'照片', max_length=100, null=True, blank=True)
+    identity_image = models.ImageField(upload_to='identity_image/%Y/%m', verbose_name=u'身份证照片', max_length=100, null=True, blank=True)
+    person_image = models.ImageField(upload_to='person_image/%Y/%m', verbose_name=u'个人照片', max_length=100, null=True, blank=True)
     zigezs = models.FileField(upload_to='zige/%Y/%m', verbose_name=u'资格证书', max_length=100, null=True, blank=True)
     xuelizs = models.FileField(upload_to='xueli/%Y/%m', verbose_name=u'学历证书', max_length=100, null=True, blank=True)
     zhichengzs = models.FileField(upload_to='zhicheng/%Y/%m', verbose_name=u'职称证书', max_length=100, null=True,
