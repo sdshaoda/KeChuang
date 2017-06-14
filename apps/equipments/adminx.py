@@ -13,15 +13,9 @@ class EquipmentTypeAdmin(object):
 
 # 设备信息Admin
 class EquipmentAdmin(object):
-    list_display = ['equ_type', 'equ_name', 'equ_person', 'file_num', 'equ_num', 'equ_status', 'effect_date',
-                    'equ_money',
-                    'buy_date', 'use_status', 'equ_staff', 'use_date', 'revert_date', 'remark', 'add_time']
-    search_fields = ['equ_type', 'equ_name', 'equ_person', 'file_num', 'equ_num', 'equ_status', 'effect_date',
-                     'equ_money',
-                     'buy_date', 'use_status', 'equ_staff', 'use_date', 'revert_date', 'remark', 'add_time']
-    list_filter = ['equ_type', 'equ_name', 'equ_person', 'file_num', 'equ_num', 'equ_status', 'effect_date',
-                   'equ_money',
-                   'buy_date', 'use_status', 'equ_staff', 'use_date', 'revert_date', 'remark', 'add_time']
+    list_display = ['equ_name', 'equ_type', 'equ_person', 'file_num', 'equ_num', 'equ_status', 'number', 'biaodingzs', 'biaoding_date', 'effect_date', 'equ_money', 'buy_date', 'use_status', 'equ_staff', 'department', 'use_date', 'revert_date', 'remark', 'add_time']
+    search_fields = ['equ_name', 'equ_type', 'equ_person', 'file_num', 'equ_num', 'equ_status', 'number', 'biaodingzs', 'equ_money', 'use_status', 'equ_staff', 'department', 'remark']
+    list_filter = ['equ_name', 'equ_type', 'equ_person', 'file_num', 'equ_num', 'equ_status', 'number', 'biaodingzs', 'biaoding_date', 'effect_date', 'equ_money', 'buy_date', 'use_status', 'equ_staff', 'department', 'use_date', 'revert_date', 'remark', 'add_time']
 
 
 # 设备变更记录Admin

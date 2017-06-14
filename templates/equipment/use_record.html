@@ -47,8 +47,9 @@
                 <th>#</th>
                 <th>设备名称</th>
                 <th>使用人</th>
-                <th>领用日期</th>
-                <th>归还日期</th>
+                <th>部门</th>
+                <th>领用时间</th>
+                <th>归还时间</th>
                 <th>设备负责人</th>
             </tr>
             {% for equ_apply in equ_applys %}
@@ -56,6 +57,7 @@
                     <td>{{ equ_apply.id }}</td>
                     <td>{{ equ_apply.equipment_name }}</td>
                     <td>{{ equ_apply.person_name }}</td>
+                    <td>{{ equ_apply.person.department_name }}</td>
                     <td>{{ equ_apply.use_date }}</td>
                     <td>{{ equ_apply.revert_date }}</td>
                     <td>{{ equ_apply.equipment_person }}</td>

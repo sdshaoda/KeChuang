@@ -27,14 +27,14 @@ class DepartmentAdmin(object):
 
 # 用户信息Admin
 class UserProfileAdmin(object):
-    list_display = ['department', 'name', 'sex', 'username', 'job', 'induction_time', 'permission', 'number', 'mobile',
-                    'email', 'office_phone', 'home_phone', 'home_address', 'xueli', 'zhicheng', 'zige', 'image',
+    list_display = ['name', 'department', 'sex', 'username', 'age', 'job', 'induction_time', 'permission', 'number', 'identity_num', 'mobile',
+                    'email', 'office_phone', 'home_phone', 'home_address', 'xueli', 'zhicheng', 'zige', 'identity_image', 'person_image', 'zigezs', 'xuelizs', 'zhichengzs', 'resume',
                     'add_time']
-    search_fields = ['department', 'name', 'sex', 'username', 'job', 'permission', 'number', 'mobile',
-                     'email', 'office_phone', 'home_phone', 'home_address', 'xueli', 'zhicheng', 'zige', 'image']
-    list_filter = ['department', 'name', 'sex', 'username', 'job', 'induction_time', 'permission', 'number', 'mobile',
-                   'email', 'office_phone', 'home_phone', 'home_address', 'xueli', 'zhicheng', 'zige', 'image',
-                   'add_time']
+    search_fields = ['name', 'department', 'sex', 'username', 'age', 'job', 'permission', 'number', 'identity_num', 'mobile',
+                    'email', 'office_phone', 'home_phone', 'home_address', 'xueli', 'zhicheng', 'zige', 'identity_image', 'person_image', 'zigezs', 'xuelizs', 'zhichengzs', 'resume']
+    list_filter = ['name', 'department', 'sex', 'username', 'age', 'job', 'induction_time', 'permission', 'number', 'identity_num', 'mobile',
+                    'email', 'office_phone', 'home_phone', 'home_address', 'xueli', 'zhicheng', 'zige', 'identity_image', 'person_image', 'zigezs', 'xuelizs', 'zhichengzs', 'resume',
+                    'add_time']
 
 
 xadmin.site.register(views.BaseAdminView, BaseSetting)

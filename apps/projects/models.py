@@ -66,6 +66,16 @@ class Project(models.Model):
     start_date = models.DateField(max_length=20, verbose_name=u'开工日期', null=True, blank=True)
     finish_date = models.DateField(max_length=20, verbose_name=u'完工日期', null=True, blank=True)
     ht_scan = models.FileField(upload_to='hetong/%Y/%m', verbose_name=u'合同扫描件', max_length=100, null=True, blank=True)
+
+    # report_num1 = models.CharField(max_length=30, verbose_name=u'报告编号1', null=True, blank=True)
+    # report_num2 = models.CharField(max_length=30, verbose_name=u'报告编号2', null=True, blank=True)
+    # report_num3 = models.CharField(max_length=30, verbose_name=u'报告编号3', null=True, blank=True)
+    # report_num4 = models.CharField(max_length=30, verbose_name=u'报告编号4', null=True, blank=True)
+    # report_num5 = models.CharField(max_length=30, verbose_name=u'报告编号5', null=True, blank=True)
+    # report_author = models.CharField(max_length=10, verbose_name=u'报告编写人', null=True, blank=True)
+    # report_checker = models.CharField(max_length=10, verbose_name=u'报告校核人', null=True, blank=True)
+    # report_auditor = models.CharField(max_length=10, verbose_name=u'报告审核人', null=True, blank=True)
+    # report_approver = models.CharField(max_length=10, verbose_name=u'报告批准人', null=True, blank=True)
     remark = models.CharField(max_length=200, verbose_name=u'备注', null=True, blank=True)
 
     add_time = models.DateTimeField(default=datetime.now, verbose_name=u'添加时间')

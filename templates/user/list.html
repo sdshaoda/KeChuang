@@ -52,6 +52,7 @@
                 <th>职务</th>
                 <th>负责项目</th>
                 <th>出勤记录</th>
+                <th>简历</th>
                 <th colspan="2">学历（证书）</th>
                 <th colspan="2">职称（证书）</th>
                 <th colspan="2">资格（证书）</th>
@@ -74,6 +75,13 @@
                         {% endfor %}
                     </td>
                     <td><a href="{% url 'pro:staff_attendance' staff.id %}">查看</a></td>
+                    <td>
+                        {% if staff.resume %}
+                            <a href="{{ MEDIA_URL }}{{ staff.resume }}">下载</a>
+                        {% else %}
+                            未上传
+                        {% endif %}
+                    </td>
                     <td>
                         {% if staff.xueli %}
                             {{ staff.xueli }}

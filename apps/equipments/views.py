@@ -3,6 +3,7 @@ from django.db.models import Q
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.views.generic import View
+from datetime import date
 
 from equipments.models import Equipment, EquipmentType
 from operation.models import EquipmentApply
@@ -543,10 +544,23 @@ class RevertEquView(View):
         equ_apply.type = '归还'  # 申请类型为 归还
         equ_apply.status = '审核中'  # 审核状态为 审核中
         equ_apply.use_date = use_date
-        equ_apply.revert_date = revert_date
+        equ_apply.revert_date = date.today().__str__()
         equ_apply.save()
 
         return HttpResponse('{"status":"success","msg":"归还申请提交成功"}', content_type='application/json')
+
+
+# 修改领用时间 Ajax
+class ChangeUseDateView(View):
+    def post(self, request):
+        equ_apply_id = request.POST.get('equ_apply_id', '')
+        use_date = request.POST.get('use_date', '')
+
+        equ_apply = EquipmentApply.objects.get(id=int(equ_apply_id))
+        equ_apply.use_date = use_date
+        equ_apply.save()
+
+        return HttpResponse('{"status":"success","msg":"修改领用时间成功"}', content_type='application/json')
 
 
 # 修改归还时间 Ajax

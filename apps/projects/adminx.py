@@ -20,20 +20,21 @@ class ProjectStageAdmin(object):
 
 # 工程信息Admin
 class ProjectAdmin(object):
-    list_display = ['pro_type', 'pro_stage', 'pro_name', 'department', 'pro_person', 'wt_person', 'ht_person',
+    list_display = ['pro_name', 'pro_type', 'pro_stage', 'department', 'pro_person', 'wt_person', 'ht_person',
                     'ht_name',
                     'ht_num',
-                    'ht_money', 'js_money', 'wt_dw', 'mobile', 'pro_address', 'sign_date', 'start_date', 'finish_date',
+                    'ht_money', 'js_money', 'wt_dw', 'mobile', 'pro_address', 'sign_date', 'start_date', 'finish_date', 'ht_scan',
                     'remark', 'add_time']
-    search_fields = ['pro_type', 'pro_stage', 'pro_name', 'department', 'pro_person', 'wt_person', 'ht_person',
-                     'ht_name',
-                     'ht_num',
-                     'ht_money', 'js_money', 'wt_dw', 'mobile', 'pro_address',
-                     'remark']
-    list_filter = ['pro_type', 'pro_stage', 'pro_name', 'department', 'pro_person', 'wt_person', 'ht_person', 'ht_name',
-                   'ht_num',
-                   'ht_money', 'js_money', 'wt_dw', 'mobile', 'pro_address', 'sign_date', 'start_date', 'finish_date',
-                   'remark', 'add_time']
+    search_fields = ['pro_name', 'pro_type', 'pro_stage', 'department', 'pro_person', 'wt_person', 'ht_person',
+                    'ht_name',
+                    'ht_num',
+                    'ht_money', 'js_money', 'wt_dw', 'mobile', 'pro_address', 'ht_scan',
+                    'remark']
+    list_filter = ['pro_name', 'pro_type', 'pro_stage', 'department', 'pro_person', 'wt_person', 'ht_person',
+                    'ht_name',
+                    'ht_num',
+                    'ht_money', 'js_money', 'wt_dw', 'mobile', 'pro_address', 'sign_date', 'start_date', 'finish_date', 'ht_scan',
+                    'remark', 'add_time']
 
 
 # 工程变更记录Admin

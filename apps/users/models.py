@@ -61,6 +61,7 @@ class UserProfile(AbstractUser):
     xuelizs = models.FileField(upload_to='xueli/%Y/%m', verbose_name=u'学历证书', max_length=100, null=True, blank=True)
     zhichengzs = models.FileField(upload_to='zhicheng/%Y/%m', verbose_name=u'职称证书', max_length=100, null=True,
                                   blank=True)
+    resume = models.FileField(upload_to='resume/%Y/%m', verbose_name=u'简历', max_length=100, null=True, blank=True)
 
     def get_projects(self):
         return self.projectmember_set.filter(person_id=self.id, is_pro_person=1)

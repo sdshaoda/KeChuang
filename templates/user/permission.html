@@ -122,7 +122,7 @@
                 data: data,
                 success: function (data) {
                     if (data.status === 'success') {
-{#修改 class ，只让让当前权限为 'current-perm'#}
+                        {#修改 class ，只让让当前权限为 'current-perm'#}
                         for (var i = 0, l = inputRadio.length; i < l; i++) {
                             if (inputRadio[i].value === permission) {
                                 inputRadio[i].className = 'current-perm'

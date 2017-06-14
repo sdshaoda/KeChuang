@@ -363,14 +363,17 @@ class EditStaffView(View):
         zigezs = request.FILES.get('zigezs', '')
         xuelizs = request.FILES.get('xuelizs', '')
         zhichengzs = request.FILES.get('zhichengzs', '')
+        resume = request.FILES.get('resume', '')
 
         # 更新用户信息
         user = UserProfile.objects.get(id=staff_id)
         user.age = age
         user.job = job
         user.department = Department.objects.get(id=int(department_id))
-        user.induction_time = induction_time
-        user.number = number
+        if induction_time:
+            user.induction_time = induction_time
+        if number:
+            user.number = number
         user.identity_num = identity_num
         user.mobile = mobile
         user.email = email
@@ -390,6 +393,8 @@ class EditStaffView(View):
             user.xuelizs = xuelizs
         if zhichengzs:
             user.zhichengzs = zhichengzs
+        if resume:
+            user.resume = resume
         user.save()
 
         # 修改的是自己的档案

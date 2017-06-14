@@ -29,7 +29,7 @@ class ProjectMember(models.Model):
         verbose_name_plural = verbose_name
 
     def __unicode__(self):
-        return self.project
+        return self.project.pro_name
 
 
 # 工程考勤
@@ -54,7 +54,7 @@ class ProjectAttendance(models.Model):
         verbose_name_plural = verbose_name
 
     def __unicode__(self):
-        return self.project
+        return self.project.pro_name
 
 
 # 工程设备
@@ -73,7 +73,7 @@ class ProjectEquipment(models.Model):
         verbose_name_plural = verbose_name
 
     def __unicode__(self):
-        return self.project
+        return self.project.pro_name
 
 
 # 工程申请
@@ -130,7 +130,7 @@ class ProjectApply(models.Model):
         verbose_name_plural = verbose_name
 
     def __unicode__(self):
-        return self.project
+        return self.project.pro_name
 
 
 # 设备申请
@@ -161,4 +161,4 @@ class EquipmentApply(models.Model):
         verbose_name_plural = verbose_name
 
     def __unicode__(self):
-        return self.equipment
+        return self.equipment.equ_name

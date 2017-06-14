@@ -9,8 +9,8 @@
             cursor: pointer;
         }
 
-{#        .use_date.show_date:hover .glyphicon-wrench,#}
-{#        .use_date.edit_date:hover .glyphicon-ok-sign,#}
+        .use_date.show_date:hover .glyphicon-wrench,
+        .use_date.edit_date:hover .glyphicon-ok-sign,
         .revert_date.show_date:hover .glyphicon-wrench,
         .revert_date.edit_date:hover .glyphicon-ok-sign {
             display: inline-block;
@@ -80,8 +80,11 @@
                             <span class="glyphicon glyphicon-wrench"></span>
                         </div>
                         <div class="use_date edit_date hidden">
-                            <input type="date" name="use_date" value="{{ equ_apply.use_date|date:"Y-m-d" }}">
-                            <span class="glyphicon glyphicon-ok-sign"></span>
+                            <form action="">
+                                <input type="hidden" name="equ_apply_id" value="{{ equ_apply.id }}">
+                                <input type="date" name="use_date" value="{{ equ_apply.use_date|date:"Y-m-d" }}">
+                                <span class="glyphicon glyphicon-ok-sign"></span>
+                            </form>
                         </div>
                     </td>
                     <td>
@@ -117,30 +120,54 @@
 
 {% block js %}
     <script>
-        {#领用时间#}
-{#        $('.use_date.show_date .glyphicon-wrench').click(function () {#}
-{#            $(this).parent().addClass('hidden')#}
-{#            $(this).parent().next().removeClass('hidden')#}
-{#        })#}
-{##}
-{#        $('.use_date.edit_date .glyphicon-ok-sign').click(function () {#}
-{#            var date = $(this).prev().val()#}
-{#            $(this).parent().addClass('hidden')#}
-{#            $(this).parent().parent().prev().removeClass('hidden')#}
-{#            $(this).parent().parent().prev().children()[0].innerText = date#}
-{#        })#}
+        {#领用时间 点击进入修改#}
+        $('.use_date.show_date .glyphicon-wrench').click(function () {
+            $(this).parent().addClass('hidden')
+            $(this).parent().next().removeClass('hidden')
+        })
 
-        {#归还时间#}
+        {#领用时间 点击提交修改#}
+        $('.use_date.edit_date .glyphicon-ok-sign').click(function () {
+            var date = $(this).prev().val()
+            var data = $(this).parent().serializeArray()
+            var _this = this;
+
+            $.ajax({
+                cache: false,
+                url: '{% url "equ:change_use_date" %}',
+                type: 'POST',
+                data: data,
+                async: true,
+                dataType: 'json',
+                beforeSend: function (xhr, settings) {
+                    xhr.setRequestHeader("X-CSRFToken", "{{ csrf_token }}");
+                },
+                success: function (data) {
+                    $('#msg').text(data.msg);
+                    $(_this).parent().parent().addClass('hidden')
+                    $(_this).parent().parent().prev().removeClass('hidden')
+                    $(_this).parent().parent().prev().children()[0].innerText = date
+                    setTimeout(function () {
+                        $('#msg').text('')
+                    }, 10000)
+                },
+                error: function () {
+                    $('#msg').text('出错了')
+                }
+            })
+        })
+
+        {#归还时间 点击进入修改#}
         $('.revert_date.show_date .glyphicon-wrench').click(function () {
             $(this).parent().addClass('hidden')
             $(this).parent().next().removeClass('hidden')
         })
 
+        {#归还时间 点击提交修改#}
         $('.revert_date.edit_date .glyphicon-ok-sign').click(function () {
             var date = $(this).prev().val()
             var data = $(this).parent().serializeArray()
             var _this = this;
-            console.log($(this))
 
             $.ajax({
                 cache: false,

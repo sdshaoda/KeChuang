@@ -13,16 +13,16 @@ from .models import ProjectMember, ProjectEquipment, ProjectApply, EquipmentAppl
 
 # 工程项目成员Admin
 class ProjectMemberAdmin(object):
-    list_display = ['project', 'person', 'remark', 'add_time']
-    search_fields = ['project', 'person', 'remark']
-    list_filter = ['project', 'person', 'remark', 'add_time']
+    list_display = ['project', 'person', 'department', 'remark', 'add_time']
+    search_fields = ['project', 'person', 'department', 'remark']
+    list_filter = ['project', 'person', 'department', 'remark', 'add_time']
 
 
 # 工程考勤Admin
 class ProjectAttendanceAdmin(object):
-    list_display = ['project', 'person', 'location', 'time', 'remark', 'add_time']
-    search_fields = ['project', 'person', 'location', 'time', 'remark']
-    list_filter = ['project', 'person', 'location', 'time', 'remark', 'add_time']
+    list_display = ['project', 'person', 'department', 'location', 'time', 'remark', 'add_time']
+    search_fields = ['project', 'person', 'department', 'location', 'remark']
+    list_filter = ['project', 'person', 'department', 'location', 'time', 'remark', 'add_time']
 
 
 # 工程设备Admin
@@ -34,15 +34,15 @@ class ProjectEquipmentAdmin(object):
 
 # 工程申请Admin
 class ProjectApplyAdmin(object):
-    list_display = ['project', 'person', 'type', 'remark', 'status', 'pro_type', 'pro_stage', 'department',
+    list_display = ['project', 'person', 'type', 'status', 'pro_type', 'pro_stage', 'department',
                     'pro_person', 'wt_person', 'ht_person', 'ht_name', 'ht_num', 'ht_money', 'js_money', 'wt_dw',
-                    'mobile', 'pro_address', 'sign_date', 'start_date', 'finish_date', 'add_time']
-    search_fields = ['project', 'person', 'type', 'remark', 'status', 'pro_type', 'pro_stage', 'department',
-                     'pro_person', 'wt_person', 'ht_person', 'ht_name', 'ht_num', 'ht_money', 'js_money', 'wt_dw',
-                     'mobile', 'pro_address']
-    list_filter = ['project', 'person', 'type', 'remark', 'status', 'pro_type', 'pro_stage', 'department', 'pro_person',
-                   'wt_person', 'ht_person', 'ht_name', 'ht_num', 'ht_money', 'js_money', 'wt_dw', 'mobile',
-                   'pro_address', 'sign_date', 'start_date', 'finish_date', 'add_time']
+                    'mobile', 'pro_address', 'sign_date', 'start_date', 'finish_date', 'ht_scan', 'remark', 'add_time']
+    search_fields = ['project', 'person', 'type', 'status', 'pro_type', 'pro_stage', 'department',
+                    'pro_person', 'wt_person', 'ht_person', 'ht_name', 'ht_num', 'ht_money', 'js_money', 'wt_dw',
+                    'mobile', 'pro_address', 'ht_scan', 'remark']
+    list_filter = ['project', 'person', 'type', 'status', 'pro_type', 'pro_stage', 'department',
+                    'pro_person', 'wt_person', 'ht_person', 'ht_name', 'ht_num', 'ht_money', 'js_money', 'wt_dw',
+                    'mobile', 'pro_address', 'sign_date', 'start_date', 'finish_date', 'ht_scan', 'remark', 'add_time']
 
 
 # 设备负责人Admin
