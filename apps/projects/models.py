@@ -86,3 +86,25 @@ class Project(models.Model):
 
     def __unicode__(self):
         return self.pro_name
+
+
+# 工程报告
+class Report(models.Model):
+    project = models.ForeignKey(Project, verbose_name=u'工程名称')
+    title = models.CharField(max_length=30, verbose_name=u'标题')
+    number = models.CharField(max_length=30, verbose_name=u'编号', null=True, blank=True)
+    write_person = models.CharField(max_length=10, verbose_name=u'编写人', null=True, blank=True)
+    check_person = models.CharField(max_length=10, verbose_name=u'校核人', null=True, blank=True)
+    verify_person = models.CharField(max_length=10, verbose_name=u'审核人', null=True, blank=True)
+    authorize_person = models.CharField(max_length=10, verbose_name=u'批准人', null=True, blank=True)
+    file = models.FileField(upload_to='report/%Y/%m', verbose_name=u'报告文件', max_length=100, null=True, blank=True)
+
+    remark = models.CharField(max_length=200, verbose_name=u'备注', null=True, blank=True)
+    add_time = models.DateTimeField(default=datetime.now, verbose_name=u'添加时间')
+
+    class Meta:
+        verbose_name = u'工程报告'
+        verbose_name_plural = verbose_name
+
+    def __unicode__(self):
+        return self.title

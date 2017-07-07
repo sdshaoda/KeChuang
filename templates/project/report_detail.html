@@ -1,0 +1,45 @@
+{% extends 'main.html' %}
+
+{% block title %}报告详情{% endblock %}
+
+{% block style %}{% endblock %}
+
+{% block content %}
+
+    报告详情
+    {{ report.title }}
+
+{% endblock %}
+
+
+{% block js %}
+    <script>
+        $('.delete_pro').click(function (e) {
+            var pro_id = $(this).attr('data-value')
+            $.ajax({
+                cache: false,
+                url: '{% url "pro:delete" %}',
+                type: 'POST',
+                async: true,
+                dataType: 'json',
+                beforeSend: function (xhr, settings) {
+                    xhr.setRequestHeader("X-CSRFToken", "{{ csrf_token }}");
+                },
+                data: {'pro_id': pro_id},
+                success: function (data) {
+                    if (data.status === 'success' && data.msg === '删除工程已成功') {
+                        $('#' + pro_id).remove()
+                    }
+                    $('#msg').text(data.msg)
+                    setTimeout(function () {
+                        $('#msg').text('')
+                    }, 10000)
+                },
+                error: function () {
+                    $('#msg').text('出错了')
+                }
+            })
+        })
+
+    </script>
+{% endblock %}

@@ -7,7 +7,7 @@ from django.views.generic import View
 from equipments.models import Equipment
 from operation.models import ProjectApply, ProjectAttendance, ProjectMember, ProjectEquipment
 from users.models import UserProfile, Department
-from .models import Project, ProjectType, ProjectStage
+from .models import Project, ProjectType, ProjectStage, Report
 
 
 # 工程浏览 GET
@@ -1083,7 +1083,6 @@ class AttendanceView(View):
 # 个人考勤记录 GET
 class StaffAttendanceView(View):
     def get(self, request, staff_id):
-
         # 获取 指定用户 的考勤记录
         atts = ProjectAttendance.objects.filter(person_id=staff_id).order_by('-add_time')
 
@@ -1144,7 +1143,7 @@ class AddMemberView(View):
             return HttpResponse('{"status":"success","msg":"该工程项目成员已存在，请勿重复添加！"}', content_type='application/json')
         else:
             pro_member = ProjectMember()
-            pro_member.is_pro_person = 0 # 非 工程负责人
+            pro_member.is_pro_person = 0  # 非 工程负责人
             pro_member.project_id = project_id
             pro_member.project_name = Project.objects.get(id=project_id).pro_name
             pro_member.person_id = person_id
@@ -1195,3 +1194,32 @@ class DeleteEquView(View):
         pro_equ.delete()
 
         return HttpResponse('{"status":"success","msg":"删除工程设备操作成功"}', content_type='application/json')
+
+
+# 工程报告 GET
+class ReportView(View):
+    def get(self, request, pro_id):
+        if pro_id == '0':
+            reports = Report.objects.all()
+        else:
+            reports = Report.objects.filter(project_id=int(pro_id))
+
+        return render(request, 'project/report.html', {
+            'reports': reports
+        })
+
+
+# 报告详情 GET
+class ReportDetailView(View):
+    def get(self, request, report_id):
+        report = Report.objects.get(id=int(report_id))
+
+        return render(request, 'project/report_detail.html', {
+            'report': report
+        })
+
+
+# 添加报告 GET POSt
+class AddReportView(View):
+    def get(self, request):
+        return render(request, 'project/add_report.html', {})

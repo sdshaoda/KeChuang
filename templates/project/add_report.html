@@ -1,0 +1,50 @@
+{% extends 'main.html' %}
+
+{% block title %}添加报告{% endblock %}
+
+{% block style %}{% endblock %}
+
+{% block content %}
+
+    <form class="form-horizontal" method="post" action="{% url 'pro:add_attendance' %}">
+
+        <div class="form-group">
+            <label for="pro_id" class="col-md-2 col-sm-2 control-label required">相关工程：</label>
+            <div class="col-md-5 col-sm-10">
+                <select class="form-control" id="pro_id" name="pro_id" required>
+                    {% for pro in pros %}
+                        <option value="{{ pro.id }}">
+                            {{ pro.pro_name }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="time" class="col-md-2 col-sm-2 control-label required">时间：</label>
+            <div class="col-md-5 col-sm-10">
+                <input type="datetime-local" class="form-control" id="time" name="time" placeholder="时间，格式：2017-04-01T12:12" required>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="location" class="col-md-2 col-sm-2 control-label required">地点：</label>
+            <div class="col-md-5 col-sm-10">
+                <input type="text" class="form-control" id="location" name="location" placeholder="地点" required>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="remark" class="col-md-2 col-sm-2 control-label">备注：</label>
+            <div class="col-md-5 col-sm-10">
+                <input type="text" class="form-control" id="remark" name="remark" placeholder="备注">
+            </div>
+        </div>
+
+        <button style="margin-bottom: 100px" type="submit" class="btn btn-primary col-md-7 col-sm-12 col-xs-12">添加</button>
+
+        {% csrf_token %}
+    </form>
+
+{% endblock %}

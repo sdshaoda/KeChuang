@@ -1,6 +1,6 @@
 {% extends 'main.html' %}
 
-{% block title %}浏览工程{% endblock %}
+{% block title %}工程报告{% endblock %}
 
 {% block style %}{% endblock %}
 
@@ -11,7 +11,7 @@
             <form id="search" method="get" class="navbar-form navbar-left col-md-6 col-sm-6 col-xs-12"
                   style="border: none;">
                 <div class="input-group">
-                    <input type="text" id="keywords" name="keywords" class="form-control" placeholder="搜索工程信息">
+                    <input type="text" id="keywords" name="keywords" class="form-control" placeholder="搜索工程报告">
                     <span class="input-group-btn">
                         <button class="btn btn-default" type="submit">搜索</button>
                     </span>
@@ -21,18 +21,7 @@
             <form method="get" class="navbar-form navbar-left col-md-6 col-sm-6 col-xs-12" style="border: none;">
                 <div class="input-group">
                     <select class="form-control" name="category" id="category">
-                        <option value="pro_id">工程ID</option>
-                        <option value="pro_person_id">工程负责人</option>
-                        <option value="department_id">所属部门</option>
-                        <option value="wt_person_id">法人委托</option>
-                        <option value="ht_person_id">合同签署人</option>
-                        <option value="ht_num">合同编号</option>
-                        <option value="ht_money">合同金额</option>
-                        <option value="js_money">结算金额</option>
-                        <option value="mobile">联系电话</option>
-                        <option value="sign_date">签订日期</option>
-                        <option value="start_date">开工日期</option>
-                        <option value="finish_date">完工日期</option>
+                        <option value="report_id">工程报告ID</option>
                         <option value="add_time">添加时间</option>
                     </select>
                     <span class="input-group-btn">
@@ -50,81 +39,73 @@
         <table class="table table-hover">
             <tr>
                 <th>#</th>
-                <th>工程名称</th>
-                <th>负责人</th>
-                <th>所属部门</th>
-                <th>工程类型</th>
-                <th>项目阶段</th>
-                <th>签订日期</th>
-                <th>合同金额</th>
-                <th>委托单位</th>
-                <th>工程合同</th>
-                <th>详细信息</th>
-                <th>报告</th>
-                <th colspan="2">操作</th>
+                <th>标题</th>
+                <th>相关工程</th>
+                <th>编号</th>
+                <th>编写人</th>
+                <th>校核人</th>
+                <th>审核人</th>
+                <th>批准人</th>
+                <th>报告文件</th>
+                <th>详情</th>
             </tr>
-            {% for pro in pros %}
-                <tr id="{{ pro.id }}">
-                    <td>{{ pro.id }}</td>
-                    <td>{{ pro.pro_name }}</td>
+            {% for report in reports %}
+                <tr>
+                    <td>{{ report.id }}</td>
+                    <td>{{ report.title }}</td>
+                    <td>{{ report.project.pro_name }}</td>
                     <td>
-                        {% if pro.pro_person %}
-                            {{ pro.pro_person }}
-                        {% else %}
-                            未填写
-                        {% endif %}
-                    </td>
-                    <td>{{ pro.department }}</td>
-                    <td>
-                        {% if pro.pro_type_name %}
-                            {{ pro.pro_type_name }}
+                        {% if report.number %}
+                            {{ report.number }}
                         {% else %}
                             未填写
                         {% endif %}
                     </td>
                     <td>
-                        {% if pro.pro_stage_name %}
-                            {{ pro.pro_stage_name }}
+                        {% if report.write_person %}
+                            {{ report.write_person }}
                         {% else %}
                             未填写
                         {% endif %}
                     </td>
                     <td>
-                        {% if pro.sign_date %}
-                            {{ pro.sign_date }}
+                        {% if report.check_person %}
+                            {{ report.check_person }}
                         {% else %}
                             未填写
                         {% endif %}
                     </td>
                     <td>
-                        {% if pro.ht_money %}
-                            {{ pro.ht_money }}
+                        {% if report.verify_person %}
+                            {{ report.verify_person }}
                         {% else %}
                             未填写
                         {% endif %}
                     </td>
                     <td>
-                        {% if pro.wt_dw %}
-                            {{ pro.wt_dw }}
+                        {% if report.authorize_person %}
+                            {{ report.authorize_person }}
                         {% else %}
                             未填写
                         {% endif %}
                     </td>
                     <td>
-                        {% if pro.ht_scan %}
-                            <a href="{{ MEDIA_URL }}{{ pro.ht_scan }}" target="_blank">查看</a>
+                        {% if report.file %}
+                            <a href="{{ MEDIA_URL }}{{ report.file }}" target="_blank">查看</a>
                         {% else %}
                             未上传
                         {% endif %}
                     </td>
-                    <td><a href="{% url 'pro:detail' pro.id %}">查看</a></td>
-                    <td><a href="{% url 'pro:report' pro.id %}">查看</a></td>
-                    <td><a href="{% url 'pro:edit' pro.id %}">修改</a></td>
-                    <td><a data-value="{{ pro.id }}" href="javascript:void(0);" class="delete_pro">删除</a></td>
+                    <td><a href="{% url 'pro:report_detail' report.id %}">查看</a></td>
                 </tr>
             {% endfor %}
         </table>
     </div>
+
+    <a href="{% url 'pro:add_report' %}" role="button" class="btn btn-primary btn-block"
+       style="margin-top: 50px; margin-bottom: 50px">添加工程报告</a>
+
+    {#    <a href="javascript:history.go(-1);" role="button" class="btn btn-primary btn-block">返回</a>#}
 
 {% endblock %}
 
