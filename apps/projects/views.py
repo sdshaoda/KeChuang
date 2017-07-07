@@ -153,7 +153,7 @@ class AddProView(View):
     def get(self, request):
 
         # 用户 列表，筛除超级用户
-        staffs = UserProfile.objects.filter(is_superuser=0)
+        staffs = UserProfile.objects.filter(is_superuser=0).order_by('username')
 
         # 工程类型
         pro_types = ProjectType.objects.all()
