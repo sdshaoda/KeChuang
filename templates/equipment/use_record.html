@@ -46,6 +46,7 @@
             <tr>
                 <th>#</th>
                 <th>设备名称</th>
+                <th>档案编号</th>
                 <th>使用人</th>
                 <th>部门</th>
                 <th>领用时间</th>
@@ -56,6 +57,7 @@
                 <tr>
                     <td>{{ equ_apply.id }}</td>
                     <td>{{ equ_apply.equipment_name }}</td>
+                    <td>{{ equ_apply.equipment.file_num }}</td>
                     <td>{{ equ_apply.person_name }}</td>
                     <td>{{ equ_apply.person.department_name }}</td>
                     <td>{{ equ_apply.use_date }}</td>
