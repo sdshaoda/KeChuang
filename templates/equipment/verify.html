@@ -79,7 +79,9 @@
                     <td>
                         <div class="use_date show_date">
                             <span>{{ equ_apply.use_date|date:"Y-m-d" }}</span>
-                            <span class="glyphicon glyphicon-wrench"></span>
+                            {% if equ_apply.status == '审核中' %}
+                                <span class="glyphicon glyphicon-wrench"></span>
+                            {% endif %}
                         </div>
                         <div class="use_date edit_date hidden">
                             <form action="">
@@ -92,7 +94,9 @@
                     <td>
                         <div class="revert_date show_date">
                             <span>{{ equ_apply.revert_date|date:"Y-m-d" }}</span>
-                            <span class="glyphicon glyphicon-wrench"></span>
+                            {% if equ_apply.status == '审核中' %}
+                                <span class="glyphicon glyphicon-wrench"></span>
+                            {% endif %}
                         </div>
                         <div class="revert_date edit_date hidden">
                             <form action="">
