@@ -151,9 +151,10 @@ class DocListView(View):
     def get(self, request):
         docs = Document.objects.all().order_by('-add_time')
 
-        # 检测员 只能浏览本部门的公文
-        if request.user.permission == '检测员':
-            docs = docs.filter(department=request.user.department)
+        # 公司负责 和 系统管理员 能够浏览 “全公司” 和 各部门 的公文
+        # 检测员 和 部门负责 只能浏览 “全公司” 和 本部门 的公文
+        if request.user.permission == '检测员' or request.user.permission == '部门负责':
+            docs = docs.filter(Q(department=request.user.department) | Q(department_name='全公司'))
 
         search_keywords = request.GET.get('keywords', '')
         category = request.GET.get('category', '')
@@ -209,9 +210,10 @@ class DocUploadView(View):
 
         departments = Department.objects.all()
 
-        # 部门负责 只能上传公文至 本部门 或全公司
+        # 公司负责 和 系统管理员 可上传公文至 “全公司” 和 各部门
+        # 部门负责 只能上传公文至 本部门
         if request.user.permission == '部门负责':
-            departments = departments.filter(Q(id=request.user.department_id) | Q(is_department=0))
+            departments = departments.filter(id=request.user.department_id)
 
         return render(request, 'announcement/upload.html', {
             'departments': departments
@@ -248,5 +250,5 @@ class DeleteDocView(View):
         doc.delete()
 
         if Announcement.objects.filter(id=doc_id):
-            return HttpResponse('{"status":"fail","msg":"删除公告失败"}', content_type='application/json')
-        return HttpResponse('{"status":"success","msg":"删除公告成功"}', content_type='application/json')
+            return HttpResponse('{"status":"fail","msg":"删除公文失败"}', content_type='application/json')
+        return HttpResponse('{"status":"success","msg":"删除公文成功"}', content_type='application/json')
