@@ -1,5 +1,6 @@
-## 简介
+## related
 
-本系统为中国科学院下属武汉XX有限公司研发，为帮助他们完成对管理工程、设备、人员的线上管理。
-
-项目目前在持续开发过程中。有任何建议欢迎PR
+- Django 主体Python框架
+- Xadmin 后台管理系统
+- Bootstrap 前端HTML/CSS框架
+- jQuery 前端类库
